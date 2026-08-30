@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>§9. Последовательность из натуральных чисел</title>
+<title>§10. Делители и кратные. Простые и составные числа</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
@@ -60,7 +60,7 @@
   .card-face .term { font-size: 16px; font-weight: 700; } .card-face .def { font-size: 13px; color: var(--ink); }
   .fib-item { margin-bottom: 16px; } .fib-sentence { font-size: 15px; margin-bottom: 6px; }
   .fib-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-  .fib-row input[type="text"] { font-family: 'PT Sans', sans-serif; font-size: 15px; padding: 6px 9px; border: none; border-bottom: 2px solid var(--ink-faint); background: transparent; color: var(--ink); width: 140px; }
+  .fib-row input[type="text"] { font-family: 'PT Sans', sans-serif; font-size: 15px; padding: 6px 9px; border: none; border-bottom: 2px solid var(--ink-faint); background: transparent; color: var(--ink); width: 170px; }
   .fib-row input[type="text"]:focus { border-bottom-color: var(--margin); }
   .fib-row input.correct { border-bottom-color: var(--good); color: var(--good); }
   .fib-row input.incorrect { border-bottom-color: var(--bad); color: var(--bad); }
@@ -85,13 +85,13 @@
 <div class="sheet">
   <header class="page">
     <a class="back-link" href="../index.html">← ко всем параграфам</a>
-    <h1>§9. Последовательность из натуральных чисел</h1>
-    <p class="subtitle">Глава 1 · Натуральные числа и нуль · стр. 46–49</p>
+    <h1>§10. Делители и кратные. Простые и составные числа</h1>
+    <p class="subtitle">Глава 2 · Делимость натуральных чисел · стр. 50–53</p>
   </header>
 
   <nav class="tabs" role="tablist" aria-label="Упражнения">
     <button class="tab" role="tab" aria-selected="true" data-target="cards">Термины</button>
-    <button class="tab" role="tab" aria-selected="false" data-target="fib">Закономерности</button>
+    <button class="tab" role="tab" aria-selected="false" data-target="fib">Формулы и правила</button>
     <button class="tab" role="tab" aria-selected="false" data-target="tf">Верно / неверно</button>
   </nav>
 
@@ -114,31 +114,33 @@
   </section>
 
   <footer class="page">
-    <a href="paragraf8.html">← §8</a>
-    <span>Математика 5 · §9</span>
-    <a href="../print/glava1/paragraf9.html">карточки для печати</a>
-    <a href="../print/glava1/paragraf9_proverka.html">лист самопроверки</a>
-    <a href="../glava2/paragraf10.html">§10 →</a>
+    <a href="../glava1/paragraf9.html">← §9</a>
+    <span>Математика 5 · §10</span>
+    <a href="../print/glava2/paragraf10.html">карточки для печати</a>
+    <a href="../print/glava2/paragraf10_proverka.html">лист самопроверки</a>
+    <a href="paragraf11.html">§11 →</a>
   </footer>
 </div>
 
 <script>
 (function () {
   var TERMS = [
-    { term: "последовательность", def: "Числа, расположенные в определённом порядке по какому-то правилу." },
-    { term: "закономерность", def: "Правило, по которому составлена последовательность." }
+    { term: "кратное", def: "Число, которое делится на другое число без остатка." },
+    { term: "делитель", def: "Число, на которое делится другое число." },
+    { term: "простое число", def: "Натуральное число, у которого ровно два делителя — единица и оно само." },
+    { term: "составное число", def: "Натуральное число, у которого больше двух делителей." }
   ];
   var FIB = [
-    { text: "1, 4, 9, 16, 25 — это последовательность ___ чисел", answer: "квадратов" },
-    { text: "1, 8, 27, 64, 125 — это последовательность ___ чисел", answer: "кубов" },
-    { text: "В последовательности Фибоначчи каждое число равно сумме ___ предыдущих", answer: "двух" },
-    { text: "4, 8, 12, 16, 20 — числа, которые делятся на ___", answer: "4" }
+    { text: "8 делится на 4, значит 8 ___ числу 4 (кратно / делитель)", answer: "кратно" },
+    { text: "Число, у которого только два делителя — единица и оно само, называется ___", answer: "простым" },
+    { text: "Число 1 не является ни простым, ни ___", answer: "составным" },
+    { text: "Простых чисел ___ (конечное количество / бесконечно много)", answer: "бесконечно много" }
   ];
   var TF = [
-    { text: "Чтобы продолжить последовательность, нужно найти закономерность.", answer: true },
-    { text: "Любой случайный набор чисел уже называется последовательностью с закономерностью.", answer: false },
-    { text: "1, 1, 2, 3, 5, 8 — начало последовательности Фибоначчи.", answer: true },
-    { text: "У последовательности не может быть пропущенных чисел.", answer: false }
+    { text: "2 и 11 — простые числа.", answer: true },
+    { text: "4 и 12 — простые числа.", answer: false },
+    { text: "Число 1 — простое число.", answer: false },
+    { text: "Составное число имеет больше двух делителей.", answer: true }
   ];
 
   var tabs = document.querySelectorAll(".tab");

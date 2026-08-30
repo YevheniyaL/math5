@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>§9. Последовательность из натуральных чисел</title>
+<title>§12. Признаки делимости на 2, 3, 5, 9, 10</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
@@ -38,7 +38,7 @@
     background-image: repeating-linear-gradient(to bottom, transparent, transparent 37px, var(--rule-soft) 38px); background-position: 0 128px; }
   .sheet::before { content: ""; position: absolute; top: 0; bottom: 0; left: 26px; width: 2px; background: var(--margin); opacity: 0.75; }
   header.page { padding-top: 6px; padding-bottom: 14px; }
-  h1 { font-size: 30px; margin: 0 0 2px; color: var(--ink); line-height: 1.1; }
+  h1 { font-size: 28px; margin: 0 0 2px; color: var(--ink); line-height: 1.15; }
   .subtitle { font-size: 15px; color: var(--ink-soft); margin: 0 0 10px; }
   nav.tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 20px; }
   .tab { font-family: 'Caveat', cursive; font-size: 19px; font-weight: 600; background: var(--paper-raised); border: 1px solid var(--rule); border-bottom-width: 3px;
@@ -60,7 +60,7 @@
   .card-face .term { font-size: 16px; font-weight: 700; } .card-face .def { font-size: 13px; color: var(--ink); }
   .fib-item { margin-bottom: 16px; } .fib-sentence { font-size: 15px; margin-bottom: 6px; }
   .fib-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-  .fib-row input[type="text"] { font-family: 'PT Sans', sans-serif; font-size: 15px; padding: 6px 9px; border: none; border-bottom: 2px solid var(--ink-faint); background: transparent; color: var(--ink); width: 140px; }
+  .fib-row input[type="text"] { font-family: 'PT Sans', sans-serif; font-size: 15px; padding: 6px 9px; border: none; border-bottom: 2px solid var(--ink-faint); background: transparent; color: var(--ink); width: 160px; }
   .fib-row input[type="text"]:focus { border-bottom-color: var(--margin); }
   .fib-row input.correct { border-bottom-color: var(--good); color: var(--good); }
   .fib-row input.incorrect { border-bottom-color: var(--bad); color: var(--bad); }
@@ -85,13 +85,13 @@
 <div class="sheet">
   <header class="page">
     <a class="back-link" href="../index.html">← ко всем параграфам</a>
-    <h1>§9. Последовательность из натуральных чисел</h1>
-    <p class="subtitle">Глава 1 · Натуральные числа и нуль · стр. 46–49</p>
+    <h1>§12. Признаки делимости на 2, 3, 5, 9, 10</h1>
+    <p class="subtitle">Глава 2 · Делимость натуральных чисел · стр. 58–62</p>
   </header>
 
   <nav class="tabs" role="tablist" aria-label="Упражнения">
     <button class="tab" role="tab" aria-selected="true" data-target="cards">Термины</button>
-    <button class="tab" role="tab" aria-selected="false" data-target="fib">Закономерности</button>
+    <button class="tab" role="tab" aria-selected="false" data-target="fib">Признаки делимости</button>
     <button class="tab" role="tab" aria-selected="false" data-target="tf">Верно / неверно</button>
   </nav>
 
@@ -101,7 +101,7 @@
   </section>
 
   <section class="page" id="fib">
-    <p class="lead">Впиши пропущенное слово.</p>
+    <p class="lead">Впиши пропущенное слово или число.</p>
     <p class="counter" id="fibCounter">Верно: 0 из 0</p>
     <div id="fibList"></div>
   </section>
@@ -114,31 +114,31 @@
   </section>
 
   <footer class="page">
-    <a href="paragraf8.html">← §8</a>
-    <span>Математика 5 · §9</span>
-    <a href="../print/glava1/paragraf9.html">карточки для печати</a>
-    <a href="../print/glava1/paragraf9_proverka.html">лист самопроверки</a>
-    <a href="../glava2/paragraf10.html">§10 →</a>
+    <a href="paragraf11.html">← §11</a>
+    <span>Математика 5 · §12</span>
+    <a href="../print/glava2/paragraf12.html">карточки для печати</a>
+    <a href="../print/glava2/paragraf12_proverka.html">лист самопроверки</a>
+    <a href="paragraf13.html">§13 →</a>
   </footer>
 </div>
 
 <script>
 (function () {
   var TERMS = [
-    { term: "последовательность", def: "Числа, расположенные в определённом порядке по какому-то правилу." },
-    { term: "закономерность", def: "Правило, по которому составлена последовательность." }
+    { term: "сумма цифр числа", def: "Сумма чисел, записанных цифрами данного числа (у 963 это 9+6+3)." }
   ];
   var FIB = [
-    { text: "1, 4, 9, 16, 25 — это последовательность ___ чисел", answer: "квадратов" },
-    { text: "1, 8, 27, 64, 125 — это последовательность ___ чисел", answer: "кубов" },
-    { text: "В последовательности Фибоначчи каждое число равно сумме ___ предыдущих", answer: "двух" },
-    { text: "4, 8, 12, 16, 20 — числа, которые делятся на ___", answer: "4" }
+    { text: "Число делится на 2, если оно оканчивается на чётную ___", answer: "цифру" },
+    { text: "Число делится на 5, если оно оканчивается на 0 или ___", answer: "5" },
+    { text: "Число делится на 10, если оно оканчивается на ___", answer: "0" },
+    { text: "Число делится на 3, если сумма его цифр делится на ___", answer: "3" },
+    { text: "Число делится на 9, если сумма его цифр делится на ___", answer: "9" }
   ];
   var TF = [
-    { text: "Чтобы продолжить последовательность, нужно найти закономерность.", answer: true },
-    { text: "Любой случайный набор чисел уже называется последовательностью с закономерностью.", answer: false },
-    { text: "1, 1, 2, 3, 5, 8 — начало последовательности Фибоначчи.", answer: true },
-    { text: "У последовательности не может быть пропущенных чисел.", answer: false }
+    { text: "963 делится на 3, потому что 9+6+3=18 делится на 3.", answer: true },
+    { text: "100 делится на 3.", answer: false },
+    { text: "6001 делится на 9.", answer: false },
+    { text: "Число, оканчивающееся на 0, делится и на 2, и на 5, и на 10.", answer: true }
   ];
 
   var tabs = document.querySelectorAll(".tab");

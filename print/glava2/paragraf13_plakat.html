@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>§13. Степень</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f5fb; --paper-raised: #ffffff; --ink: #232a4d; --ink-soft: #565f86; --ink-faint: #8990b8;
+    --line: #d8dcf0; --accent: #3a4fa0; --accent-soft: #e4e8f9;
+    --units: #2f9e8f; --units-bg: #dcf2ee;
+    --millions: #c9544a; --millions-bg: #fae2df;
+    --shadow: rgba(35, 42, 77, 0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1a1f36; --paper-raised: #242a47; --ink: #eef0fb; --ink-soft: #aab1d8; --ink-faint: #7981ac;
+      --line: #363d5e; --accent: #8fa3ea; --accent-soft: #2a3364;
+      --units: #5fd0bd; --units-bg: #1f3c37;
+      --millions: #ea9184; --millions-bg: #3d2925;
+      --shadow: rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1a1f36; --paper-raised: #242a47; --ink: #eef0fb; --ink-soft: #aab1d8; --ink-faint: #7981ac;
+    --line: #363d5e; --accent: #8fa3ea; --accent-soft: #2a3364;
+    --units: #5fd0bd; --units-bg: #1f3c37;
+    --millions: #ea9184; --millions-bg: #3d2925;
+    --shadow: rgba(0, 0, 0, 0.35);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: 'Nunito Sans', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  .poster { max-width: 720px; margin: 0 auto; padding: 36px 28px 48px; }
+  h1, h2, .display { font-family: 'Baloo 2', 'Nunito Sans', sans-serif; font-weight: 700; text-wrap: balance; }
+  .eyebrow { font-size: 13px; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); margin: 0 0 6px; }
+  h1 { font-size: 40px; line-height: 1.05; margin: 0 0 6px; color: var(--ink); }
+  .lede { font-size: 16px; color: var(--ink-soft); margin: 0 0 30px; max-width: 48ch; }
+  section { margin-bottom: 30px; } section:last-of-type { margin-bottom: 0; }
+  .section-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; }
+  .section-head h2 { font-size: 19px; margin: 0; color: var(--ink); }
+
+  .power-box { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 14px; padding: 26px; text-align: center; box-shadow: 0 2px 0 var(--shadow); }
+  .power-eq { font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 700; color: var(--ink-faint); }
+  .power-result { font-size: 46px; font-weight: 800; color: var(--accent); margin: 10px 0; }
+  .power-result sup { font-size: 24px; color: var(--millions); vertical-align: super; }
+  .power-labels { display: flex; justify-content: center; gap: 40px; margin-top: 14px; font-size: 13px; color: var(--ink-soft); }
+  .power-labels b { display: block; color: var(--ink); font-size: 15px; }
+
+  .def-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 480px) { .def-grid { grid-template-columns: 1fr; } }
+  .def-card { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 0 var(--shadow); }
+  .def-card .term { font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 15px; color: var(--accent); margin: 0 0 5px; }
+  .def-card p { margin: 0; font-size: 13.5px; color: var(--ink); line-height: 1.5; }
+
+  footer { margin-top: 36px; padding-top: 16px; border-top: 1px dashed var(--line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 12px; color: var(--ink-faint); }
+  @media print { body { background: #ffffff; } .poster { max-width: none; padding: 12px 6px; } }
+
+  @media print {
+    @page { size: A4; margin: 10mm; }
+    body { background: #fff !important; }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+    .poster { zoom: 0.88; box-shadow: none !important; }
+    .poster * { box-shadow: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="poster">
+  <p class="eyebrow">Математика · 5 класс · Глава 2</p>
+  <h1>§13. Степень</h1>
+  <p class="lede">Короткая запись для «умножить само на себя несколько раз».</p>
+
+  <section>
+    <div class="power-box">
+      <p class="power-eq">7 · 7 · 7 · 7</p>
+      <p class="power-eq">↓</p>
+      <p class="power-result">7<sup>4</sup></p>
+      <div class="power-labels">
+        <span><b>7</b>основание</span>
+        <span><b>4</b>показатель</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Термины</h2></div>
+    <div class="def-grid">
+      <div class="def-card"><p class="term">квадрат числа</p><p>Число во второй степени: 7² = 49.</p></div>
+      <div class="def-card"><p class="term">куб числа</p><p>Число в третьей степени: 7³ = 343.</p></div>
+      <div class="def-card"><p class="term">степень с основанием 10</p><p>10ⁿ = единица и n нулей: 10³=1000.</p></div>
+      <div class="def-card"><p class="term">говорите правильно</p><p>7⁴ — «семь в степени четыре»; 7² — «семь в квадрате».</p></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>§13 · стр. 63–66 · math_5_1.pdf</span>
+    <span>для запоминания — держи перед глазами первую неделю</span>
+  </footer>
+</div>
+
+</body>
+</html>

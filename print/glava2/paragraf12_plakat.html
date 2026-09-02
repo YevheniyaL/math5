@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>§12. Признаки делимости</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f5fb; --paper-raised: #ffffff; --ink: #232a4d; --ink-soft: #565f86; --ink-faint: #8990b8;
+    --line: #d8dcf0; --accent: #3a4fa0; --accent-soft: #e4e8f9;
+    --shadow: rgba(35, 42, 77, 0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1a1f36; --paper-raised: #242a47; --ink: #eef0fb; --ink-soft: #aab1d8; --ink-faint: #7981ac;
+      --line: #363d5e; --accent: #8fa3ea; --accent-soft: #2a3364;
+      --shadow: rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1a1f36; --paper-raised: #242a47; --ink: #eef0fb; --ink-soft: #aab1d8; --ink-faint: #7981ac;
+    --line: #363d5e; --accent: #8fa3ea; --accent-soft: #2a3364;
+    --shadow: rgba(0, 0, 0, 0.35);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: 'Nunito Sans', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  .poster { max-width: 720px; margin: 0 auto; padding: 36px 28px 48px; }
+  h1, h2, .display { font-family: 'Baloo 2', 'Nunito Sans', sans-serif; font-weight: 700; text-wrap: balance; }
+  .eyebrow { font-size: 13px; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); margin: 0 0 6px; }
+  h1 { font-size: 30px; line-height: 1.15; margin: 0 0 6px; color: var(--ink); }
+  .lede { font-size: 16px; color: var(--ink-soft); margin: 0 0 30px; max-width: 48ch; }
+  section { margin-bottom: 30px; } section:last-of-type { margin-bottom: 0; }
+  .section-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; }
+  .section-head h2 { font-size: 19px; margin: 0; color: var(--ink); }
+
+  .rules-grid { display: flex; flex-direction: column; gap: 10px; }
+  .rule-row { display: flex; align-items: center; gap: 14px; background: var(--paper-raised); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; box-shadow: 0 2px 0 var(--shadow); }
+  .rule-badge { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 22px; color: #fff; background: var(--accent); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .rule-text { font-size: 14.5px; }
+  .rule-text b { color: var(--accent); }
+
+  .eg-box { background: var(--accent-soft); border-radius: 12px; padding: 14px 18px; font-size: 14px; margin-top: 4px; }
+  .eg-box b { color: var(--accent); }
+
+  footer { margin-top: 36px; padding-top: 16px; border-top: 1px dashed var(--line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 12px; color: var(--ink-faint); }
+  @media print { body { background: #ffffff; } .poster { max-width: none; padding: 12px 6px; } }
+
+  @media print {
+    @page { size: A4; margin: 10mm; }
+    body { background: #fff !important; }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+    .poster { zoom: 0.88; box-shadow: none !important; }
+    .poster * { box-shadow: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="poster">
+  <p class="eyebrow">Математика · 5 класс · Глава 2</p>
+  <h1>§12. Признаки делимости на 2, 3, 5, 9, 10</h1>
+  <p class="lede">Пять правил, по которым можно узнать, делится ли число, просто
+  посмотрев на его запись — без деления в столбик.</p>
+
+  <section>
+    <div class="rules-grid">
+      <div class="rule-row"><span class="rule-badge">2</span><span class="rule-text">оканчивается на <b>0, 2, 4, 6, 8</b></span></div>
+      <div class="rule-row"><span class="rule-badge">5</span><span class="rule-text">оканчивается на <b>0 или 5</b></span></div>
+      <div class="rule-row"><span class="rule-badge">10</span><span class="rule-text">оканчивается на <b>0</b></span></div>
+      <div class="rule-row"><span class="rule-badge">3</span><span class="rule-text"><b>сумма цифр</b> делится на 3</span></div>
+      <div class="rule-row"><span class="rule-badge">9</span><span class="rule-text"><b>сумма цифр</b> делится на 9</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eg-box">
+      <b>Пример:</b> 963 → 9+6+3=18. 18 делится и на 3, и на 9 → значит, 963 делится и на 3, и на 9.
+    </div>
+  </section>
+
+  <footer>
+    <span>§12 · стр. 58–62 · math_5_1.pdf</span>
+    <span>для запоминания — держи перед глазами первую неделю</span>
+  </footer>
+</div>
+
+</body>
+</html>

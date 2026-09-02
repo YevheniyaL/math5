@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>§3. Сравнение натуральных чисел</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f5fb; --paper-raised: #ffffff; --ink: #232a4d; --ink-soft: #565f86; --ink-faint: #8990b8;
+    --line: #d8dcf0; --accent: #3a4fa0; --accent-soft: #e4e8f9;
+    --units: #2f9e8f; --units-bg: #dcf2ee;
+    --millions: #c9544a; --millions-bg: #fae2df;
+    --shadow: rgba(35, 42, 77, 0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1a1f36; --paper-raised: #242a47; --ink: #eef0fb; --ink-soft: #aab1d8; --ink-faint: #7981ac;
+      --line: #363d5e; --accent: #8fa3ea; --accent-soft: #2a3364;
+      --units: #5fd0bd; --units-bg: #1f3c37;
+      --millions: #ea9184; --millions-bg: #3d2925;
+      --shadow: rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1a1f36; --paper-raised: #242a47; --ink: #eef0fb; --ink-soft: #aab1d8; --ink-faint: #7981ac;
+    --line: #363d5e; --accent: #8fa3ea; --accent-soft: #2a3364;
+    --units: #5fd0bd; --units-bg: #1f3c37;
+    --millions: #ea9184; --millions-bg: #3d2925;
+    --shadow: rgba(0, 0, 0, 0.35);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: 'Nunito Sans', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  .poster { max-width: 720px; margin: 0 auto; padding: 36px 28px 48px; }
+  h1, h2, .display { font-family: 'Baloo 2', 'Nunito Sans', sans-serif; font-weight: 700; text-wrap: balance; }
+  .eyebrow { font-size: 13px; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); margin: 0 0 6px; }
+  h1 { font-size: 34px; line-height: 1.05; margin: 0 0 6px; color: var(--ink); }
+  .lede { font-size: 16px; color: var(--ink-soft); margin: 0 0 30px; max-width: 48ch; }
+  section { margin-bottom: 34px; } section:last-of-type { margin-bottom: 0; }
+  .section-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; }
+  .section-head h2 { font-size: 20px; margin: 0; color: var(--ink); }
+
+  .cmp-box { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 14px; padding: 22px; box-shadow: 0 2px 0 var(--shadow); }
+  .cmp-row { display: flex; align-items: center; justify-content: center; gap: 20px; }
+  .cmp-num { display: flex; gap: 4px; }
+  .cmp-digit { font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 700; width: 32px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 6px; background: var(--accent-soft); color: var(--ink-faint); }
+  .cmp-digit.hl { background: var(--millions-bg); color: var(--millions); }
+  .cmp-sign { font-family: 'Baloo 2', sans-serif; font-size: 28px; font-weight: 800; color: var(--accent); }
+  .cmp-caption { margin-top: 12px; text-align: center; font-size: 14px; color: var(--ink-soft); }
+  .cmp-caption b { color: var(--ink); }
+
+  .rule-list { display: flex; flex-direction: column; gap: 10px; }
+  .rule { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px; padding: 12px 16px; font-size: 14.5px; box-shadow: 0 2px 0 var(--shadow); }
+  .rule b { color: var(--accent); }
+
+  .dbl-box { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 14px; padding: 22px; box-shadow: 0 2px 0 var(--shadow); text-align: center; }
+  .dbl-eq { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; color: var(--ink); }
+  .dbl-eq .mid { color: var(--units); }
+  .dbl-ray { position: relative; height: 20px; margin: 18px 40px 0; border-top: 2px solid var(--ink-faint); }
+  .dbl-ray span { position: absolute; top: -9px; width: 8px; height: 8px; border-radius: 50%; background: var(--units); }
+  .dbl-ray span:nth-child(1) { left: 0%; } .dbl-ray span:nth-child(2) { left: 45%; } .dbl-ray span:nth-child(3) { left: 100%; }
+
+  .def-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 480px) { .def-grid { grid-template-columns: 1fr; } }
+  .def-card { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; box-shadow: 0 2px 0 var(--shadow); }
+  .def-card .term { font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 17px; color: var(--accent); margin: 0 0 6px; }
+  .def-card p { margin: 0; font-size: 14.5px; color: var(--ink); line-height: 1.5; }
+
+  footer { margin-top: 40px; padding-top: 16px; border-top: 1px dashed var(--line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 12px; color: var(--ink-faint); }
+  @media print { body { background: #ffffff; } .poster { max-width: none; padding: 12px 6px; } }
+
+  @media print {
+    @page { size: A4; margin: 10mm; }
+    body { background: #fff !important; }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+    .poster { zoom: 0.88; box-shadow: none !important; }
+    .poster * { box-shadow: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="poster">
+  <p class="eyebrow">Математика · 5 класс · Глава 1</p>
+  <h1>§3. Сравнение натуральных чисел</h1>
+  <p class="lede">Как понять, какое число больше, если оно длинное и цифры почти
+  совпадают.</p>
+
+  <section>
+    <div class="section-head"><h2>Одинаковое число разрядов — сравни цифры слева направо</h2></div>
+    <div class="cmp-box">
+      <div class="cmp-row">
+        <div class="cmp-num">
+          <span class="cmp-digit">2</span><span class="cmp-digit">8</span><span class="cmp-digit hl">2</span><span class="cmp-digit">1</span>
+        </div>
+        <span class="cmp-sign">&gt;</span>
+        <div class="cmp-num">
+          <span class="cmp-digit">2</span><span class="cmp-digit">8</span><span class="cmp-digit hl">1</span><span class="cmp-digit">9</span>
+        </div>
+      </div>
+      <p class="cmp-caption">Первые две цифры совпадают. Первая <b>непохожая</b> цифра —
+      третья: 2 больше 1, значит <b>2821 &gt; 2819</b>.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Три правила сравнения</h2></div>
+    <div class="rule-list">
+      <div class="rule"><b>Разное число разрядов</b> — больше то число, у которого разрядов (цифр) больше. 1001 &gt; 999.</div>
+      <div class="rule"><b>Одинаковое число разрядов</b> — сравни цифры слева направо: где первая непохожая цифра больше, то число и больше.</div>
+      <div class="rule"><b>На координатном луче</b> — число левее меньше, число правее больше.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Двойное неравенство</h2></div>
+    <div class="dbl-box">
+      <p class="dbl-eq">14 &lt; <span class="mid">19</span> &lt; 22</p>
+      <div class="dbl-ray"><span></span><span></span><span></span></div>
+      <p class="cmp-caption">Число 19 сравнивается сразу с двумя другими: правее 14, левее 22.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Термины</h2></div>
+    <div class="def-grid">
+      <div class="def-card"><p class="term">неравенство</p><p>Сравнение чисел знаками &lt; (меньше) или &gt; (больше).</p></div>
+      <div class="def-card"><p class="term">двойное неравенство</p><p>Запись вида a &lt; b &lt; c — число сравнивается сразу с двумя другими.</p></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>§3 · стр. 17–20 · math_5_1.pdf</span>
+    <span>для запоминания — держи перед глазами первую неделю</span>
+  </footer>
+</div>
+
+</body>
+</html>

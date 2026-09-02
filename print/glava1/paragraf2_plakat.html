@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>§2. Координатный луч</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f5fb; --paper-raised: #ffffff; --ink: #232a4d; --ink-soft: #565f86; --ink-faint: #8990b8;
+    --line: #d8dcf0; --accent: #3a4fa0; --accent-soft: #e4e8f9;
+    --units: #2f9e8f; --units-bg: #dcf2ee;
+    --thousands: #c9861f; --thousands-bg: #faedd6;
+    --millions: #c9544a; --millions-bg: #fae2df;
+    --billions: #7d5ba6; --billions-bg: #ece4f5;
+    --shadow: rgba(35, 42, 77, 0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1a1f36; --paper-raised: #242a47; --ink: #eef0fb; --ink-soft: #aab1d8; --ink-faint: #7981ac;
+      --line: #363d5e; --accent: #8fa3ea; --accent-soft: #2a3364;
+      --units: #5fd0bd; --units-bg: #1f3c37;
+      --thousands: #f0c463; --thousands-bg: #3d3320;
+      --millions: #ea9184; --millions-bg: #3d2925;
+      --billions: #b79bdb; --billions-bg: #322a48;
+      --shadow: rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1a1f36; --paper-raised: #242a47; --ink: #eef0fb; --ink-soft: #aab1d8; --ink-faint: #7981ac;
+    --line: #363d5e; --accent: #8fa3ea; --accent-soft: #2a3364;
+    --units: #5fd0bd; --units-bg: #1f3c37;
+    --thousands: #f0c463; --thousands-bg: #3d3320;
+    --millions: #ea9184; --millions-bg: #3d2925;
+    --billions: #b79bdb; --billions-bg: #322a48;
+    --shadow: rgba(0, 0, 0, 0.35);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: 'Nunito Sans', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  .poster { max-width: 720px; margin: 0 auto; padding: 36px 28px 48px; }
+  h1, h2, .display { font-family: 'Baloo 2', 'Nunito Sans', sans-serif; font-weight: 700; text-wrap: balance; }
+  .eyebrow { font-size: 13px; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); margin: 0 0 6px; }
+  h1 { font-size: 36px; line-height: 1.05; margin: 0 0 6px; color: var(--ink); }
+  .lede { font-size: 16px; color: var(--ink-soft); margin: 0 0 30px; max-width: 48ch; }
+  section { margin-bottom: 34px; } section:last-of-type { margin-bottom: 0; }
+  .section-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; }
+  .section-head h2 { font-size: 20px; margin: 0; color: var(--ink); }
+  .section-head .n { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; color: var(--accent); background: var(--accent-soft); border-radius: 5px; padding: 3px 7px; }
+
+  .ray-box { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 14px; padding: 26px 22px 18px; box-shadow: 0 2px 0 var(--shadow); }
+  .ray-track { position: relative; height: 2px; background: var(--ink-faint); margin: 0 10px 0 26px; }
+  .ray-track::after { content: "→"; position: absolute; right: -22px; top: 50%; transform: translateY(-50%); color: var(--ink-faint); font-size: 18px; }
+  .ray-origin { position: absolute; left: -26px; top: 50%; transform: translateY(-50%); width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
+  .ray-points { position: relative; height: 56px; }
+  .ray-point { position: absolute; top: 0; transform: translateX(-50%); text-align: center; }
+  .ray-point .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); margin: 18px auto 4px; }
+  .ray-point .lbl { font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 15px; color: var(--accent); }
+  .ray-point .co { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: var(--ink-soft); }
+  .ray-caption { margin-top: 10px; font-size: 14px; color: var(--ink-soft); }
+  .ray-caption b { color: var(--ink); }
+
+  .steps { display: flex; flex-direction: column; gap: 10px; }
+  .step { display: flex; gap: 12px; align-items: flex-start; background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; box-shadow: 0 2px 0 var(--shadow); }
+  .step .idx { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 14px; color: #fff; background: var(--accent); width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .step p { margin: 0; font-size: 14.5px; line-height: 1.5; }
+
+  .def-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 480px) { .def-grid { grid-template-columns: 1fr; } }
+  .def-card { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; box-shadow: 0 2px 0 var(--shadow); }
+  .def-card .term { font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 17px; color: var(--accent); margin: 0 0 6px; }
+  .def-card p { margin: 0; font-size: 14.5px; color: var(--ink); line-height: 1.5; }
+
+  .callout { background: var(--accent-soft); border-radius: 12px; padding: 14px 18px; font-size: 14.5px; color: var(--ink); }
+  .callout b { color: var(--accent); }
+
+  .oldunits { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .oldunits td { padding: 5px 10px; border-bottom: 1px dashed var(--line); }
+  .oldunits td:first-child { color: var(--ink-soft); }
+  .oldunits td:last-child { font-family: 'JetBrains Mono', monospace; text-align: right; color: var(--ink); }
+
+  footer { margin-top: 40px; padding-top: 16px; border-top: 1px dashed var(--line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 12px; color: var(--ink-faint); }
+  @media print { body { background: #ffffff; } .poster { max-width: none; padding: 12px 6px; } }
+
+  @media print {
+    @page { size: A4; margin: 10mm; }
+    body { background: #fff !important; }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+    .poster { zoom: 0.88; box-shadow: none !important; }
+    .poster * { box-shadow: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="poster">
+  <p class="eyebrow">Математика · 5 класс · Глава 1</p>
+  <h1>§2. Координатный луч</h1>
+  <p class="lede">Как отмечать числа на луче и читать их координаты — база для всей
+  дальнейшей геометрии и графиков.</p>
+
+  <section>
+    <div class="section-head"><h2>Координатный луч</h2></div>
+    <div class="ray-box">
+      <div class="ray-points">
+        <div class="ray-point" style="left:0%"><span class="lbl">O</span><span class="dot"></span><span class="co">0</span></div>
+        <div class="ray-point" style="left:22%"><span class="lbl">A</span><span class="dot"></span><span class="co">1</span></div>
+        <div class="ray-point" style="left:55%"><span class="lbl">B</span><span class="dot"></span><span class="co">3</span></div>
+        <div class="ray-point" style="left:82%"><span class="lbl">C</span><span class="dot"></span><span class="co">5</span></div>
+      </div>
+      <div class="ray-track"><span class="ray-origin"></span></div>
+      <p class="ray-caption"><b>O</b> — начало координат (координата 0). Отрезок
+      <b>OA</b> — единичный отрезок. Число под точкой — её <b>координата</b>.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Термины</h2></div>
+    <div class="def-grid">
+      <div class="def-card">
+        <p class="term">единичный отрезок</p>
+        <p>Отрезок, длина которого принята за единицу длины.</p>
+      </div>
+      <div class="def-card">
+        <p class="term">координата точки</p>
+        <p>Число, которое показывает положение точки на луче. Запись M(7):
+        «точка M имеет координату 7».</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Алгоритм построения</h2></div>
+    <div class="steps">
+      <div class="step"><span class="idx">1</span><p>Изобразить луч, выбрав направление.</p></div>
+      <div class="step"><span class="idx">2</span><p>Обозначить начало координат — точку O.</p></div>
+      <div class="step"><span class="idx">3</span><p>Отметить концы единичного отрезка числами 0 и 1, дальше считать по нему
+      (для больших чисел — взять отрезок покрупнее: 10, 100…).</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Расширение</h2><span class="n">для интереса</span></div>
+    <p class="lede" style="margin-bottom:10px;">До метров и сантиметров люди мерили длину чем придётся:</p>
+    <table class="oldunits">
+      <tr><td>пядь</td><td>21 см</td></tr>
+      <tr><td>локоть</td><td>45 см</td></tr>
+      <tr><td>аршин</td><td>≈ 71 см</td></tr>
+      <tr><td>сажень</td><td>≈ 2 м 13 см</td></tr>
+      <tr><td>верста</td><td>≈ 1 км 67 м</td></tr>
+    </table>
+  </section>
+
+  <footer>
+    <span>§2 · стр. 12–16 · math_5_1.pdf</span>
+    <span>для запоминания — держи перед глазами первую неделю</span>
+  </footer>
+</div>
+
+</body>
+</html>

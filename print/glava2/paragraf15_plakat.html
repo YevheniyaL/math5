@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>§15. НОД и НОК</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f5fb; --paper-raised: #ffffff; --ink: #232a4d; --ink-soft: #565f86; --ink-faint: #8990b8;
+    --line: #d8dcf0; --accent: #3a4fa0; --accent-soft: #e4e8f9;
+    --units: #2f9e8f; --units-bg: #dcf2ee;
+    --millions: #c9544a; --millions-bg: #fae2df;
+    --thousands: #c9861f; --thousands-bg: #faedd6;
+    --shadow: rgba(35, 42, 77, 0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1a1f36; --paper-raised: #242a47; --ink: #eef0fb; --ink-soft: #aab1d8; --ink-faint: #7981ac;
+      --line: #363d5e; --accent: #8fa3ea; --accent-soft: #2a3364;
+      --units: #5fd0bd; --units-bg: #1f3c37;
+      --millions: #ea9184; --millions-bg: #3d2925;
+      --thousands: #f0c463; --thousands-bg: #3d3320;
+      --shadow: rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1a1f36; --paper-raised: #242a47; --ink: #eef0fb; --ink-soft: #aab1d8; --ink-faint: #7981ac;
+    --line: #363d5e; --accent: #8fa3ea; --accent-soft: #2a3364;
+    --units: #5fd0bd; --units-bg: #1f3c37;
+    --millions: #ea9184; --millions-bg: #3d2925;
+    --thousands: #f0c463; --thousands-bg: #3d3320;
+    --shadow: rgba(0, 0, 0, 0.35);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: 'Nunito Sans', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  .poster { max-width: 720px; margin: 0 auto; padding: 36px 28px 48px; }
+  h1, h2, .display { font-family: 'Baloo 2', 'Nunito Sans', sans-serif; font-weight: 700; text-wrap: balance; }
+  .eyebrow { font-size: 13px; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); margin: 0 0 6px; }
+  h1 { font-size: 40px; line-height: 1.05; margin: 0 0 6px; color: var(--ink); }
+  .lede { font-size: 16px; color: var(--ink-soft); margin: 0 0 30px; max-width: 48ch; }
+  section { margin-bottom: 30px; } section:last-of-type { margin-bottom: 0; }
+  .section-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; }
+  .section-head h2 { font-size: 19px; margin: 0; color: var(--ink); }
+
+  .venn-box { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 14px; padding: 20px; box-shadow: 0 2px 0 var(--shadow); }
+  .venn-titles { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--ink-soft); margin-bottom: 10px; padding: 0 6px; }
+  .venn { position: relative; height: 150px; }
+  .venn-circle { position: absolute; top: 0; width: 220px; height: 150px; border-radius: 50%; }
+  .venn-circle.a { left: 20px; background: var(--units-bg); opacity: 0.85; }
+  .venn-circle.b { right: 20px; background: var(--millions-bg); opacity: 0.85; }
+  .venn-chips { position: absolute; inset: 0; display: flex; align-items: center; }
+  .venn-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; z-index: 1; }
+  .chip { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 15px; background: var(--paper-raised); border-radius: 6px; padding: 3px 9px; box-shadow: 0 1px 0 var(--shadow); }
+  .venn-caption { text-align: center; margin-top: 10px; font-size: 13.5px; color: var(--ink-soft); }
+  .venn-caption b { color: var(--accent); }
+
+  .noc-box { background: var(--thousands-bg); border-radius: 12px; padding: 14px 18px; margin-top: 16px; font-size: 14px; color: var(--ink); }
+  .noc-box b { color: var(--thousands); }
+
+  footer { margin-top: 36px; padding-top: 16px; border-top: 1px dashed var(--line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 12px; color: var(--ink-faint); }
+  @media print { body { background: #ffffff; } .poster { max-width: none; padding: 12px 6px; } }
+
+  @media print {
+    @page { size: A4; margin: 10mm; }
+    body { background: #fff !important; }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+    .poster { zoom: 0.88; box-shadow: none !important; }
+    .poster * { box-shadow: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="poster">
+  <p class="eyebrow">Математика · 5 класс · Глава 2</p>
+  <h1>§15. НОД и НОК</h1>
+  <p class="lede">НОД — это общие простые множители двух чисел, перемноженные вместе.</p>
+
+  <section>
+    <div class="venn-box">
+      <div class="venn-titles"><span>180 = 2²·3²·5</span><span>378 = 2·3³·7</span></div>
+      <div class="venn">
+        <div class="venn-circle a"></div>
+        <div class="venn-circle b"></div>
+        <div class="venn-chips">
+          <div class="venn-col"><span class="chip">2</span><span class="chip">5</span></div>
+          <div class="venn-col"><span class="chip">2</span><span class="chip">3</span><span class="chip">3</span></div>
+          <div class="venn-col"><span class="chip">3</span><span class="chip">7</span></div>
+        </div>
+      </div>
+      <p class="venn-caption">Общие множители (в середине): 2, 3, 3 → <b>НОД(180;378) = 2·3·3 = 18</b></p>
+    </div>
+    <div class="noc-box">
+      <b>НОК</b> — общие множители + всё, что осталось по краям:
+      2 · 3 · 3 · 5 · 3 · 7 = 2 · 3³ · 5 · 7 = <b>3780</b>
+    </div>
+  </section>
+
+  <footer>
+    <span>§15 · стр. 71–76 · math_5_1.pdf</span>
+    <span>для запоминания — держи перед глазами первую неделю</span>
+  </footer>
+</div>
+
+</body>
+</html>

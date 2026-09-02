@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>§4. Порядок арифметических действий</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f5fb; --paper-raised: #ffffff; --ink: #232a4d; --ink-soft: #565f86; --ink-faint: #8990b8;
+    --line: #d8dcf0; --accent: #3a4fa0; --accent-soft: #e4e8f9;
+    --s1: #7d5ba6; --s1-bg: #ece4f5;
+    --s2: #c9861f; --s2-bg: #faedd6;
+    --s3: #2f9e8f; --s3-bg: #dcf2ee;
+    --shadow: rgba(35, 42, 77, 0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1a1f36; --paper-raised: #242a47; --ink: #eef0fb; --ink-soft: #aab1d8; --ink-faint: #7981ac;
+      --line: #363d5e; --accent: #8fa3ea; --accent-soft: #2a3364;
+      --s1: #b79bdb; --s1-bg: #322a48;
+      --s2: #f0c463; --s2-bg: #3d3320;
+      --s3: #5fd0bd; --s3-bg: #1f3c37;
+      --shadow: rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1a1f36; --paper-raised: #242a47; --ink: #eef0fb; --ink-soft: #aab1d8; --ink-faint: #7981ac;
+    --line: #363d5e; --accent: #8fa3ea; --accent-soft: #2a3364;
+    --s1: #b79bdb; --s1-bg: #322a48;
+    --s2: #f0c463; --s2-bg: #3d3320;
+    --s3: #5fd0bd; --s3-bg: #1f3c37;
+    --shadow: rgba(0, 0, 0, 0.35);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: 'Nunito Sans', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  .poster { max-width: 720px; margin: 0 auto; padding: 36px 28px 48px; }
+  h1, h2, .display { font-family: 'Baloo 2', 'Nunito Sans', sans-serif; font-weight: 700; text-wrap: balance; }
+  .eyebrow { font-size: 13px; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); margin: 0 0 6px; }
+  h1 { font-size: 30px; line-height: 1.1; margin: 0 0 6px; color: var(--ink); }
+  .lede { font-size: 16px; color: var(--ink-soft); margin: 0 0 30px; max-width: 48ch; }
+  section { margin-bottom: 34px; } section:last-of-type { margin-bottom: 0; }
+  .section-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; }
+  .section-head h2 { font-size: 20px; margin: 0; color: var(--ink); }
+
+  .recipe { display: flex; flex-direction: column; gap: 10px; }
+  .recipe-step { display: flex; gap: 12px; align-items: center; border-radius: 10px; padding: 12px 16px; box-shadow: 0 2px 0 var(--shadow); }
+  .recipe-step .idx { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 18px; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #fff; }
+  .recipe-step p { margin: 0; font-size: 15px; }
+  .recipe-step.s1 { background: var(--s1-bg); } .recipe-step.s1 .idx { background: var(--s1); }
+  .recipe-step.s2 { background: var(--s2-bg); } .recipe-step.s2 .idx { background: var(--s2); }
+  .recipe-step.s3 { background: var(--s3-bg); } .recipe-step.s3 .idx { background: var(--s3); }
+
+  .expr-box { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 14px; padding: 22px; text-align: center; box-shadow: 0 2px 0 var(--shadow); }
+  .expr { font-family: 'JetBrains Mono', monospace; font-size: 21px; font-weight: 700; }
+  .expr .p1 { color: var(--s1); } .expr .p2 { color: var(--s2); } .expr .p3 { color: var(--s3); }
+  .expr-caption { margin-top: 10px; font-size: 13.5px; color: var(--ink-soft); }
+
+  .chip-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  .chip { font-family: 'JetBrains Mono', monospace; font-size: 16px; font-weight: 700; background: var(--accent-soft); color: var(--accent); border-radius: 8px; padding: 8px 14px; }
+
+  footer { margin-top: 40px; padding-top: 16px; border-top: 1px dashed var(--line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 12px; color: var(--ink-faint); }
+  @media print { body { background: #ffffff; } .poster { max-width: none; padding: 12px 6px; } }
+
+  @media print {
+    @page { size: A4; margin: 10mm; }
+    body { background: #fff !important; }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+    .poster { zoom: 0.88; box-shadow: none !important; }
+    .poster * { box-shadow: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="poster">
+  <p class="eyebrow">Математика · 5 класс · Глава 1</p>
+  <h1>§4. Порядок арифметических действий</h1>
+  <p class="lede">Один и тот же пример можно решить неправильно, если перепутать
+  порядок действий. Вот рецепт, который работает всегда.</p>
+
+  <section>
+    <div class="section-head"><h2>Рецепт по шагам</h2></div>
+    <div class="recipe">
+      <div class="recipe-step s1"><span class="idx">1</span><p>Сначала — всё, что в <b>скобках</b>.</p></div>
+      <div class="recipe-step s2"><span class="idx">2</span><p>Потом — <b>умножение и деление</b>, по порядку слева направо.</p></div>
+      <div class="recipe-step s3"><span class="idx">3</span><p>В конце — <b>сложение и вычитание</b>, по порядку слева направо.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Пример</h2></div>
+    <div class="expr-box">
+      <p class="expr">24 · 25 − <span class="p1">(23 + 100 : 20)</span></p>
+      <p class="expr-caption">Сначала <span style="color:var(--s1)">скобки</span> → внутри них сначала деление 100:20=5,
+      потом 23+5=28. Дальше 24·25=600. И в конце 600−28=572.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Выучи наизусть — считается мгновенно</h2></div>
+    <div class="chip-row">
+      <span class="chip">2 · 5 = 10</span>
+      <span class="chip">4 · 25 = 100</span>
+      <span class="chip">8 · 125 = 1000</span>
+    </div>
+  </section>
+
+  <footer>
+    <span>§4 · стр. 21–25 · math_5_1.pdf</span>
+    <span>для запоминания — держи перед глазами первую неделю</span>
+  </footer>
+</div>
+
+</body>
+</html>

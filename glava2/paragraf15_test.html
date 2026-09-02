@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>§15. Проверь себя — НОД и НОК</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #faf9f4;
+    --paper-raised: #ffffff;
+    --rule: #b9cfe0;
+    --rule-soft: #dbe8f1;
+    --margin: #2f6690;
+    --margin-soft: #c7dbea;
+    --ink: #24304a;
+    --ink-soft: #647089;
+    --ink-faint: #97a2b8;
+    --good: #3c8a5c;
+    --good-bg: #dff1e5;
+    --bad: #c85a4f;
+    --bad-bg: #fbe4e1;
+    --mark: #2f9e8f;
+    --mark-bg: #d7f0ec;
+    --shadow: rgba(36, 48, 74, 0.14);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1b2431;
+      --paper-raised: #232f3f;
+      --rule: #3c5468;
+      --rule-soft: #29394a;
+      --margin: #7fb1de;
+      --margin-soft: #2c3f4f;
+      --ink: #eceff5;
+      --ink-soft: #a7b2c8;
+      --ink-faint: #6d788e;
+      --good: #6fcb93;
+      --good-bg: #23392c;
+      --bad: #e0847a;
+      --bad-bg: #402b2a;
+      --mark: #5fd0bd;
+      --mark-bg: #1f3d38;
+      --shadow: rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1b2431;
+    --paper-raised: #232f3f;
+    --rule: #3c5468;
+    --rule-soft: #29394a;
+    --margin: #7fb1de;
+    --margin-soft: #2c3f4f;
+    --ink: #eceff5;
+    --ink-soft: #a7b2c8;
+    --ink-faint: #6d788e;
+    --good: #6fcb93;
+    --good-bg: #23392c;
+    --bad: #e0847a;
+    --bad-bg: #402b2a;
+    --mark: #5fd0bd;
+    --mark-bg: #1f3d38;
+    --shadow: rgba(0, 0, 0, 0.35);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'PT Sans', Arial, sans-serif;
+    line-height: 1.5;
+    -webkit-tap-highlight-color: transparent;
+  }
+  h1, .hand { font-family: 'Caveat', 'Comic Sans MS', cursive; font-weight: 700; text-wrap: balance; }
+  .back-link { font-size: 13px; color: var(--ink-faint); text-decoration: none; }
+  .back-link:hover { color: var(--margin); }
+  .sheet {
+    max-width: 640px; margin: 0 auto; padding: 22px 20px 60px 44px; position: relative;
+    background-image: repeating-linear-gradient(to bottom, transparent, transparent 37px, var(--rule-soft) 38px);
+    background-position: 0 128px;
+  }
+  .sheet::before { content: ""; position: absolute; top: 0; bottom: 0; left: 26px; width: 2px; background: var(--margin); opacity: 0.75; }
+  header.page { padding-top: 6px; padding-bottom: 14px; }
+  h1 { font-size: 36px; margin: 0 0 2px; color: var(--ink); line-height: 1.1; }
+  .subtitle { font-size: 15px; color: var(--ink-soft); margin: 0 0 10px; }
+  .lead { font-size: 14px; color: var(--ink-soft); margin: 18px 0 12px; }
+  .counter { font-family: 'Caveat', cursive; font-size: 20px; font-weight: 700; color: var(--margin); margin-bottom: 12px; }
+
+  .q-item { margin-bottom: 18px; }
+  .q-num { font-family: 'Caveat', cursive; font-size: 20px; font-weight: 700; color: var(--margin); margin-right: 4px; }
+  .q-text { font-size: 15px; }
+  .q-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 6px; }
+  .q-row input[type="text"] {
+    font-family: 'PT Sans', sans-serif; font-size: 15px; padding: 6px 9px;
+    border: none; border-bottom: 2px solid var(--ink-faint); background: transparent; color: var(--ink);
+    width: 140px;
+  }
+  .q-row input[type="text"]:focus { border-bottom-color: var(--margin); }
+  .q-row input.correct { border-bottom-color: var(--good); color: var(--good); }
+  .q-row input.incorrect { border-bottom-color: var(--bad); color: var(--bad); }
+  .check-btn { font-family: 'PT Sans', sans-serif; font-size: 13px; background: var(--ink); color: var(--paper); border: none; border-radius: 5px; padding: 6px 12px; cursor: pointer; }
+  .check-btn:hover { opacity: 0.88; }
+  .q-mark { font-family: 'Caveat', cursive; font-size: 18px; font-weight: 700; min-width: 90px; }
+  .q-mark.good-mark { color: var(--good); }
+  .q-mark.bad-mark { color: var(--bad); }
+
+  .result {
+    display: none; margin-top: 20px; padding: 16px 18px; border-radius: 8px;
+    border: 1px solid var(--rule); background: var(--paper-raised); box-shadow: 1px 2px 0 var(--shadow);
+  }
+  .result.show { display: block; }
+  .result .score { font-family: 'Caveat', cursive; font-size: 28px; font-weight: 700; color: var(--margin); margin: 0 0 4px; }
+  .result .msg { font-size: 14px; color: var(--ink-soft); margin: 0; }
+
+  .reset-line { margin-top: 16px; }
+  .reset-btn { font-family: 'Caveat', cursive; font-size: 16px; background: none; border: none; color: var(--ink-faint); text-decoration: underline; cursor: pointer; padding: 0; }
+  .reset-btn:hover { color: var(--margin); }
+
+  footer.page { margin-top: 30px; font-size: 12px; color: var(--ink-faint); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+  footer.page a { color: var(--ink-faint); }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header class="page">
+    <a class="back-link" href="paragraf15.html">&larr; к тренажёру §15</a>
+    <h1>Проверь себя: §15</h1>
+    <p class="subtitle">§15. НОД и НОК · Глава 2 · стр. 71–76</p>
+  </header>
+
+  <p class="lead">Впиши ответ и нажми «Проверить» под каждым вопросом — сразу увидишь, верно ли.</p>
+  <p class="counter" id="counter"></p>
+
+  <div id="qList"></div>
+
+  <div class="result" id="result">
+    <p class="score" id="resultScore"></p>
+    <p class="msg" id="resultMsg"></p>
+  </div>
+
+  <div class="reset-line"><button class="reset-btn" id="resetBtn">начать заново</button></div>
+
+  <footer class="page">
+    <span>Математика 5 &middot; §15</span>
+    <a href="../print/glava2/paragraf15_proverka.html">лист самопроверки (печать)</a>
+    <a href="paragraf15.html">тренажёр §15</a>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var Q = [
+    { text: "НОД(24;18) = ___", answer: "6" },
+    { text: "НОК(8;12) = ___", answer: "24" },
+    { text: "Если одно число делится на другое, то НОД равен ___ числу (меньшему/большему)", answer: "меньшему" },
+    { text: "Для взаимно простых чисел НОК равен ___ этих чисел", answer: "произведению" }
+  ];
+
+  var qList = document.getElementById("qList");
+  var counterEl = document.getElementById("counter");
+  var resultEl = document.getElementById("result");
+  var scoreEl = document.getElementById("resultScore");
+  var msgEl = document.getElementById("resultMsg");
+  var state = [];
+
+  function updateSummary() {
+    var correct = 0, answered = 0;
+    state.forEach(function (s) {
+      if (s.answeredOnce) answered++;
+      if (s.checkedRight) correct++;
+    });
+    counterEl.textContent = "Верно: " + correct + " из " + Q.length;
+    if (answered === Q.length) {
+      scoreEl.textContent = "Результат: " + correct + " из " + Q.length;
+      if (correct === Q.length) {
+        msgEl.textContent = "Отлично! Параграф усвоен полностью.";
+      } else if (correct >= Math.ceil(Q.length * 0.6)) {
+        msgEl.textContent = "Неплохо! Загляни в тренажёр §15, чтобы закрепить то, что не получилось.";
+      } else {
+        msgEl.textContent = "Стоит повторить §15 ещё раз — начни с карточек в тренажёре.";
+      }
+      resultEl.classList.add("show");
+    } else {
+      resultEl.classList.remove("show");
+    }
+  }
+
+  function render() {
+    qList.innerHTML = "";
+    state = Q.map(function () { return { checkedRight: false, answeredOnce: false }; });
+    Q.forEach(function (q, idx) {
+      var item = document.createElement("div");
+      item.className = "q-item";
+      item.innerHTML =
+        '<div class="q-text"><span class="q-num">' + (idx + 1) + '.</span>' + q.text + '</div>' +
+        '<div class="q-row">' +
+          '<input type="text" autocomplete="off" autocapitalize="off" spellcheck="false">' +
+          '<button class="check-btn" type="button">Проверить</button>' +
+          '<span class="q-mark"></span>' +
+        '</div>';
+      var input = item.querySelector("input");
+      var btn = item.querySelector(".check-btn");
+      var mark = item.querySelector(".q-mark");
+      function check() {
+        var val = input.value.trim().toLowerCase();
+        var ok = val === q.answer.toLowerCase();
+        input.classList.toggle("correct", ok);
+        input.classList.toggle("incorrect", !ok);
+        state[idx].checkedRight = ok;
+        state[idx].answeredOnce = true;
+        if (ok) {
+          mark.textContent = "верно!";
+          mark.className = "q-mark good-mark";
+        } else {
+          mark.textContent = "ответ: " + q.answer;
+          mark.className = "q-mark bad-mark";
+        }
+        updateSummary();
+      }
+      btn.addEventListener("click", check);
+      input.addEventListener("keydown", function (e) { if (e.key === "Enter") check(); });
+      qList.appendChild(item);
+    });
+    updateSummary();
+  }
+
+  document.getElementById("resetBtn").addEventListener("click", render);
+
+  render();
+})();
+</script>
+</body>
+</html>

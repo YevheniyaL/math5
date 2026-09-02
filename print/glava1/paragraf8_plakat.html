@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>§8. Решение текстовых задач</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f5fb; --paper-raised: #ffffff; --ink: #232a4d; --ink-soft: #565f86; --ink-faint: #8990b8;
+    --line: #d8dcf0; --accent: #3a4fa0; --accent-soft: #e4e8f9;
+    --units: #2f9e8f; --units-bg: #dcf2ee;
+    --millions: #c9544a; --millions-bg: #fae2df;
+    --shadow: rgba(35, 42, 77, 0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1a1f36; --paper-raised: #242a47; --ink: #eef0fb; --ink-soft: #aab1d8; --ink-faint: #7981ac;
+      --line: #363d5e; --accent: #8fa3ea; --accent-soft: #2a3364;
+      --units: #5fd0bd; --units-bg: #1f3c37;
+      --millions: #ea9184; --millions-bg: #3d2925;
+      --shadow: rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1a1f36; --paper-raised: #242a47; --ink: #eef0fb; --ink-soft: #aab1d8; --ink-faint: #7981ac;
+    --line: #363d5e; --accent: #8fa3ea; --accent-soft: #2a3364;
+    --units: #5fd0bd; --units-bg: #1f3c37;
+    --millions: #ea9184; --millions-bg: #3d2925;
+    --shadow: rgba(0, 0, 0, 0.35);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: 'Nunito Sans', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  .poster { max-width: 720px; margin: 0 auto; padding: 36px 28px 48px; }
+  h1, h2, .display { font-family: 'Baloo 2', 'Nunito Sans', sans-serif; font-weight: 700; text-wrap: balance; }
+  .eyebrow { font-size: 13px; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); margin: 0 0 6px; }
+  h1 { font-size: 32px; line-height: 1.1; margin: 0 0 6px; color: var(--ink); }
+  .lede { font-size: 16px; color: var(--ink-soft); margin: 0 0 30px; max-width: 48ch; }
+  section { margin-bottom: 34px; } section:last-of-type { margin-bottom: 0; }
+  .section-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; }
+  .section-head h2 { font-size: 20px; margin: 0; color: var(--ink); }
+
+  .steps { display: flex; flex-direction: column; gap: 10px; }
+  .step { display: flex; gap: 12px; align-items: flex-start; background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; box-shadow: 0 2px 0 var(--shadow); }
+  .step .idx { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 14px; color: #fff; background: var(--accent); width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .step p { margin: 0; font-size: 14.5px; line-height: 1.5; }
+
+  .method-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 520px) { .method-grid { grid-template-columns: 1fr; } }
+  .method-card { border-radius: 14px; padding: 18px; box-shadow: 0 2px 0 var(--shadow); }
+  .method-card.a { background: var(--units-bg); }
+  .method-card.b { background: var(--millions-bg); }
+  .method-card .title { font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 16px; margin: 0 0 8px; }
+  .method-card.a .title { color: var(--units); }
+  .method-card.b .title { color: var(--millions); }
+  .method-card p { margin: 0 0 8px; font-size: 13.5px; color: var(--ink); line-height: 1.5; }
+  .method-card .eg { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--ink-soft); }
+
+  footer { margin-top: 40px; padding-top: 16px; border-top: 1px dashed var(--line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 12px; color: var(--ink-faint); }
+  @media print { body { background: #ffffff; } .poster { max-width: none; padding: 12px 6px; } }
+
+  @media print {
+    @page { size: A4; margin: 10mm; }
+    body { background: #fff !important; }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+    .poster { zoom: 0.88; box-shadow: none !important; }
+    .poster * { box-shadow: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="poster">
+  <p class="eyebrow">Математика · 5 класс · Глава 1</p>
+  <h1>§8. Решение текстовых задач</h1>
+  <p class="lede">Общий план для любой задачи — и два конкретных способа решения,
+  когда просто «подумать» не получается.</p>
+
+  <section>
+    <div class="section-head"><h2>Общий план</h2></div>
+    <div class="steps">
+      <div class="step"><span class="idx">1</span><p>Понять условие, найти <b>главный вопрос</b> задачи.</p></div>
+      <div class="step"><span class="idx">2</span><p>Решить, что обозначить неизвестным (буквой x).</p></div>
+      <div class="step"><span class="idx">3</span><p>Если данных много — оформить <b>таблицей</b>.</p></div>
+      <div class="step"><span class="idx">4</span><p>Выбрать способ решения и решить.</p></div>
+      <div class="step"><span class="idx">5</span><p>Проверить и записать ответ.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Два способа решения</h2></div>
+    <div class="method-grid">
+      <div class="method-card a">
+        <p class="title">Способ пропорции</p>
+        <p>Когда норма (расход, скорость) одинаковая, составляем равенство отношений.</p>
+        <p class="eg">600 : 50 = x : 70 → x = 840</p>
+      </div>
+      <div class="method-card b">
+        <p class="title">Геометрический способ</p>
+        <p>Когда одна величина в несколько раз больше другой — изображаем отрезками и находим цену одной части.</p>
+        <p class="eg">дыня+арбуз=8кг, арбуз в 3р. больше → 4 части → 1 часть=2кг</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>§8 · стр. 41–45 · math_5_1.pdf</span>
+    <span>для запоминания — держи перед глазами первую неделю</span>
+  </footer>
+</div>
+
+</body>
+</html>

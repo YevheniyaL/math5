@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>§7. Формулы. Вычисления по формулам</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f5fb; --paper-raised: #ffffff; --ink: #232a4d; --ink-soft: #565f86; --ink-faint: #8990b8;
+    --line: #d8dcf0; --accent: #3a4fa0; --accent-soft: #e4e8f9;
+    --units: #2f9e8f; --units-bg: #dcf2ee;
+    --thousands: #c9861f; --thousands-bg: #faedd6;
+    --millions: #c9544a; --millions-bg: #fae2df;
+    --shadow: rgba(35, 42, 77, 0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1a1f36; --paper-raised: #242a47; --ink: #eef0fb; --ink-soft: #aab1d8; --ink-faint: #7981ac;
+      --line: #363d5e; --accent: #8fa3ea; --accent-soft: #2a3364;
+      --units: #5fd0bd; --units-bg: #1f3c37;
+      --thousands: #f0c463; --thousands-bg: #3d3320;
+      --millions: #ea9184; --millions-bg: #3d2925;
+      --shadow: rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1a1f36; --paper-raised: #242a47; --ink: #eef0fb; --ink-soft: #aab1d8; --ink-faint: #7981ac;
+    --line: #363d5e; --accent: #8fa3ea; --accent-soft: #2a3364;
+    --units: #5fd0bd; --units-bg: #1f3c37;
+    --thousands: #f0c463; --thousands-bg: #3d3320;
+    --millions: #ea9184; --millions-bg: #3d2925;
+    --shadow: rgba(0, 0, 0, 0.35);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: 'Nunito Sans', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  .poster { max-width: 760px; margin: 0 auto; padding: 36px 28px 48px; }
+  h1, h2, .display { font-family: 'Baloo 2', 'Nunito Sans', sans-serif; font-weight: 700; text-wrap: balance; }
+  .eyebrow { font-size: 13px; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); margin: 0 0 6px; }
+  h1 { font-size: 32px; line-height: 1.1; margin: 0 0 6px; color: var(--ink); }
+  .lede { font-size: 16px; color: var(--ink-soft); margin: 0 0 30px; max-width: 52ch; }
+  section { margin-bottom: 34px; } section:last-of-type { margin-bottom: 0; }
+  .section-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; }
+  .section-head h2 { font-size: 20px; margin: 0; color: var(--ink); }
+
+  .formula-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 620px) { .formula-grid { grid-template-columns: 1fr; } }
+  .fcard { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 14px; padding: 16px; text-align: center; box-shadow: 0 2px 0 var(--shadow); }
+  .fcard svg { display: block; margin: 0 auto 10px; }
+  .fcard .name { font-size: 13px; color: var(--ink-soft); margin: 0 0 6px; }
+  .fcard .formula { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 700; color: var(--accent); margin: 0; }
+  .fcard .also { font-size: 11.5px; color: var(--ink-faint); margin-top: 6px; font-family: 'JetBrains Mono', monospace; }
+
+  .river-box { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; box-shadow: 0 2px 0 var(--shadow); }
+  .river-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .river-row:last-child { margin-bottom: 0; }
+  .river-label { font-size: 13px; color: var(--ink-soft); width: 96px; flex-shrink: 0; }
+  .river-bar { height: 14px; border-radius: 7px; background: var(--units); }
+  .river-bar.p { background: var(--units); }
+  .river-bar.m { background: var(--millions); }
+  .river-eq { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--ink); margin-left: 8px; white-space: nowrap; }
+
+  footer { margin-top: 40px; padding-top: 16px; border-top: 1px dashed var(--line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 12px; color: var(--ink-faint); }
+  @media print { body { background: #ffffff; } .poster { max-width: none; padding: 12px 6px; } }
+
+  @media print {
+    @page { size: A4; margin: 10mm; }
+    body { background: #fff !important; }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+    .poster { zoom: 0.88; box-shadow: none !important; }
+    .poster * { box-shadow: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="poster">
+  <p class="eyebrow">Математика · 5 класс · Глава 1</p>
+  <h1>§7. Формулы. Вычисления по формулам</h1>
+  <p class="lede">Три формулы, которые встретятся в математике ещё много раз —
+  запомни их вместе с диаграммой, а не только буквами.</p>
+
+  <section>
+    <div class="section-head"><h2>Три главные формулы</h2></div>
+    <div class="formula-grid">
+      <div class="fcard">
+        <svg width="120" height="80" viewBox="0 0 120 80" style="color:var(--millions)">
+          <polygon points="60,10 15,70 105,70" fill="none" stroke="currentColor" stroke-width="3"/>
+          <text x="34" y="45" font-size="12" fill="currentColor" font-family="JetBrains Mono">a</text>
+          <text x="78" y="45" font-size="12" fill="currentColor" font-family="JetBrains Mono">b</text>
+          <text x="55" y="78" font-size="12" fill="currentColor" font-family="JetBrains Mono">c</text>
+        </svg>
+        <p class="name">периметр треугольника</p>
+        <p class="formula">P = a+b+c</p>
+      </div>
+      <div class="fcard">
+        <svg width="120" height="80" viewBox="0 0 120 80" style="color:var(--thousands)">
+          <rect x="20" y="18" width="80" height="44" fill="none" stroke="currentColor" stroke-width="3"/>
+          <text x="55" y="14" font-size="12" fill="currentColor" font-family="JetBrains Mono">b</text>
+          <text x="6" y="44" font-size="12" fill="currentColor" font-family="JetBrains Mono">a</text>
+        </svg>
+        <p class="name">площадь прямоугольника</p>
+        <p class="formula">S = a·b</p>
+        <p class="also">a=S:b&nbsp;&nbsp;b=S:a</p>
+      </div>
+      <div class="fcard">
+        <svg width="120" height="80" viewBox="0 0 120 80" style="color:var(--units)">
+          <line x1="15" y1="40" x2="105" y2="40" stroke="currentColor" stroke-width="3"/>
+          <polygon points="105,40 95,34 95,46" fill="currentColor"/>
+          <circle cx="15" cy="40" r="4" fill="currentColor"/>
+          <text x="45" y="30" font-size="12" fill="currentColor" font-family="JetBrains Mono">v, t</text>
+          <text x="50" y="60" font-size="12" fill="currentColor" font-family="JetBrains Mono">s</text>
+        </svg>
+        <p class="name">путь, скорость, время</p>
+        <p class="formula">s = v·t</p>
+        <p class="also">v=s:t&nbsp;&nbsp;t=s:v</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Движение по реке</h2></div>
+    <div class="river-box">
+      <div class="river-row">
+        <span class="river-label">по течению</span>
+        <div class="river-bar p" style="width:70%;"></div>
+        <span class="river-eq">v(теч.) = v(собств.) + v(реки)</span>
+      </div>
+      <div class="river-row">
+        <span class="river-label">против течения</span>
+        <div class="river-bar m" style="width:38%;"></div>
+        <span class="river-eq">v(теч.) = v(собств.) − v(реки)</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>§7 · стр. 35–40 · math_5_1.pdf</span>
+    <span>для запоминания — держи перед глазами первую неделю</span>
+  </footer>
+</div>
+
+</body>
+</html>

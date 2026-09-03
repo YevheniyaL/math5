@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>§16. Обыкновенная дробь</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f5fb; --paper-raised: #ffffff; --ink: #232a4d; --ink-soft: #565f86; --ink-faint: #8990b8;
+    --line: #d8dcf0; --accent: #3a4fa0; --accent-soft: #e4e8f9;
+    --num: #c9544a; --num-bg: #fae2df;
+    --den: #2f9e8f; --den-bg: #dcf2ee;
+    --shadow: rgba(35, 42, 77, 0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1a1f36; --paper-raised: #242a47; --ink: #eef0fb; --ink-soft: #aab1d8; --ink-faint: #7981ac;
+      --line: #363d5e; --accent: #8fa3ea; --accent-soft: #2a3364;
+      --num: #ea9184; --num-bg: #3d2925;
+      --den: #5fd0bd; --den-bg: #1f3c37;
+      --shadow: rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1a1f36; --paper-raised: #242a47; --ink: #eef0fb; --ink-soft: #aab1d8; --ink-faint: #7981ac;
+    --line: #363d5e; --accent: #8fa3ea; --accent-soft: #2a3364;
+    --num: #ea9184; --num-bg: #3d2925;
+    --den: #5fd0bd; --den-bg: #1f3c37;
+    --shadow: rgba(0, 0, 0, 0.35);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: 'Nunito Sans', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  .poster { max-width: 720px; margin: 0 auto; padding: 36px 28px 48px; }
+  h1, h2, .display { font-family: 'Baloo 2', 'Nunito Sans', sans-serif; font-weight: 700; text-wrap: balance; }
+  .eyebrow { font-size: 13px; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); margin: 0 0 6px; }
+  h1 { font-size: 32px; line-height: 1.15; margin: 0 0 6px; color: var(--ink); }
+  .lede { font-size: 16px; color: var(--ink-soft); margin: 0 0 30px; max-width: 48ch; }
+  section { margin-bottom: 30px; } section:last-of-type { margin-bottom: 0; }
+  .section-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; }
+  .section-head h2 { font-size: 19px; margin: 0; color: var(--ink); }
+
+  .frac-box { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 14px; padding: 22px; box-shadow: 0 2px 0 var(--shadow); display: flex; align-items: center; gap: 26px; flex-wrap: wrap; }
+  .frac-visual { display: flex; }
+  .frac-visual .part { width: 26px; height: 68px; border: 1px solid var(--paper-raised); }
+  .frac-visual .part.taken { background: var(--num); }
+  .frac-visual .part.rest { background: var(--den-bg); }
+  .frac-num { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 40px; line-height: 1; text-align: center; }
+  .frac-num .top { color: var(--num); border-bottom: 3px solid var(--ink); padding: 0 6px 4px; }
+  .frac-num .bot { color: var(--den); padding: 4px 6px 0; }
+  .frac-legend { font-size: 14px; color: var(--ink-soft); }
+  .frac-legend b.n { color: var(--num); } .frac-legend b.d { color: var(--den); }
+  .frac-legend div { margin-bottom: 6px; }
+
+  .rules-grid { display: flex; flex-direction: column; gap: 10px; }
+  .rule-row { display: flex; align-items: center; gap: 14px; background: var(--paper-raised); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; box-shadow: 0 2px 0 var(--shadow); }
+  .rule-badge { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 15px; color: #fff; background: var(--accent); min-width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; padding: 0 4px; text-align: center; }
+  .rule-text { font-size: 14.5px; }
+  .rule-text b { color: var(--accent); }
+
+  .eg-box { background: var(--accent-soft); border-radius: 12px; padding: 14px 18px; font-size: 14px; margin-top: 4px; }
+  .eg-box b { color: var(--accent); }
+
+  footer { margin-top: 36px; padding-top: 16px; border-top: 1px dashed var(--line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 12px; color: var(--ink-faint); }
+  @media print { body { background: #ffffff; } .poster { max-width: none; padding: 12px 6px; } }
+
+  @media print {
+    @page { size: A4; margin: 10mm; }
+    body { background: #fff !important; }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+    .poster { zoom: 0.88; box-shadow: none !important; }
+    .poster * { box-shadow: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="poster">
+  <p class="eyebrow">Математика · 5 класс · Глава 3</p>
+  <h1>§16. Обыкновенная дробь</h1>
+  <p class="lede">Дробь показывает часть целого: на сколько частей поделили и сколько частей взяли.</p>
+
+  <section>
+    <div class="frac-box">
+      <div class="frac-visual">
+        <div class="part taken"></div><div class="part taken"></div><div class="part taken"></div><div class="part taken"></div>
+        <div class="part rest"></div><div class="part rest"></div><div class="part rest"></div><div class="part rest"></div><div class="part rest"></div>
+      </div>
+      <div class="frac-num"><span class="top">4</span><span class="bot">9</span></div>
+      <div class="frac-legend">
+        <div><b class="n">числитель</b> — сколько частей взяли (закрашено)</div>
+        <div><b class="d">знаменатель</b> — на сколько частей разделили целое</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="rules-grid">
+      <div class="rule-row"><span class="rule-badge">m:n</span><span class="rule-text">черта дроби = <b>знак деления</b>: m : n = m⁄n, и наоборот</span></div>
+      <div class="rule-row"><span class="rule-badge">3=³⁄₁</span><span class="rule-text">любое натуральное число можно записать <b>дробью</b></span></div>
+      <div class="rule-row"><span class="rule-badge">4:21</span><span class="rule-text">часть, которую <b>меньшее</b> число составляет от большего = меньшее : большее</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eg-box">
+      <b>Пример:</b> какую часть числа 21 составляет число 4? 4 : 21 = <b>4⁄21</b>.
+    </div>
+  </section>
+
+  <footer>
+    <span>§16 · стр. 78–85 · math_5_1.pdf</span>
+    <span>для запоминания — держи перед глазами первую неделю</span>
+  </footer>
+</div>
+
+</body>
+</html>

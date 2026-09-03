@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>§26. Умножение дробей</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f5fb; --paper-raised: #ffffff; --ink: #232a4d; --ink-soft: #565f86; --ink-faint: #8990b8;
+    --line: #d8dcf0; --accent: #3a4fa0; --accent-soft: #e4e8f9;
+    --shadow: rgba(35, 42, 77, 0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1a1f36; --paper-raised: #242a47; --ink: #eef0fb; --ink-soft: #aab1d8; --ink-faint: #7981ac;
+      --line: #363d5e; --accent: #8fa3ea; --accent-soft: #2a3364;
+      --shadow: rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1a1f36; --paper-raised: #242a47; --ink: #eef0fb; --ink-soft: #aab1d8; --ink-faint: #7981ac;
+    --line: #363d5e; --accent: #8fa3ea; --accent-soft: #2a3364;
+    --shadow: rgba(0, 0, 0, 0.35);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: 'Nunito Sans', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  .poster { max-width: 720px; margin: 0 auto; padding: 36px 28px 48px; }
+  h1, h2, .display { font-family: 'Baloo 2', 'Nunito Sans', sans-serif; font-weight: 700; text-wrap: balance; }
+  .eyebrow { font-size: 13px; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); margin: 0 0 6px; }
+  h1 { font-size: 30px; line-height: 1.15; margin: 0 0 6px; color: var(--ink); }
+  .lede { font-size: 16px; color: var(--ink-soft); margin: 0 0 30px; max-width: 48ch; }
+  section { margin-bottom: 26px; } section:last-of-type { margin-bottom: 0; }
+
+  .mul-box { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 14px; padding: 22px; box-shadow: 0 2px 0 var(--shadow); text-align: center; }
+  .mul-row { display: flex; align-items: center; justify-content: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 26px; flex-wrap: wrap; }
+  .frac { display: inline-block; text-align: center; line-height: 1.15; }
+  .frac .top, .frac .bot { display: block; padding: 0 4px; }
+  .frac .top { border-bottom: 3px solid var(--ink); }
+  .mul-caption { margin-top: 10px; font-size: 13.5px; color: var(--ink-soft); }
+  .mul-caption b { color: var(--accent); }
+
+  .rules-grid { display: flex; flex-direction: column; gap: 10px; }
+  .rule-row { display: flex; align-items: center; gap: 14px; background: var(--paper-raised); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; box-shadow: 0 2px 0 var(--shadow); }
+  .rule-badge { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 13px; color: #fff; background: var(--accent); min-width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; padding: 0 3px; text-align: center; }
+  .rule-text { font-size: 14.5px; } .rule-text b { color: var(--accent); }
+
+  footer { margin-top: 32px; padding-top: 16px; border-top: 1px dashed var(--line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 12px; color: var(--ink-faint); }
+  @media print { body { background: #ffffff; } .poster { max-width: none; padding: 12px 6px; } }
+
+  @media print {
+    @page { size: A4; margin: 10mm; }
+    body { background: #fff !important; }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+    .poster { zoom: 0.88; box-shadow: none !important; }
+    .poster * { box-shadow: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="poster">
+  <p class="eyebrow">Математика · 5 класс · Глава 3</p>
+  <h1>§26. Умножение дробей</h1>
+  <p class="lede">Числитель на числитель, знаменатель на знаменатель — и сократить до умножения, если можно.</p>
+
+  <section>
+    <div class="mul-box">
+      <div class="mul-row">
+        <span class="frac"><span class="top">27</span><span class="bot">32</span></span>
+        <span>·</span>
+        <span class="frac"><span class="top">24</span><span class="bot">45</span></span>
+        <span>=</span>
+        <span class="frac"><span class="top">9</span><span class="bot">20</span></span>
+      </div>
+      <p class="mul-caption">сократили <b>до</b> умножения (27 и 45 на 9; 24 и 32 на 8) — считать проще</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="rules-grid">
+      <div class="rule-row"><span class="rule-badge">a·c<br>b·d</span><span class="rule-text">дробь на дробь: <b>числитель × числитель</b>, <b>знаменатель × знаменатель</b></span></div>
+      <div class="rule-row"><span class="rule-badge">×n</span><span class="rule-text">дробь на натуральное число: <b>числитель × n</b>, знаменатель тот же</span></div>
+      <div class="rule-row"><span class="rule-badge">3⅗</span><span class="rule-text">смешанные числа: сначала <b>в неправильную дробь</b>, потом по общему правилу</span></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>§26 · стр. 128–131 · math_5_1.pdf</span>
+    <span>для запоминания — держи перед глазами первую неделю</span>
+  </footer>
+</div>
+
+</body>
+</html>

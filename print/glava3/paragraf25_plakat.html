@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>§25. Вычитание смешанных чисел</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f5fb; --paper-raised: #ffffff; --ink: #232a4d; --ink-soft: #565f86; --ink-faint: #8990b8;
+    --line: #d8dcf0; --accent: #3a4fa0; --accent-soft: #e4e8f9;
+    --ok: #2f9e8f; --ok-bg: #dcf2ee;
+    --borrow: #c9544a; --borrow-bg: #fae2df;
+    --shadow: rgba(35, 42, 77, 0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1a1f36; --paper-raised: #242a47; --ink: #eef0fb; --ink-soft: #aab1d8; --ink-faint: #7981ac;
+      --line: #363d5e; --accent: #8fa3ea; --accent-soft: #2a3364;
+      --ok: #5fd0bd; --ok-bg: #1f3c37;
+      --borrow: #ea9184; --borrow-bg: #3d2925;
+      --shadow: rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1a1f36; --paper-raised: #242a47; --ink: #eef0fb; --ink-soft: #aab1d8; --ink-faint: #7981ac;
+    --line: #363d5e; --accent: #8fa3ea; --accent-soft: #2a3364;
+    --ok: #5fd0bd; --ok-bg: #1f3c37;
+    --borrow: #ea9184; --borrow-bg: #3d2925;
+    --shadow: rgba(0, 0, 0, 0.35);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: 'Nunito Sans', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  .poster { max-width: 720px; margin: 0 auto; padding: 36px 28px 48px; }
+  h1, h2, .display { font-family: 'Baloo 2', 'Nunito Sans', sans-serif; font-weight: 700; text-wrap: balance; }
+  .eyebrow { font-size: 13px; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); margin: 0 0 6px; }
+  h1 { font-size: 26px; line-height: 1.15; margin: 0 0 6px; color: var(--ink); }
+  .lede { font-size: 16px; color: var(--ink-soft); margin: 0 0 30px; max-width: 48ch; }
+  section { margin-bottom: 24px; } section:last-of-type { margin-bottom: 0; }
+  .section-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; }
+  .section-head h2 { font-size: 16px; margin: 0; color: var(--ink); }
+
+  .case-box { border-radius: 12px; padding: 14px 18px; }
+  .case-box.ok { background: var(--ok-bg); }
+  .case-box.borrow { background: var(--borrow-bg); }
+  .case-row { display: flex; align-items: center; justify-content: center; gap: 10px; font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 17px; flex-wrap: wrap; }
+  .frac { display: inline-block; text-align: center; line-height: 1.15; }
+  .frac .top, .frac .bot { display: block; padding: 0 4px; }
+  .frac .top { border-bottom: 3px solid var(--ink); }
+  .case-caption { text-align: center; font-size: 13px; margin-top: 8px; }
+  .case-box.ok .case-caption { color: var(--ok); }
+  .case-box.borrow .case-caption { color: var(--borrow); }
+
+  footer { margin-top: 30px; padding-top: 16px; border-top: 1px dashed var(--line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 12px; color: var(--ink-faint); }
+  @media print { body { background: #ffffff; } .poster { max-width: none; padding: 12px 6px; } }
+
+  @media print {
+    @page { size: A4; margin: 10mm; }
+    body { background: #fff !important; }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+    .poster { zoom: 0.88; box-shadow: none !important; }
+    .poster * { box-shadow: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="poster">
+  <p class="eyebrow">Математика · 5 класс · Глава 3</p>
+  <h1>§25. Вычитание смешанных чисел</h1>
+  <p class="lede">Если дробной части «не хватает» — занимаем единицу у целой.</p>
+
+  <section>
+    <div class="section-head"><h2>Дробная часть уменьшаемого не меньше</h2></div>
+    <div class="case-box ok">
+      <div class="case-row">
+        <span>3</span><span class="frac"><span class="top">7</span><span class="bot">8</span></span>
+        <span>−</span>
+        <span>1</span><span class="frac"><span class="top">6</span><span class="bot">8</span></span>
+        <span>=</span>
+        <span>2</span><span class="frac"><span class="top">1</span><span class="bot">8</span></span>
+      </div>
+      <p class="case-caption">7⁄8 ≥ 6⁄8 → вычли целые части и дробные части отдельно</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Дробная часть уменьшаемого меньше — занимаем единицу</h2></div>
+    <div class="case-box borrow">
+      <div class="case-row">
+        <span>23</span><span class="frac"><span class="top">2</span><span class="bot">11</span></span>
+        <span>=</span>
+        <span>22</span><span class="frac"><span class="top">13</span><span class="bot">11</span></span>
+      </div>
+      <p class="case-caption">2⁄11 &lt; 9⁄11 → целую часть 23 уменьшили на 1, а к числителю добавили знаменатель (2+11=13)</p>
+      <div class="case-row" style="margin-top:10px;">
+        <span>22</span><span class="frac"><span class="top">13</span><span class="bot">11</span></span>
+        <span>−</span>
+        <span>20</span><span class="frac"><span class="top">9</span><span class="bot">11</span></span>
+        <span>=</span>
+        <span>2</span><span class="frac"><span class="top">4</span><span class="bot">11</span></span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>§25 · стр. 121–127 · math_5_1.pdf</span>
+    <span>для запоминания — держи перед глазами первую неделю</span>
+  </footer>
+</div>
+
+</body>
+</html>

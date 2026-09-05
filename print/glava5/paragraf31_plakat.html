@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>§31. Десятичная дробь</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f5fb; --paper-raised: #ffffff; --ink: #232a4d; --ink-soft: #565f86; --ink-faint: #8990b8;
+    --line: #d8dcf0; --accent: #3a4fa0; --accent-soft: #e4e8f9;
+    --num: #c9544a; --num-bg: #fae2df;
+    --den: #2f9e8f; --den-bg: #dcf2ee;
+    --shadow: rgba(35, 42, 77, 0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1a1f36; --paper-raised: #242a47; --ink: #eef0fb; --ink-soft: #aab1d8; --ink-faint: #7981ac;
+      --line: #363d5e; --accent: #8fa3ea; --accent-soft: #2a3364;
+      --num: #ea9184; --num-bg: #3d2925;
+      --den: #5fd0bd; --den-bg: #1f3c37;
+      --shadow: rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1a1f36; --paper-raised: #242a47; --ink: #eef0fb; --ink-soft: #aab1d8; --ink-faint: #7981ac;
+    --line: #363d5e; --accent: #8fa3ea; --accent-soft: #2a3364;
+    --num: #ea9184; --num-bg: #3d2925;
+    --den: #5fd0bd; --den-bg: #1f3c37;
+    --shadow: rgba(0, 0, 0, 0.35);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: 'Nunito Sans', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  .poster { max-width: 720px; margin: 0 auto; padding: 36px 28px 48px; }
+  h1, h2, .display { font-family: 'Baloo 2', 'Nunito Sans', sans-serif; font-weight: 700; text-wrap: balance; }
+  .eyebrow { font-size: 13px; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); margin: 0 0 6px; }
+  h1 { font-size: 30px; line-height: 1.15; margin: 0 0 6px; color: var(--ink); }
+  .lede { font-size: 16px; color: var(--ink-soft); margin: 0 0 30px; max-width: 50ch; }
+  section { margin-bottom: 30px; } section:last-of-type { margin-bottom: 0; }
+
+  .num-box { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 14px; padding: 22px; box-shadow: 0 2px 0 var(--shadow); display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
+  .num-box .whole { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 38px; color: var(--ink); }
+  .num-box .comma { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 38px; color: var(--accent); }
+  .num-box .frac { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 38px; color: var(--num); }
+  .num-box .label { position: relative; }
+  .num-box .tag { position: absolute; top: -22px; left: 50%; transform: translateX(-50%); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-faint); white-space: nowrap; }
+
+  .table-wrap { overflow-x: auto; background: var(--paper-raised); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; box-shadow: 0 2px 0 var(--shadow); }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; text-align: center; }
+  th, td { padding: 6px 8px; border: 1px solid var(--line); }
+  th { color: var(--ink-soft); font-weight: 700; font-size: 12px; }
+  td.hi { color: var(--den); font-weight: 700; }
+
+  .rules-grid { display: flex; flex-direction: column; gap: 10px; }
+  .rule-row { display: flex; align-items: center; gap: 14px; background: var(--paper-raised); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; box-shadow: 0 2px 0 var(--shadow); }
+  .rule-badge { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 15px; color: #fff; background: var(--accent); min-width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .rule-text { font-size: 14.5px; }
+  .rule-text b { color: var(--accent); }
+
+  .eg-box { background: var(--accent-soft); border-radius: 12px; padding: 14px 18px; font-size: 14px; margin-top: 4px; }
+  .eg-box b { color: var(--accent); }
+
+  footer { margin-top: 36px; padding-top: 16px; border-top: 1px dashed var(--line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 12px; color: var(--ink-faint); }
+  @media print { body { background: #ffffff; } .poster { max-width: none; padding: 12px 6px; } }
+
+  @media print {
+    @page { size: A4; margin: 10mm; }
+    body { background: #fff !important; }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+    .poster { zoom: 0.88; box-shadow: none !important; }
+    .poster * { box-shadow: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="poster">
+  <p class="eyebrow">Математика · 5 класс · Глава 5</p>
+  <h1>§31. Десятичная дробь</h1>
+  <p class="lede">Дробь со знаменателем 10, 100, 1000… можно записать без знаменателя — через запятую.</p>
+
+  <section>
+    <div class="num-box">
+      <span class="label"><span class="tag">целая часть</span><span class="whole">15</span></span>
+      <span class="comma">,</span>
+      <span class="label"><span class="tag">дробная часть</span><span class="frac">39</span></span>
+      <span style="color:var(--ink-faint);font-size:14px;">&nbsp; = 15 39/100</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="table-wrap">
+      <table>
+        <tr><th>сотни</th><th>десятки</th><th>единицы</th><th>,</th><th>десятые</th><th>сотые</th><th>тысячные</th><th>десятитысячные</th></tr>
+        <tr><td></td><td>3</td><td>8</td><td>,</td><td class="hi">0</td><td class="hi">0</td><td class="hi">1</td><td class="hi">3</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="rules-grid">
+      <div class="rule-row"><span class="rule-badge">1</span><span class="rule-text">уравнять число цифр числителя и число нулей знаменателя (нули <b>слева</b>)</span></div>
+      <div class="rule-row"><span class="rule-badge">2</span><span class="rule-text">записать <b>целую часть</b> (может быть 0)</span></div>
+      <div class="rule-row"><span class="rule-badge">3</span><span class="rule-text">поставить <b>запятую</b></span></div>
+      <div class="rule-row"><span class="rule-badge">4</span><span class="rule-text">записать <b>числитель дробной части</b></span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eg-box">
+      <b>Осторожно с чтением:</b> 7 3/10 и 7,3 читают одинаково — «семь целых три десятых».
+      А вот 7/10 читают «семь десятых», тогда как 0,7 — «нуль целых семь десятых».
+    </div>
+  </section>
+
+  <footer>
+    <span>§31 · стр. 12–16 · math_5_2.pdf</span>
+    <span>термин «десятичные дроби» ввёл Симон Стевин, 1585 г.</span>
+  </footer>
+</div>
+
+</body>
+</html>

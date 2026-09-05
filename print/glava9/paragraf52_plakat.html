@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>§52. Окружность. Круг</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f5fb; --paper-raised: #ffffff; --ink: #232a4d; --ink-soft: #565f86; --ink-faint: #8990b8;
+    --line: #d8dcf0; --accent: #3a4fa0; --accent-soft: #e4e8f9;
+    --num: #c9544a; --num-bg: #fae2df;
+    --den: #2f9e8f; --den-bg: #dcf2ee;
+    --shadow: rgba(35, 42, 77, 0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1a1f36; --paper-raised: #242a47; --ink: #eef0fb; --ink-soft: #aab1d8; --ink-faint: #7981ac;
+      --line: #363d5e; --accent: #8fa3ea; --accent-soft: #2a3364;
+      --num: #ea9184; --num-bg: #3d2925;
+      --den: #5fd0bd; --den-bg: #1f3c37;
+      --shadow: rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1a1f36; --paper-raised: #242a47; --ink: #eef0fb; --ink-soft: #aab1d8; --ink-faint: #7981ac;
+    --line: #363d5e; --accent: #8fa3ea; --accent-soft: #2a3364;
+    --num: #ea9184; --num-bg: #3d2925;
+    --den: #5fd0bd; --den-bg: #1f3c37;
+    --shadow: rgba(0, 0, 0, 0.35);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: 'Nunito Sans', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  .poster { max-width: 720px; margin: 0 auto; padding: 36px 28px 48px; }
+  h1, h2, .display { font-family: 'Baloo 2', 'Nunito Sans', sans-serif; font-weight: 700; text-wrap: balance; }
+  .eyebrow { font-size: 13px; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); margin: 0 0 6px; }
+  h1 { font-size: 32px; line-height: 1.15; margin: 0 0 6px; color: var(--ink); }
+  .lede { font-size: 16px; color: var(--ink-soft); margin: 0 0 30px; max-width: 50ch; }
+  section { margin-bottom: 30px; } section:last-of-type { margin-bottom: 0; }
+
+  .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  @media (max-width: 480px) { .grid4 { grid-template-columns: repeat(2, 1fr); } }
+  .circ-card { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 12px; padding: 14px 8px; box-shadow: 0 2px 0 var(--shadow); text-align: center; }
+  .circ-card svg { display: block; margin: 0 auto 8px; }
+  .circ-card .lbl { font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 14px; color: var(--accent); }
+  .circ-card .sub { font-size: 11px; color: var(--ink-faint); margin-top: 2px; }
+
+  .rules-grid { display: flex; flex-direction: column; gap: 10px; }
+  .rule-row { display: flex; align-items: center; gap: 14px; background: var(--paper-raised); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; box-shadow: 0 2px 0 var(--shadow); }
+  .rule-badge { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 13px; color: #fff; background: var(--accent); min-width: 40px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; padding: 0 4px; text-align: center; }
+  .rule-text { font-size: 14.5px; }
+  .rule-text b { color: var(--accent); }
+
+  .sector-demo { display: flex; align-items: center; justify-content: center; gap: 26px; background: var(--paper-raised); border: 1px solid var(--line); border-radius: 12px; padding: 18px; box-shadow: 0 2px 0 var(--shadow); flex-wrap: wrap; }
+  .sector-demo .eq { font-family: 'JetBrains Mono', monospace; font-size: 17px; color: var(--ink); }
+  .sector-demo .eq b { color: var(--num); }
+
+  footer { margin-top: 36px; padding-top: 16px; border-top: 1px dashed var(--line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 12px; color: var(--ink-faint); }
+  @media print { body { background: #ffffff; } .poster { max-width: none; padding: 12px 6px; } }
+
+  @media print {
+    @page { size: A4; margin: 10mm; }
+    body { background: #fff !important; }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+    .poster { zoom: 0.88; box-shadow: none !important; }
+    .poster * { box-shadow: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="poster">
+  <p class="eyebrow">Математика · 5 класс · Глава 9</p>
+  <h1>§52. Окружность. Круг</h1>
+  <p class="lede">Диаметр всегда проходит через центр и всегда в 2 раза больше радиуса.</p>
+
+  <section>
+    <div class="grid4">
+      <div class="circ-card">
+        <svg width="64" height="64" viewBox="0 0 64 64"><circle cx="32" cy="32" r="26" fill="none" stroke="#3a4fa0" stroke-width="3"/></svg>
+        <div class="lbl">окружность</div><div class="sub">линия</div>
+      </div>
+      <div class="circ-card">
+        <svg width="64" height="64" viewBox="0 0 64 64"><circle cx="32" cy="32" r="26" fill="none" stroke="#8990b8" stroke-width="2"/><circle cx="32" cy="32" r="2" fill="#c9544a"/><line x1="32" y1="32" x2="58" y2="32" stroke="#c9544a" stroke-width="3"/></svg>
+        <div class="lbl">радиус r</div><div class="sub">центр &rarr; точка</div>
+      </div>
+      <div class="circ-card">
+        <svg width="64" height="64" viewBox="0 0 64 64"><circle cx="32" cy="32" r="26" fill="none" stroke="#8990b8" stroke-width="2"/><line x1="6" y1="32" x2="58" y2="32" stroke="#2f9e8f" stroke-width="3"/></svg>
+        <div class="lbl">диаметр d</div><div class="sub">d = 2r</div>
+      </div>
+      <div class="circ-card">
+        <svg width="64" height="64" viewBox="0 0 64 64"><circle cx="32" cy="32" r="26" fill="#dcf2ee" stroke="#2f9e8f" stroke-width="2"/></svg>
+        <div class="lbl">круг</div><div class="sub">вся площадь</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sector-demo">
+      <svg width="90" height="90" viewBox="0 0 90 90">
+        <circle cx="45" cy="45" r="38" fill="none" stroke="#d8dcf0" stroke-width="2"/>
+        <path d="M45 45 L45 7 A38 38 0 0 1 71.9 71.9 Z" fill="#fae2df" stroke="#c9544a" stroke-width="2"/>
+        <path d="M45 45 L71.9 71.9 A38 38 0 1 1 45 7 Z" fill="#dcf2ee" stroke="#2f9e8f" stroke-width="2"/>
+        <text x="65" y="40" font-size="11" fill="#c9544a" font-family="JetBrains Mono, monospace" text-anchor="middle">135°</text>
+        <text x="25" y="56" font-size="11" fill="#2f9e8f" font-family="JetBrains Mono, monospace" text-anchor="middle">225°</text>
+      </svg>
+      <div class="eq">135° + <b>225°</b> = 360°<br><span style="color:#565f86;font-size:13px">второй сектор = 360° &minus; первый</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="rules-grid">
+      <div class="rule-row"><span class="rule-badge">d=2r</span><span class="rule-text"><b>диаметр</b> всегда в 2 раза больше <b>радиуса</b></span></div>
+      <div class="rule-row"><span class="rule-badge">≤ r</span><span class="rule-text">точки <b>круга</b> — на расстоянии не больше радиуса; точки <b>окружности</b> — ровно на радиусе</span></div>
+      <div class="rule-row"><span class="rule-badge">360°</span><span class="rule-text">сумма углов всех секторов круга всегда равна <b>360°</b></span></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>§52 · стр. 98–100 · math_5_2.pdf</span>
+    <span>для запоминания — держи перед глазами первую неделю</span>
+  </footer>
+</div>
+
+</body>
+</html>

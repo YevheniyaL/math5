@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>§53. Диаграмма</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f5fb; --paper-raised: #ffffff; --ink: #232a4d; --ink-soft: #565f86; --ink-faint: #8990b8;
+    --line: #d8dcf0; --accent: #3a4fa0; --accent-soft: #e4e8f9;
+    --num: #c9544a; --num-bg: #fae2df;
+    --den: #2f9e8f; --den-bg: #dcf2ee;
+    --shadow: rgba(35, 42, 77, 0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1a1f36; --paper-raised: #242a47; --ink: #eef0fb; --ink-soft: #aab1d8; --ink-faint: #7981ac;
+      --line: #363d5e; --accent: #8fa3ea; --accent-soft: #2a3364;
+      --num: #ea9184; --num-bg: #3d2925;
+      --den: #5fd0bd; --den-bg: #1f3c37;
+      --shadow: rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1a1f36; --paper-raised: #242a47; --ink: #eef0fb; --ink-soft: #aab1d8; --ink-faint: #7981ac;
+    --line: #363d5e; --accent: #8fa3ea; --accent-soft: #2a3364;
+    --num: #ea9184; --num-bg: #3d2925;
+    --den: #5fd0bd; --den-bg: #1f3c37;
+    --shadow: rgba(0, 0, 0, 0.35);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: 'Nunito Sans', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  .poster { max-width: 720px; margin: 0 auto; padding: 36px 28px 48px; }
+  h1, h2, .display { font-family: 'Baloo 2', 'Nunito Sans', sans-serif; font-weight: 700; text-wrap: balance; }
+  .eyebrow { font-size: 13px; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); margin: 0 0 6px; }
+  h1 { font-size: 32px; line-height: 1.15; margin: 0 0 6px; color: var(--ink); }
+  .lede { font-size: 16px; color: var(--ink-soft); margin: 0 0 30px; max-width: 50ch; }
+  section { margin-bottom: 30px; } section:last-of-type { margin-bottom: 0; }
+
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  @media (max-width: 480px) { .grid3 { grid-template-columns: repeat(1, 1fr); } }
+  .diag-card { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 12px; padding: 14px 10px; box-shadow: 0 2px 0 var(--shadow); text-align: center; }
+  .diag-card svg { display: block; margin: 0 auto 8px; }
+  .diag-card .lbl { font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 14px; color: var(--accent); }
+  .diag-card .sub { font-size: 11.5px; color: var(--ink-faint); margin-top: 2px; }
+
+  .steps { display: flex; flex-direction: column; gap: 10px; }
+  .step-row { display: flex; align-items: center; gap: 14px; background: var(--paper-raised); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; box-shadow: 0 2px 0 var(--shadow); }
+  .step-badge { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 15px; color: #fff; background: var(--accent); min-width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .step-text { font-size: 14.5px; } .step-text b { color: var(--accent); }
+
+  .example { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 12px; padding: 14px 18px; box-shadow: 0 2px 0 var(--shadow); font-family: 'JetBrains Mono', monospace; font-size: 13.5px; line-height: 1.8; color: var(--ink); }
+  .example b { color: var(--num); }
+
+  footer { margin-top: 36px; padding-top: 16px; border-top: 1px dashed var(--line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 12px; color: var(--ink-faint); }
+  @media print { body { background: #ffffff; } .poster { max-width: none; padding: 12px 6px; } }
+
+  @media print {
+    @page { size: A4; margin: 10mm; }
+    body { background: #fff !important; }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+    .poster { zoom: 0.88; box-shadow: none !important; }
+    .poster * { box-shadow: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="poster">
+  <p class="eyebrow">Математика · 5 класс · Глава 9</p>
+  <h1>§53. Диаграмма</h1>
+  <p class="lede">Одни и те же числа можно показать кругом, столбиками или отрезками.</p>
+
+  <section>
+    <div class="grid3">
+      <div class="diag-card">
+        <svg width="70" height="70" viewBox="0 0 70 70">
+          <path d="M35 35 L35 5 A30 30 0 0 1 63 42 Z" fill="#fae2df" stroke="#c9544a" stroke-width="1.5"/>
+          <path d="M35 35 L63 42 A30 30 0 0 1 20 63 Z" fill="#dcf2ee" stroke="#2f9e8f" stroke-width="1.5"/>
+          <path d="M35 35 L20 63 A30 30 0 1 1 35 5 Z" fill="#fdf0d5" stroke="#c98a2f" stroke-width="1.5"/>
+        </svg>
+        <div class="lbl">круговая</div><div class="sub">сектора по углам</div>
+      </div>
+      <div class="diag-card">
+        <svg width="70" height="70" viewBox="0 0 70 70">
+          <line x1="8" y1="60" x2="62" y2="60" stroke="#8990b8" stroke-width="2"/>
+          <rect x="14" y="38" width="10" height="22" fill="#fae2df" stroke="#c9544a" stroke-width="1.5"/>
+          <rect x="30" y="26" width="10" height="34" fill="#dcf2ee" stroke="#2f9e8f" stroke-width="1.5"/>
+          <rect x="46" y="14" width="10" height="46" fill="#fdf0d5" stroke="#c98a2f" stroke-width="1.5"/>
+        </svg>
+        <div class="lbl">столбчатая</div><div class="sub">прямоугольники</div>
+      </div>
+      <div class="diag-card">
+        <svg width="70" height="70" viewBox="0 0 70 70">
+          <line x1="8" y1="15" x2="8" y2="60" stroke="#8990b8" stroke-width="1.5"/>
+          <line x1="12" y1="50" x2="45" y2="50" stroke="#c9544a" stroke-width="3"/>
+          <line x1="12" y1="35" x2="58" y2="35" stroke="#2f9e8f" stroke-width="3"/>
+          <line x1="12" y1="20" x2="38" y2="20" stroke="#c98a2f" stroke-width="3"/>
+        </svg>
+        <div class="lbl">линейная</div><div class="sub">отрезки</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="steps">
+      <div class="step-row"><span class="step-badge">1</span><span class="step-text">найти <b>общую сумму</b> всех величин</span></div>
+      <div class="step-row"><span class="step-badge">2</span><span class="step-text">360° : сумма = <b>градусов на единицу</b></span></div>
+      <div class="step-row"><span class="step-badge">3</span><span class="step-text">(градусов на единицу) &times; величина = <b>угол сектора</b></span></div>
+      <div class="step-row"><span class="step-badge">4</span><span class="step-text">начертить <b>транспортиром</b> и закрасить</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="example">
+      40 + 50 + 70 + 20 = <b>180</b> (сумма)<br>
+      360° : 180 = <b>2°</b> на единицу<br>
+      40&middot;2°=80° &nbsp; 50&middot;2°=100° &nbsp; 70&middot;2°=140° &nbsp; 20&middot;2°=40°
+    </div>
+  </section>
+
+  <footer>
+    <span>§53 · стр. 101–109 · math_5_2.pdf</span>
+    <span>для запоминания — держи перед глазами первую неделю</span>
+  </footer>
+</div>
+
+</body>
+</html>

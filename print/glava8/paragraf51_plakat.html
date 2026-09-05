@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>§51. Многоугольники</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f5fb; --paper-raised: #ffffff; --ink: #232a4d; --ink-soft: #565f86; --ink-faint: #8990b8;
+    --line: #d8dcf0; --accent: #3a4fa0; --accent-soft: #e4e8f9;
+    --num: #c9544a; --num-bg: #fae2df;
+    --den: #2f9e8f; --den-bg: #dcf2ee;
+    --shadow: rgba(35, 42, 77, 0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1a1f36; --paper-raised: #242a47; --ink: #eef0fb; --ink-soft: #aab1d8; --ink-faint: #7981ac;
+      --line: #363d5e; --accent: #8fa3ea; --accent-soft: #2a3364;
+      --num: #ea9184; --num-bg: #3d2925;
+      --den: #5fd0bd; --den-bg: #1f3c37;
+      --shadow: rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1a1f36; --paper-raised: #242a47; --ink: #eef0fb; --ink-soft: #aab1d8; --ink-faint: #7981ac;
+    --line: #363d5e; --accent: #8fa3ea; --accent-soft: #2a3364;
+    --num: #ea9184; --num-bg: #3d2925;
+    --den: #5fd0bd; --den-bg: #1f3c37;
+    --shadow: rgba(0, 0, 0, 0.35);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: 'Nunito Sans', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  .poster { max-width: 720px; margin: 0 auto; padding: 36px 28px 48px; }
+  h1, h2, .display { font-family: 'Baloo 2', 'Nunito Sans', sans-serif; font-weight: 700; text-wrap: balance; }
+  .eyebrow { font-size: 13px; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); margin: 0 0 6px; }
+  h1 { font-size: 30px; line-height: 1.15; margin: 0 0 6px; color: var(--ink); }
+  .lede { font-size: 16px; color: var(--ink-soft); margin: 0 0 30px; max-width: 50ch; }
+  section { margin-bottom: 30px; } section:last-of-type { margin-bottom: 0; }
+
+  .pent-box { background: var(--paper-raised); border: 1px solid var(--line); border-radius: 14px; padding: 22px; box-shadow: 0 2px 0 var(--shadow); display: flex; justify-content: center; }
+
+  .rules-grid { display: flex; flex-direction: column; gap: 10px; }
+  .rule-row { display: flex; align-items: center; gap: 14px; background: var(--paper-raised); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; box-shadow: 0 2px 0 var(--shadow); }
+  .rule-badge { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 15px; color: #fff; background: var(--accent); min-width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .rule-text { font-size: 14.5px; }
+  .rule-text b { color: var(--accent); }
+
+  .eg-box { background: var(--accent-soft); border-radius: 12px; padding: 14px 18px; font-size: 14px; margin-top: 4px; text-align: center; font-family: 'JetBrains Mono', monospace; font-weight: 700; }
+  .eg-box .lab { display: block; font-family: 'Nunito Sans', sans-serif; font-weight: 400; color: var(--ink-soft); margin-bottom: 4px; }
+
+  footer { margin-top: 36px; padding-top: 16px; border-top: 1px dashed var(--line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 12px; color: var(--ink-faint); }
+  @media print { body { background: #ffffff; } .poster { max-width: none; padding: 12px 6px; } }
+
+  @media print {
+    @page { size: A4; margin: 10mm; }
+    body { background: #fff !important; }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+    .poster { zoom: 0.88; box-shadow: none !important; }
+    .poster * { box-shadow: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="poster">
+  <p class="eyebrow">Математика · 5 класс · Глава 8</p>
+  <h1>§51. Многоугольники</h1>
+  <p class="lede">Вершины, стороны, углы — и отрезки между несоседними вершинами (диагонали).</p>
+
+  <section>
+    <div class="pent-box">
+      <svg width="220" height="200" viewBox="0 0 220 200">
+        <polygon points="110,10 200,80 165,180 55,180 20,80" fill="none" stroke="#3a4fa0" stroke-width="2.5"/>
+        <line x1="110" y1="10" x2="165" y2="180" stroke="#c9544a" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <line x1="110" y1="10" x2="55" y2="180" stroke="#c9544a" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <line x1="200" y1="80" x2="55" y2="180" stroke="#c9544a" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <line x1="200" y1="80" x2="20" y2="80" stroke="#c9544a" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <line x1="165" y1="180" x2="20" y2="80" stroke="#c9544a" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <circle cx="110" cy="10" r="3" fill="#232a4d"/><circle cx="200" cy="80" r="3" fill="#232a4d"/>
+        <circle cx="165" cy="180" r="3" fill="#232a4d"/><circle cx="55" cy="180" r="3" fill="#232a4d"/>
+        <circle cx="20" cy="80" r="3" fill="#232a4d"/>
+      </svg>
+    </div>
+  </section>
+
+  <section>
+    <div class="rules-grid">
+      <div class="rule-row"><span class="rule-badge">В</span><span class="rule-text"><b>соседние вершины</b> — концы одной стороны</span></div>
+      <div class="rule-row"><span class="rule-badge">С</span><span class="rule-text"><b>смежные стороны</b> — прилегают к одной вершине</span></div>
+      <div class="rule-row"><span class="rule-badge">Д</span><span class="rule-text"><b>диагональ</b> — отрезок между <u>несоседними</u> вершинами (пунктир)</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eg-box"><span class="lab">площади уже знакомых фигур</span>S(квадрат) = a² &nbsp;&middot;&nbsp; S(прямоугольник) = ab</div>
+  </section>
+
+  <footer>
+    <span>§51 · стр. 94–97 · math_5_2.pdf</span>
+    <span>пчелиные соты — многоугольник (шестиугольник) из природы</span>
+  </footer>
+</div>
+
+</body>
+</html>

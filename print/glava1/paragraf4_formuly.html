@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Математика · §4 · формулы и решения</title>
+<link rel="icon" href="data:image/svg+xml,<svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22><text%20y=%22.9em%22%20font-size=%2290%22>📐</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700&family=Nunito+Sans:wght@400;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f5fb; --raised: #ffffff; --ink: #232a4d; --soft: #565f86; --faint: #8990b8;
+    --line: #d8dcf0; --accent: #3a4fa0; --accent-bg: #e4e8f9;
+    --book: #2f7d6f; --book-bg: #dcf2ee; --mine: #9a6417; --mine-bg: #faedd6;
+    --err: #b8453b; --err-bg: #fae2df;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1a1f36; --raised: #242a47; --ink: #eef0fb; --soft: #aab1d8; --faint: #7981ac;
+      --line: #363d5e; --accent: #8fa3ea; --accent-bg: #2a3364;
+      --book: #5fd0bd; --book-bg: #1f3c37; --mine: #f0c463; --mine-bg: #3d3320;
+      --err: #ea9184; --err-bg: #3d2925;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1a1f36; --raised: #242a47; --ink: #eef0fb; --soft: #aab1d8; --faint: #7981ac;
+    --line: #363d5e; --accent: #8fa3ea; --accent-bg: #2a3364;
+    --book: #5fd0bd; --book-bg: #1f3c37; --mine: #f0c463; --mine-bg: #3d3320;
+    --err: #ea9184; --err-bg: #3d2925;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: 'Nunito Sans', Arial, sans-serif; font-size: 14px; line-height: 1.4; }
+  .sheet { max-width: 780px; margin: 0 auto; padding: 24px 16px 36px; }
+  .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 4px; }
+  .eyebrow { font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0; }
+  .mark { font-size: 12px; font-weight: 800; color: var(--accent); background: var(--accent-bg); border-radius: 999px; padding: 3px 10px; white-space: nowrap; }
+  h1 { font-family: 'Baloo 2', 'Nunito Sans', sans-serif; font-size: 26px; line-height: 1.1; margin: 2px 0 4px; }
+  .lede { color: var(--soft); margin: 0 0 14px; font-size: 13px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: var(--soft); margin: 0 0 14px; }
+  .blk { background: var(--raised); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; break-inside: avoid; }
+  .blk h2 { font-family: 'Baloo 2', 'Nunito Sans', sans-serif; font-size: 17px; margin: 0 0 6px; display: flex; gap: 8px; align-items: baseline; }
+  .blk h2 .n { color: var(--accent); }
+  .f { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 16px; color: var(--accent); background: var(--accent-bg); border-radius: 8px; padding: 6px 10px; margin: 0 0 6px; }
+  .f.txt { font-family: 'Nunito Sans', Arial, sans-serif; font-size: 15px; }
+  .f small { font-weight: 500; font-size: 12.5px; color: var(--soft); margin-left: 6px; }
+  .where, .when { margin: 0 0 6px; font-size: 13px; }
+  .when b, .where b { color: var(--soft); }
+  .exs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0 0 6px; }
+  .exs.one { grid-template-columns: 1fr; }
+  @media (max-width: 620px) { .exs { grid-template-columns: 1fr; } }
+  .ex { border-radius: 8px; padding: 7px 10px; font-size: 13px; }
+  .ex.book { background: var(--book-bg); }
+  .ex.mine { background: var(--mine-bg); }
+  .ex .src { display: block; font-size: 11px; font-weight: 800; letter-spacing: .03em; margin-bottom: 3px; }
+  .ex.book .src { color: var(--book); }
+  .ex.mine .src { color: var(--mine); }
+  .ex .q { margin: 0 0 3px; }
+  .ex ol { margin: 0; padding-left: 20px; font-size: 13.5px; font-variant-numeric: tabular-nums; }
+  .ex ol li { margin: 1px 0; }
+  .ex .ans { margin: 3px 0 0; font-weight: 700; }
+  .err { margin: 0; font-size: 13px; background: var(--err-bg); border-radius: 8px; padding: 6px 10px; }
+  .err b { color: var(--err); }
+  table.rules { width: 100%; border-collapse: collapse; font-size: 13px; margin: 0 0 6px; }
+  table.rules th, table.rules td { border: 1px solid var(--line); padding: 4px 7px; text-align: left; vertical-align: top; }
+  table.rules th { background: var(--accent-bg); color: var(--accent); font-size: 12px; }
+  table.rules td.m { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; white-space: nowrap; }
+  footer { margin-top: 14px; padding-top: 8px; border-top: 1px dashed var(--line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 11.5px; color: var(--faint); }
+  footer a { color: var(--faint); }
+  @media print {
+    @page { size: A4; margin: 10mm; }
+    body { background: #fff !important; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+    .sheet { zoom: 1.0; max-width: none; padding: 0; }
+    .noprint { display: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="top">
+    <p class="eyebrow">Математика · 5 класс · Глава 1 · формулы и решения</p>
+    <span class="mark">§4</span>
+  </div>
+  <h1>§4. Арифметические действия с натуральными числами</h1>
+  <p class="lede">Порядок действий и три приёма, которые ускоряют счёт в уме.</p>
+  <p class="legend"><span>📖 — пример из учебника</span><span>✏️ — пример придуман для этого листа, в учебнике его нет</span><span>⚠ — где чаще всего ошибаются</span></p>
+<section class="blk"><h2><span class="n">1</span>Порядок действий</h2><div class="f txt">1) скобки → 2) × и : слева направо → 3) + и − слева направо</div><div class="exs"><div class="ex mine"><span class="src">✏️ мой пример</span><p class="q">120 − 20 : 4 · 2 + 5</p><ol><li>20 : 4 = 5</li><li>5 · 2 = 10</li><li>120 − 10 = 110</li><li>110 + 5 = 115</li></ol><p class="ans">Ответ: 115</p></div><div class="ex mine"><span class="src">✏️ мой пример</span><p class="q">48 : 6 · 2 и 48 : (6 · 2)</p><ol><li>48 : 6 = 8, 8 · 2 = 16</li><li>6 · 2 = 12, 48 : 12 = 4</li></ol><p class="ans">16 и 4 — скобки меняют ответ</p></div></div><p class="err"><b>⚠ Частая ошибка:</b> начинать с вычитания, потому что оно стоит первым: 120 − 20 = 100 … Сначала × и :, потом + и −. А × и : между собой — строго слева направо.</p></section>
+<section class="blk"><h2><span class="n">2</span>Удобные пары для счёта в уме</h2><div class="f">2·5 = 10 &nbsp; 4·25 = 100 &nbsp; 8·125 = 1000</div><p class="when"><b>Когда применять:</b> в произведении есть 5, 25 или 125 — ищи им пару.</p><div class="exs"><div class="ex book"><span class="src">📖 из учебника, стр. 23</span><p class="q">62 · 5</p><ol><li>62 = 31 · 2</li><li>31 · (2 · 5) = 31 · 10 = 310</li></ol></div><div class="ex mine"><span class="src">✏️ мой пример</span><p class="q">4 · 37 · 25</p><ol><li>переставим: (4 · 25) · 37</li><li>100 · 37 = 3700</li></ol></div></div></section>
+<section class="blk"><h2><span class="n">3</span>Дополнить до круглого</h2><div class="f">286 + 78 = 286 + (14 + 64) = 300 + 64</div><p class="when"><b>Когда применять:</b> одно слагаемое близко к круглому числу.</p><div class="exs"><div class="ex book"><span class="src">📖 из учебника, стр. 22</span><p class="q">286 + 78</p><ol><li>до 300 не хватает 14: 78 = 14 + 64</li><li>(286 + 14) + 64 = 300 + 64 = 364</li></ol></div><div class="ex mine"><span class="src">✏️ мой пример</span><p class="q">579 + 46</p><ol><li>до 600 не хватает 21: 46 = 21 + 25</li><li>(579 + 21) + 25 = 600 + 25 = 625</li></ol></div></div></section>
+  <footer>
+    <span>§4 · стр. 21–25 · math_5_1.pdf</span>
+    <span class="noprint"><a href="../../index.html">← все параграфы</a> · <a href="../../glava1/paragraf4.html">тренажёр §4</a></span>
+  </footer>
+</div>
+</body>
+</html>

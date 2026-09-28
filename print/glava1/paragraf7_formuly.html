@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Математика · §7 · формулы и решения</title>
+<link rel="icon" href="data:image/svg+xml,<svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22><text%20y=%22.9em%22%20font-size=%2290%22>📐</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700&family=Nunito+Sans:wght@400;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f5fb; --raised: #ffffff; --ink: #232a4d; --soft: #565f86; --faint: #8990b8;
+    --line: #d8dcf0; --accent: #3a4fa0; --accent-bg: #e4e8f9;
+    --book: #2f7d6f; --book-bg: #dcf2ee; --mine: #9a6417; --mine-bg: #faedd6;
+    --err: #b8453b; --err-bg: #fae2df;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1a1f36; --raised: #242a47; --ink: #eef0fb; --soft: #aab1d8; --faint: #7981ac;
+      --line: #363d5e; --accent: #8fa3ea; --accent-bg: #2a3364;
+      --book: #5fd0bd; --book-bg: #1f3c37; --mine: #f0c463; --mine-bg: #3d3320;
+      --err: #ea9184; --err-bg: #3d2925;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1a1f36; --raised: #242a47; --ink: #eef0fb; --soft: #aab1d8; --faint: #7981ac;
+    --line: #363d5e; --accent: #8fa3ea; --accent-bg: #2a3364;
+    --book: #5fd0bd; --book-bg: #1f3c37; --mine: #f0c463; --mine-bg: #3d3320;
+    --err: #ea9184; --err-bg: #3d2925;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: 'Nunito Sans', Arial, sans-serif; font-size: 14px; line-height: 1.4; }
+  .sheet { max-width: 780px; margin: 0 auto; padding: 24px 16px 36px; }
+  .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 4px; }
+  .eyebrow { font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0; }
+  .mark { font-size: 12px; font-weight: 800; color: var(--accent); background: var(--accent-bg); border-radius: 999px; padding: 3px 10px; white-space: nowrap; }
+  h1 { font-family: 'Baloo 2', 'Nunito Sans', sans-serif; font-size: 26px; line-height: 1.1; margin: 2px 0 4px; }
+  .lede { color: var(--soft); margin: 0 0 14px; font-size: 13px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: var(--soft); margin: 0 0 14px; }
+  .blk { background: var(--raised); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; break-inside: avoid; }
+  .blk h2 { font-family: 'Baloo 2', 'Nunito Sans', sans-serif; font-size: 17px; margin: 0 0 6px; display: flex; gap: 8px; align-items: baseline; }
+  .blk h2 .n { color: var(--accent); }
+  .f { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 16px; color: var(--accent); background: var(--accent-bg); border-radius: 8px; padding: 6px 10px; margin: 0 0 6px; }
+  .f.txt { font-family: 'Nunito Sans', Arial, sans-serif; font-size: 15px; }
+  .f small { font-weight: 500; font-size: 12.5px; color: var(--soft); margin-left: 6px; }
+  .where, .when { margin: 0 0 6px; font-size: 13px; }
+  .when b, .where b { color: var(--soft); }
+  .exs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0 0 6px; }
+  .exs.one { grid-template-columns: 1fr; }
+  @media (max-width: 620px) { .exs { grid-template-columns: 1fr; } }
+  .ex { border-radius: 8px; padding: 7px 10px; font-size: 13px; }
+  .ex.book { background: var(--book-bg); }
+  .ex.mine { background: var(--mine-bg); }
+  .ex .src { display: block; font-size: 11px; font-weight: 800; letter-spacing: .03em; margin-bottom: 3px; }
+  .ex.book .src { color: var(--book); }
+  .ex.mine .src { color: var(--mine); }
+  .ex .q { margin: 0 0 3px; }
+  .ex ol { margin: 0; padding-left: 20px; font-size: 13.5px; font-variant-numeric: tabular-nums; }
+  .ex ol li { margin: 1px 0; }
+  .ex .ans { margin: 3px 0 0; font-weight: 700; }
+  .err { margin: 0; font-size: 13px; background: var(--err-bg); border-radius: 8px; padding: 6px 10px; }
+  .err b { color: var(--err); }
+  table.rules { width: 100%; border-collapse: collapse; font-size: 13px; margin: 0 0 6px; }
+  table.rules th, table.rules td { border: 1px solid var(--line); padding: 4px 7px; text-align: left; vertical-align: top; }
+  table.rules th { background: var(--accent-bg); color: var(--accent); font-size: 12px; }
+  table.rules td.m { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; white-space: nowrap; }
+  footer { margin-top: 14px; padding-top: 8px; border-top: 1px dashed var(--line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 11.5px; color: var(--faint); }
+  footer a { color: var(--faint); }
+  @media print {
+    @page { size: A4; margin: 10mm; }
+    body { background: #fff !important; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+    .sheet { zoom: 0.89; max-width: none; padding: 0; }
+    .noprint { display: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="top">
+    <p class="eyebrow">Математика · 5 класс · Глава 1 · формулы и решения</p>
+    <span class="mark">§7</span>
+  </div>
+  <h1>§7. Формулы. Вычисления по формулам</h1>
+  <p class="lede">Три главные формулы и движение по реке. Из каждой формулы можно выразить любую букву.</p>
+  <p class="legend"><span>📖 — пример из учебника</span><span>✏️ — пример придуман для этого листа, в учебнике его нет</span><span>⚠ — где чаще всего ошибаются</span></p>
+<section class="blk"><h2><span class="n">1</span>Периметр треугольника</h2><div class="f">P = a + b + c <small>→ a = P − b − c</small></div><p class="where"><b>Буквы:</b> P — периметр, a, b, c — длины сторон.</p><div class="exs"><div class="ex book"><span class="src">📖 из учебника, стр. 36</span><p class="q">a = 3 см, b = 4 см, c = 5 см. P = ?</p><ol><li>P = 3 + 4 + 5 = 12 (см)</li></ol></div><div class="ex book"><span class="src">📖 из учебника, стр. 36</span><p class="q">P = 12 см, b = 4 см, c = 5 см. a = ?</p><ol><li>a = 12 − 4 − 5 = 3 (см)</li></ol></div></div></section>
+<section class="blk"><h2><span class="n">2</span>Площадь прямоугольника</h2><div class="f">S = a · b <small>→ a = S : b, &nbsp; b = S : a</small></div><p class="where"><b>Буквы:</b> S — площадь, a — длина, b — ширина.</p><div class="exs"><div class="ex book"><span class="src">📖 из учебника, стр. 37</span><p class="q">a = 4 см, b = 5 см. S = ?</p><ol><li>S = 4 · 5 = 20 (см²)</li></ol></div><div class="ex book"><span class="src">📖 из учебника, стр. 37</span><p class="q">S = 20 см², a = 4 см. b = ?</p><ol><li>b = 20 : 4 = 5 (см)</li></ol></div></div><p class="err"><b>⚠ Частая ошибка:</b> путать единицы: площадь — в квадратных (см², м²), длина — в обычных (см, м).</p></section>
+<section class="blk"><h2><span class="n">3</span>Путь, скорость, время</h2><div class="f">s = v · t <small>→ v = s : t, &nbsp; t = s : v</small></div><p class="where"><b>Буквы:</b> s — путь (расстояние), v — скорость, t — время.</p><div class="exs"><div class="ex book"><span class="src">📖 из учебника, стр. 37</span><ol><li>v = 12 км/ч, t = 2 ч → s = 12 · 2 = 24 (км)</li><li>s = 18 км, t = 3 ч → v = 18 : 3 = 6 (км/ч)</li><li>s = 80 км, v = 40 км/ч → t = 80 : 40 = 2 (ч)</li></ol></div><div class="ex mine"><span class="src">✏️ мой пример</span><p class="q">Подсказка-треугольник: закрой пальцем то, что ищешь.</p><ol><li>сверху s, снизу v и t</li><li>закрыл s → видно v · t</li><li>закрыл v → видно s : t; закрыл t → s : v</li></ol></div></div><p class="err"><b>⚠ Частая ошибка:</b> смешивать единицы: скорость в км/ч, а время в минутах. Сначала переведи минуты в часы (или наоборот).</p></section>
+<section class="blk"><h2><span class="n">4</span>Движение по реке</h2><div class="f txt">v<sub>по теч.</sub> = v<sub>собств.</sub> + v<sub>теч.</sub> &nbsp;&nbsp; v<sub>пр. теч.</sub> = v<sub>собств.</sub> − v<sub>теч.</sub></div><p class="when"><b>Когда применять:</b> в задаче есть лодка, катер, теплоход и течение реки.</p><div class="exs one"><div class="ex mine"><span class="src">✏️ мой пример</span><p class="q">Катер 18 км/ч, течение 2 км/ч. Сколько км проплывёт за 3 ч по течению и против?</p><ol><li>по течению: 18 + 2 = 20 (км/ч); 20 · 3 = 60 (км)</li><li>против: 18 − 2 = 16 (км/ч); 16 · 3 = 48 (км)</li></ol><p class="ans">Ответ: 60 км и 48 км</p></div></div></section>
+  <footer>
+    <span>§7 · стр. 35–40 · math_5_1.pdf</span>
+    <span class="noprint"><a href="../../index.html">← все параграфы</a> · <a href="../../glava1/paragraf7.html">тренажёр §7</a></span>
+  </footer>
+</div>
+</body>
+</html>

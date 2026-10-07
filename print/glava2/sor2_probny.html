@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Математика · §10–15 · пробный СОР №2</title>
+<link rel="icon" href="data:image/svg+xml,<svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22><text%20y=%22.9em%22%20font-size=%2290%22>📐</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700&family=Nunito+Sans:wght@400;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f5fb; --raised: #ffffff; --ink: #232a4d; --soft: #565f86; --faint: #8990b8;
+    --line: #d8dcf0; --accent: #3a4fa0; --accent-bg: #e4e8f9;
+    --book: #2f7d6f; --book-bg: #dcf2ee; --mine: #9a6417; --mine-bg: #faedd6;
+    --err: #b8453b; --err-bg: #fae2df;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1a1f36; --raised: #242a47; --ink: #eef0fb; --soft: #aab1d8; --faint: #7981ac;
+      --line: #363d5e; --accent: #8fa3ea; --accent-bg: #2a3364;
+      --book: #5fd0bd; --book-bg: #1f3c37; --mine: #f0c463; --mine-bg: #3d3320;
+      --err: #ea9184; --err-bg: #3d2925;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1a1f36; --raised: #242a47; --ink: #eef0fb; --soft: #aab1d8; --faint: #7981ac;
+    --line: #363d5e; --accent: #8fa3ea; --accent-bg: #2a3364;
+    --book: #5fd0bd; --book-bg: #1f3c37; --mine: #f0c463; --mine-bg: #3d3320;
+    --err: #ea9184; --err-bg: #3d2925;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: 'Nunito Sans', Arial, sans-serif; font-size: 14px; line-height: 1.4; }
+  .sheet { max-width: 780px; margin: 0 auto; padding: 24px 16px 36px; }
+  .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 4px; }
+  .eyebrow { font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0; }
+  .mark { font-size: 12px; font-weight: 800; color: var(--accent); background: var(--accent-bg); border-radius: 999px; padding: 3px 10px; white-space: nowrap; }
+  h1 { font-family: 'Baloo 2', 'Nunito Sans', sans-serif; font-size: 26px; line-height: 1.1; margin: 2px 0 4px; }
+  .lede { color: var(--soft); margin: 0 0 14px; font-size: 13px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: var(--soft); margin: 0 0 14px; }
+  .blk { background: var(--raised); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; break-inside: avoid; }
+  .blk h2 { font-family: 'Baloo 2', 'Nunito Sans', sans-serif; font-size: 17px; margin: 0 0 6px; display: flex; gap: 8px; align-items: baseline; }
+  .blk h2 .n { color: var(--accent); }
+  .f { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 16px; color: var(--accent); background: var(--accent-bg); border-radius: 8px; padding: 6px 10px; margin: 0 0 6px; }
+  .f.txt { font-family: 'Nunito Sans', Arial, sans-serif; font-size: 15px; }
+  .f small { font-weight: 500; font-size: 12.5px; color: var(--soft); margin-left: 6px; }
+  .where, .when { margin: 0 0 6px; font-size: 13px; }
+  .when b, .where b { color: var(--soft); }
+  .exs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0 0 6px; }
+  .exs.one { grid-template-columns: 1fr; }
+  @media (max-width: 620px) { .exs { grid-template-columns: 1fr; } }
+  .ex { border-radius: 8px; padding: 7px 10px; font-size: 13px; }
+  .ex.book { background: var(--book-bg); }
+  .ex.mine { background: var(--mine-bg); }
+  .ex .src { display: block; font-size: 11px; font-weight: 800; letter-spacing: .03em; margin-bottom: 3px; }
+  .ex.book .src { color: var(--book); }
+  .ex.mine .src { color: var(--mine); }
+  .ex .q { margin: 0 0 3px; }
+  .ex ol { margin: 0; padding-left: 20px; font-size: 13.5px; font-variant-numeric: tabular-nums; }
+  .ex ol li { margin: 1px 0; }
+  .ex .ans { margin: 3px 0 0; font-weight: 700; }
+  .err { margin: 0; font-size: 13px; background: var(--err-bg); border-radius: 8px; padding: 6px 10px; }
+  .err b { color: var(--err); }
+  table.rules { width: 100%; border-collapse: collapse; font-size: 13px; margin: 0 0 6px; }
+  table.rules th, table.rules td { border: 1px solid var(--line); padding: 4px 7px; text-align: left; vertical-align: top; }
+  table.rules th { background: var(--accent-bg); color: var(--accent); font-size: 12px; }
+  table.rules td.m { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; white-space: nowrap; }
+  footer { margin-top: 14px; padding-top: 8px; border-top: 1px dashed var(--line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 11.5px; color: var(--faint); }
+  footer a { color: var(--faint); }
+  @media print {
+    @page { size: A4; margin: 10mm; }
+    body { background: #fff !important; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+    .sheet { zoom: 1.0; max-width: none; padding: 0; }
+    .noprint { display: none !important; }
+  }
+
+
+
+  .blk h2 small.par { margin-left: auto; font-family: 'Nunito Sans', sans-serif; font-size: 11px; font-weight: 800; color: var(--accent); background: var(--accent-bg); border-radius: 999px; padding: 1px 8px; }
+
+  h3.part { font-family: 'Baloo 2', sans-serif; font-size: 16px; color: var(--accent); margin: 10px 0 6px; border-bottom: 2px solid var(--accent-bg); }
+  .task { display: flex; gap: 10px; margin: 0 0 9px; break-inside: avoid; }
+  .task .tn { flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .task p { margin: 0 0 5px; font-size: 14.5px; }
+  .line { display: inline-block; min-width: 260px; border-bottom: 1px solid var(--ink); height: 1em; vertical-align: bottom; }
+  .line.s { min-width: 90px; }
+  .score { margin-top: 12px; font-weight: 800; text-align: right; }
+  h2.h2p { font-family: 'Baloo 2', sans-serif; font-size: 22px; margin: 2px 0 4px; }
+  table.ans { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 12px; }
+  table.ans th, table.ans td { border: 1px solid var(--line); padding: 4px 7px; vertical-align: top; text-align: left; }
+  table.ans th { background: var(--accent-bg); color: var(--accent); font-size: 12px; }
+  table.ans td:first-child { font-weight: 800; text-align: center; }
+  table.ans td:nth-child(3) { white-space: nowrap; text-align: center; }
+  table.ans td:nth-child(4) { font-size: 12px; color: var(--soft); width: 22%; }
+  table.ans tr.sep td { background: var(--paper); font-weight: 800; text-align: left; color: var(--accent); }
+  .tips ul { margin: 0; padding-left: 20px; font-size: 13px; }
+  .tips li { margin: 3px 0; }
+  .page2 { margin-top: 30px; }
+  @media print { .page2 { break-before: page; margin-top: 0; } .sheet { zoom: 1.0; } }
+
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="top">
+    <p class="eyebrow">Математика · 5 класс · Глава 2 · пробный СОР</p>
+    <span class="mark">§10–15 · СОР №2</span>
+  </div>
+  <h1>Пробный СОР №2 «Делимость натуральных чисел»</h1>
+  <p class="lede">Имя: ______________________ &nbsp; Дата: ___________ &nbsp; Решай в тетради, ответ запиши на строчке.</p>
+
+  <h3 class="part">Часть 1 — как в настоящем СОР · 20 минут · 11 баллов</h3>
+
+  <div class="task"><span class="tn">1</span><div>
+    <p>а) Запишите первые пять чисел, кратных числу 9. <span class="line"></span></p>
+    <p>б) Запишите первые пять чисел, кратных числу 12. <span class="line"></span></p>
+    <p>в) Найдите наименьшее общее кратное чисел 9 и 12. &nbsp;НОК(9; 12) = <span class="line s"></span></p>
+  </div></div>
+
+  <div class="task"><span class="tn">2</span><div>
+    <p>а) Запишите все делители числа 24. <span class="line"></span></p>
+    <p>б) Запишите все делители числа 36. <span class="line"></span></p>
+    <p>в) Найдите наибольший общий делитель чисел 24 и 36. &nbsp;НОД(24; 36) = <span class="line s"></span></p>
+  </div></div>
+
+  <div class="task"><span class="tn">3</span><div>
+    <p>а) Разложите число 540 на простые множители. &nbsp;540 = <span class="line"></span></p>
+    <p>б) Замените одинаковые множители степенью. &nbsp;540 = <span class="line"></span></p>
+  </div></div>
+
+  <div class="task"><span class="tn">4</span><div>
+    <p>При каких значениях цифры * число <b>7214*</b> делится:</p>
+    <p>а) на 2? <span class="line s"></span> &nbsp; б) на 3? <span class="line s"></span> &nbsp; в) на 6? <span class="line s"></span></p>
+  </div></div>
+
+  <h3 class="part">Часть 2 — что ещё может попасться (по учебнику) · 11 баллов</h3>
+
+  <div class="task"><span class="tn">5</span><div>
+    <p>Какие пары чисел взаимно простые? Обведите. &nbsp; а) 8 и 15 &nbsp; б) 14 и 21 &nbsp; в) 9 и 10 &nbsp; г) 12 и 26</p>
+    <p>Для взаимно простых пар найдите НОК. <span class="line"></span></p>
+  </div></div>
+
+  <div class="task"><span class="tn">6</span><div>
+    <p>Разложите числа 60 и 84 на простые множители и найдите НОД(60; 84) и НОК(60; 84).</p>
+    <p>НОД = <span class="line s"></span> &nbsp; НОК = <span class="line s"></span></p>
+  </div></div>
+
+  <div class="task"><span class="tn">7</span><div>
+    <p>Из 36 яблок и 54 мандаринов собрали одинаковые подарки, всё разложили без остатка. Какое <b>наибольшее</b> число подарков можно собрать? Сколько яблок и сколько мандаринов в каждом?</p>
+    <p>Ответ: <span class="line"></span></p>
+  </div></div>
+
+  <div class="task"><span class="tn">8</span><div>
+    <p>Два автобуса вместе отошли от остановки в 8:00. Первый возвращается на неё каждые 15 минут, второй — каждые 20 минут. В котором часу они снова будут на остановке вместе?</p>
+    <p>Ответ: <span class="line"></span></p>
+  </div></div>
+
+  <div class="task"><span class="tn">9</span><div>
+    <p>Найдите НОК(4; 6; 10) = <span class="line s"></span></p>
+  </div></div>
+
+  <div class="task"><span class="tn">10</span><div>
+    <p>Найдите устно: &nbsp; НОД(13; 52) = <span class="line s"></span> &nbsp; НОК(13; 52) = <span class="line s"></span></p>
+  </div></div>
+
+  <p class="score">Часть 1: ____ из 11 &nbsp;·&nbsp; Часть 2: ____ из 11</p>
+</div>
+
+<div class="sheet page2">
+  <div class="top">
+    <p class="eyebrow">Для мамы · ответы и баллы · не показывать ребёнку до проверки</p>
+    <span class="mark">§10–15 · СОР №2</span>
+  </div>
+  <h2 class="h2p">Ответы с решением</h2>
+  <p class="lede">Баллы — как в критериях настоящего СОР: 1 балл за каждый верный шаг. «Блок N» — где правило на листе «Делимость — правила для мамы».</p>
+
+  <table class="ans">
+  <tr><th>№</th><th>Ответ и решение</th><th>Баллы</th><th>Если ошибка</th></tr>
+  <tr class="sep"><td colspan="4">Часть 1</td></tr>
+  <tr><td>1</td><td>а) 9, 18, 27, 36, 45 &nbsp; б) 12, 24, 36, 48, 60 &nbsp; в) первое общее число — <b>НОК = 36</b></td><td>1+1+1</td><td>блоки 1, 8</td></tr>
+  <tr><td>2</td><td>а) 1, 2, 3, 4, 6, 8, 12, 24 (пары 1·24, 2·12, 3·8, 4·6) <br>б) 1, 2, 3, 4, 6, 9, 12, 18, 36 (пары 1·36, 2·18, 3·12, 4·9, 6·6) <br>в) общие 1, 2, 3, 4, 6, 12 → <b>НОД = 12</b></td><td>1+1+1</td><td>блоки 1, 7 — проверьте, не пропущены ли 1 и само число</td></tr>
+  <tr><td>3</td><td>540 : 2 = 270 : 2 = 135 : 3 = 45 : 3 = 15 : 3 = 5 : 5 = 1 <br>а) <b>540 = 2 · 2 · 3 · 3 · 3 · 5</b> &nbsp; б) <b>540 = 2² · 3³ · 5</b></td><td>1+1</td><td>блоки 5, 6</td></tr>
+  <tr><td>4</td><td>а) * = 0, 2, 4, 6, 8 <br>б) сумма цифр 7+2+1+4 = 14; 14 + * делится на 3 → * = 1, 4, 7 (15, 18, 21) <br>в) есть в обоих списках → <b>* = 4</b> (72 144)</td><td>1+1+1</td><td>блок 4: на 6 = и на 2, и на 3</td></tr>
+  <tr class="sep"><td colspan="4">Часть 2</td></tr>
+  <tr><td>5</td><td>Взаимно простые: <b>а) 8 и 15, в) 9 и 10</b>. (б: обе делятся на 7; г: обе на 2) <br>НОК(8; 15) = 8 · 15 = <b>120</b>; НОК(9; 10) = <b>90</b></td><td>1+1</td><td>блок 9</td></tr>
+  <tr><td>6</td><td>60 = 2² · 3 · 5; &nbsp; 84 = 2² · 3 · 7 <br>НОД = 2² · 3 = <b>12</b>; &nbsp; НОК = 2² · 3 · 5 · 7 = <b>420</b> &nbsp; (проверка: 12 · 420 = 5040 = 60 · 84 ✓)</td><td>1+1+1</td><td>блоки 6, 7, 8</td></tr>
+  <tr><td>7</td><td>«поровну, наибольшее» → НОД(36; 54) = <b>18 подарков</b>; в каждом 36 : 18 = <b>2 яблока</b> и 54 : 18 = <b>3 мандарина</b></td><td>1+1</td><td>блок 10: если вышло 108 — посчитан НОК</td></tr>
+  <tr><td>8</td><td>«снова вместе» → НОК(15; 20) = 60 минут → <b>в 9:00</b></td><td>1+1</td><td>блок 10: если 5 мин — посчитан НОД</td></tr>
+  <tr><td>9</td><td>4 = 2², 6 = 2 · 3, 10 = 2 · 5 → НОК = 2² · 3 · 5 = <b>60</b></td><td>1</td><td>блок 8</td></tr>
+  <tr><td>10</td><td>52 = 13 · 4 делится на 13 → <b>НОД = 13</b>, <b>НОК = 52</b></td><td>1</td><td>блок 9</td></tr>
+  </table>
+
+  <div class="blk tips"><h2><span class="n">!</span>Как провести</h2>
+  <ul>
+    <li><b>Часть 1</b> — засеките 20 минут, как на настоящем СОР. 9–11 баллов — готов, 6–8 — повторить блоки с ошибками, меньше 6 — разобрать лист правил вместе и решить ещё раз через день.</li>
+    <li><b>Часть 2</b> — без времени. Это задания по типам из учебника (упр. 236, 238, 242–247), которые учитель может добавить.</li>
+    <li>Самая частая беда этой темы — <b>путать НОД и НОК</b>. Спросите: «Ответ должен быть больше чисел или меньше?» НОД ≤ меньшего числа, НОК ≥ большего.</li>
+  </ul></div>
+
+  <footer><span>Математика 5 · Глава 2 · все числа в заданиях свои (✏️), с упражнениями учебника не совпадают</span><span class="noprint"><a href="razdel_delimost_pravila.html">правила для мамы →</a> · <a href="../../index.html">на главную</a></span></footer>
+</div>
+
+</body>
+</html>

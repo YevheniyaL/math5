@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Математика · §29–30 · правила для мамы</title>
+<link rel="icon" href="data:image/svg+xml,<svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22><text%20y=%22.9em%22%20font-size=%2290%22>📐</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700&family=Nunito+Sans:wght@400;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f5fb; --raised: #ffffff; --ink: #232a4d; --soft: #565f86; --faint: #8990b8;
+    --line: #d8dcf0; --accent: #3a4fa0; --accent-bg: #e4e8f9;
+    --book: #2f7d6f; --book-bg: #dcf2ee; --mine: #9a6417; --mine-bg: #faedd6;
+    --err: #b8453b; --err-bg: #fae2df;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1a1f36; --raised: #242a47; --ink: #eef0fb; --soft: #aab1d8; --faint: #7981ac;
+      --line: #363d5e; --accent: #8fa3ea; --accent-bg: #2a3364;
+      --book: #5fd0bd; --book-bg: #1f3c37; --mine: #f0c463; --mine-bg: #3d3320;
+      --err: #ea9184; --err-bg: #3d2925;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1a1f36; --raised: #242a47; --ink: #eef0fb; --soft: #aab1d8; --faint: #7981ac;
+    --line: #363d5e; --accent: #8fa3ea; --accent-bg: #2a3364;
+    --book: #5fd0bd; --book-bg: #1f3c37; --mine: #f0c463; --mine-bg: #3d3320;
+    --err: #ea9184; --err-bg: #3d2925;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: 'Nunito Sans', Arial, sans-serif; font-size: 14px; line-height: 1.4; }
+  .sheet { max-width: 780px; margin: 0 auto; padding: 24px 16px 36px; }
+  .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 4px; }
+  .eyebrow { font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0; }
+  .mark { font-size: 12px; font-weight: 800; color: var(--accent); background: var(--accent-bg); border-radius: 999px; padding: 3px 10px; white-space: nowrap; }
+  h1 { font-family: 'Baloo 2', 'Nunito Sans', sans-serif; font-size: 26px; line-height: 1.1; margin: 2px 0 4px; }
+  .lede { color: var(--soft); margin: 0 0 14px; font-size: 13px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: var(--soft); margin: 0 0 14px; }
+  .blk { background: var(--raised); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; break-inside: avoid; }
+  .blk h2 { font-family: 'Baloo 2', 'Nunito Sans', sans-serif; font-size: 17px; margin: 0 0 6px; display: flex; gap: 8px; align-items: baseline; }
+  .blk h2 .n { color: var(--accent); }
+  .f { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 16px; color: var(--accent); background: var(--accent-bg); border-radius: 8px; padding: 6px 10px; margin: 0 0 6px; }
+  .f.txt { font-family: 'Nunito Sans', Arial, sans-serif; font-size: 15px; }
+  .f small { font-weight: 500; font-size: 12.5px; color: var(--soft); margin-left: 6px; }
+  .where, .when { margin: 0 0 6px; font-size: 13px; }
+  .when b, .where b { color: var(--soft); }
+  .exs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0 0 6px; }
+  .exs.one { grid-template-columns: 1fr; }
+  @media (max-width: 620px) { .exs { grid-template-columns: 1fr; } }
+  .ex { border-radius: 8px; padding: 7px 10px; font-size: 13px; }
+  .ex.book { background: var(--book-bg); }
+  .ex.mine { background: var(--mine-bg); }
+  .ex .src { display: block; font-size: 11px; font-weight: 800; letter-spacing: .03em; margin-bottom: 3px; }
+  .ex.book .src { color: var(--book); }
+  .ex.mine .src { color: var(--mine); }
+  .ex .q { margin: 0 0 3px; }
+  .ex ol { margin: 0; padding-left: 20px; font-size: 13.5px; font-variant-numeric: tabular-nums; }
+  .ex ol li { margin: 1px 0; }
+  .ex .ans { margin: 3px 0 0; font-weight: 700; }
+  .err { margin: 0; font-size: 13px; background: var(--err-bg); border-radius: 8px; padding: 6px 10px; }
+  .err b { color: var(--err); }
+  table.rules { width: 100%; border-collapse: collapse; font-size: 13px; margin: 0 0 6px; }
+  table.rules th, table.rules td { border: 1px solid var(--line); padding: 4px 7px; text-align: left; vertical-align: top; }
+  table.rules th { background: var(--accent-bg); color: var(--accent); font-size: 12px; }
+  table.rules td.m { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; white-space: nowrap; }
+  footer { margin-top: 14px; padding-top: 8px; border-top: 1px dashed var(--line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 11.5px; color: var(--faint); }
+  footer a { color: var(--faint); }
+  @media print {
+    @page { size: A4; margin: 10mm; }
+    body { background: #fff !important; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+    .sheet { zoom: 1.0; max-width: none; padding: 0; }
+    .noprint { display: none !important; }
+  }
+
+
+
+  .blk h2 small.par { margin-left: auto; font-family: 'Nunito Sans', sans-serif; font-size: 11px; font-weight: 800; color: var(--accent); background: var(--accent-bg); border-radius: 999px; padding: 1px 8px; }
+
+  .cols { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 6px; }
+  .col-txt { flex: 1; }
+  table.stolb { border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 700; }
+  table.stolb td { padding: 1px 10px; text-align: right; }
+  table.stolb td:first-child { border-right: 2px solid var(--accent); }
+  table.stolb td:last-child { color: var(--accent); text-align: left; }
+  ol.steps { margin: 0 0 6px; padding-left: 20px; font-size: 13px; }
+  @media print { .sheet { zoom: 0.85; } .pb { break-before: page; } .blk { margin-bottom: 8px; padding: 9px 12px; } .lede { margin-bottom: 8px; } }
+
+  svg.ray { display: block; width: 330px; height: 50px; color: var(--ink); }
+  svg.ray text { font-family: 'Nunito Sans', Arial, sans-serif; font-size: 13px; font-weight: 800; fill: currentColor; }
+  svg.ray .pt { fill: var(--accent); }
+  .rays > div { display: flex; align-items: center; gap: 10px; margin: 2px 0; }
+  .rays.two { display: flex; gap: 24px; flex-wrap: wrap; }
+  .rays .rl { font-weight: 800; width: 18px; }
+  .rays .ra { font-size: 14px; white-space: nowrap; }
+  .col-ray { flex: none; padding-top: 6px; }
+  .line.xs { min-width: 50px; }
+
+  .fr { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; line-height: 1.08; margin: 0 2px; font-size: 0.92em; }
+  .fr > .nu { border-bottom: 1.4px solid currentColor; padding: 0 3px; }
+  .fr > .de { padding: 0 3px; }
+  .mx { white-space: nowrap; }
+  .f .fr { font-size: 0.85em; }
+  p.big { font-size: 15.5px; line-height: 2.1; }
+  table.ans td { line-height: 1.9; }
+  table.rules td { line-height: 1.8; }
+  .ex .q, .ex ol li, .ex .ans { line-height: 1.9; }
+
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="top">
+    <p class="eyebrow">Математика · 5 класс · Глава 4 · правила для мамы</p>
+    <span class="mark">§29–30 · к СОР «Текстовые задачи»</span>
+  </div>
+  <h1>Текстовые задачи с дробями — всё, что нужно к СОР</h1>
+  <p class="lede">Лист для взрослого: правило простыми словами → пример по шагам → где ребёнок обычно ошибается. Номера блоков совпадают с «бл. N» в пробном СОР и листах повторения. Без действий с дробями из главы 3 эти задачи не решить — они в блоке 1.</p>
+  <p class="legend"><span>📖 — пример из учебника (страница сверена)</span><span>✏️ — пример придуман для этого листа</span><span>⚠ — частая ошибка</span></p>
+
+<section class="blk"><h2><span class="n">1</span>Инструменты из главы 3 <small class="par">§21–27</small></h2>
+<table class="rules">
+<tr><th>Действие</th><th>Как</th><th>✏️ пример</th></tr>
+<tr><td>число × дробь</td><td>число : знаменатель · числитель</td><td>24 · <span class="fr"><span class="nu">3</span><span class="de">4</span></span> = 24 : 4 · 3 = 18</td></tr>
+<tr><td>число : дробь</td><td>умножить на <b>перевёрнутую</b> дробь</td><td>18 : <span class="fr"><span class="nu">3</span><span class="de">4</span></span> = 18 · <span class="fr"><span class="nu">4</span><span class="de">3</span></span> = 18 : 3 · 4 = 24</td></tr>
+<tr><td>сложить дроби</td><td>к общему знаменателю (НОК), сложить числители</td><td><span class="fr"><span class="nu">1</span><span class="de">4</span></span> + <span class="fr"><span class="nu">1</span><span class="de">6</span></span> = <span class="fr"><span class="nu">3</span><span class="de">12</span></span> + <span class="fr"><span class="nu">2</span><span class="de">12</span></span> = <span class="fr"><span class="nu">5</span><span class="de">12</span></span></td></tr>
+<tr><td>«сколько осталось» от целого</td><td>целое = 1 = <span class="fr"><span class="nu">n</span><span class="de">n</span></span></td><td>1 − <span class="fr"><span class="nu">5</span><span class="de">12</span></span> = <span class="fr"><span class="nu">12</span><span class="de">12</span></span> − <span class="fr"><span class="nu">5</span><span class="de">12</span></span> = <span class="fr"><span class="nu">7</span><span class="de">12</span></span></td></tr>
+<tr><td>1 : дробь</td><td>перевернуть дробь</td><td>1 : <span class="fr"><span class="nu">5</span><span class="de">12</span></span> = <span class="fr"><span class="nu">12</span><span class="de">5</span></span> = <span class="mx">2<span class="fr"><span class="nu">2</span><span class="de">5</span></span></span></td></tr>
+</table>
+</section>
+
+<section class="blk"><h2><span class="n">2</span>Дробь от числа — <b>умножаем</b> <small class="par">§29</small></h2>
+<div class="f txt"><span class="fr"><span class="nu">m</span><span class="de">n</span></span> от числа A = A · <span class="fr"><span class="nu">m</span><span class="de">n</span></span> = A : n · m &nbsp;<small>(делим на знаменатель — нашли одну часть, умножаем на числитель)</small></div>
+<div class="exs">
+<div class="ex book"><span class="src">📖 стр. 4</span><p class="q">Урок 45 мин, самостоятельная — <span class="fr"><span class="nu">4</span><span class="de">9</span></span> урока</p><ol><li>45 : 9 = 5 мин — одна девятая</li><li>5 · 4 = 20</li></ol><p class="ans">20 мин</p></div>
+<div class="ex mine"><span class="src">✏️ «Сколько осталось?» — ещё один шаг</span><p class="q">40 конфет, <span class="fr"><span class="nu">3</span><span class="de">8</span></span> съели. Сколько осталось?</p><ol><li>съели 40 : 8 · 3 = 15</li><li>осталось 40 − 15 = 25</li></ol><p class="ans">25 конфет</p></div>
+</div>
+<p class="err"><b>⚠</b> Ответить «15» — на вопрос «сколько осталось» нужен ещё шаг вычитания. Это отдельный балл в СОР.</p>
+</section>
+
+<section class="blk"><h2><span class="n">3</span>Число по его дроби — <b>делим</b> <small class="par">§29</small></h2>
+<div class="f txt">если <span class="fr"><span class="nu">m</span><span class="de">n</span></span> числа равны B, то число = B : <span class="fr"><span class="nu">m</span><span class="de">n</span></span> = B : m · n</div>
+<div class="exs">
+<div class="ex book"><span class="src">📖 стр. 4</span><p class="q">Жук 3 см — это <span class="fr"><span class="nu">3</span><span class="de">4</span></span> длины кузнечика</p><ol><li>3 : 3 = 1 см — одна четверть</li><li>1 · 4 = 4</li></ol><p class="ans">4 см</p></div>
+<div class="ex mine"><span class="src">✏️</span><p class="q">Прочитали 36 страниц — это <span class="fr"><span class="nu">2</span><span class="de">5</span></span> книги</p><ol><li>36 : 2 = 18 — одна пятая</li><li>18 · 5 = 90</li></ol><p class="ans">90 страниц</p></div>
+</div>
+<p class="err"><b>⚠</b> Умножить вместо деления: 36 · <span class="fr"><span class="nu">2</span><span class="de">5</span></span> ≈ 14 — получилось <b>меньше</b> части, а целое всегда больше своей части. Это лучшая проверка.</p>
+</section>
+
+<section class="blk"><h2><span class="n">4</span>Как понять, умножать или делить <small class="par">§29</small></h2>
+<table class="rules">
+<tr><th>Что известно</th><th>Что ищем</th><th>Действие</th><th>Подсказка в тексте</th></tr>
+<tr><td><b>всё целое</b> и дробь</td><td>часть</td><td><b>×</b> дробь</td><td>«<span class="fr"><span class="nu">3</span><span class="de">8</span></span> <b>от</b> 40», «из них <span class="fr"><span class="nu">3</span><span class="de">8</span></span>»</td></tr>
+<tr><td><b>часть</b> и какая это дробь</td><td>целое</td><td><b>:</b> дробь</td><td>«36 страниц, <b>что составляет</b> <span class="fr"><span class="nu">2</span><span class="de">5</span></span> книги»</td></tr>
+</table>
+</section>
+
+<section class="blk pb"><h2><span class="n">5</span>Две траты — сколько осталось (задание 3 СОР) <small class="par">§29</small></h2>
+<div class="exs">
+<div class="ex mine"><span class="src">✏️ Способ СОР — через дроби</span><p class="q">1200 тг: <span class="fr"><span class="nu">1</span><span class="de">4</span></span> на тетради, <span class="fr"><span class="nu">1</span><span class="de">3</span></span> на книгу. Сколько осталось?</p><ol><li>потратили: <span class="fr"><span class="nu">1</span><span class="de">4</span></span> + <span class="fr"><span class="nu">1</span><span class="de">3</span></span> = <span class="fr"><span class="nu">3</span><span class="de">12</span></span> + <span class="fr"><span class="nu">4</span><span class="de">12</span></span> = <span class="fr"><span class="nu">7</span><span class="de">12</span></span></li><li>осталось: 1 − <span class="fr"><span class="nu">7</span><span class="de">12</span></span> = <span class="fr"><span class="nu">5</span><span class="de">12</span></span></li><li>1200 : 12 · 5 = 500</li></ol><p class="ans">500 тг</p></div>
+<div class="ex mine"><span class="src">✏️ Проверка — через деньги</span><ol><li>тетради: 1200 : 4 = 300</li><li>книга: 1200 : 3 = 400</li><li>1200 − 300 − 400 = 500 ✓</li></ol></div>
+</div>
+<p class="err"><b>⚠ «От всего» или «от остатка»?</b> «Потом <span class="fr"><span class="nu">1</span><span class="de">3</span></span> <b>оставшихся</b>» — дробь берут от того, что осталось после первого шага, а не от целого. Тогда считают по шагам, деньгами.</p>
+</section>
+
+<section class="blk"><h2><span class="n">6</span>Совместная работа (задание 4 СОР) <small class="par">§30</small></h2>
+<div class="f txt">вся работа = <b>1</b> &nbsp;→&nbsp; за 1 час = 1 : время &nbsp;→&nbsp; сложить &nbsp;→&nbsp; время вместе = 1 : сумма</div>
+<div class="exs">
+<div class="ex book"><span class="src">📖 Бассейн, стр. 8</span><p class="q">Первая труба — 3 ч, вторая — 2 ч. Вместе?</p><ol><li>за 1 ч: <span class="fr"><span class="nu">1</span><span class="de">3</span></span> и <span class="fr"><span class="nu">1</span><span class="de">2</span></span> бассейна</li><li>вместе за 1 ч: <span class="fr"><span class="nu">2</span><span class="de">6</span></span> + <span class="fr"><span class="nu">3</span><span class="de">6</span></span> = <span class="fr"><span class="nu">5</span><span class="de">6</span></span></li><li>1 : <span class="fr"><span class="nu">5</span><span class="de">6</span></span> = <span class="fr"><span class="nu">6</span><span class="de">5</span></span> = <span class="mx">1<span class="fr"><span class="nu">1</span><span class="de">5</span></span></span></li></ol><p class="ans"><span class="mx">1<span class="fr"><span class="nu">1</span><span class="de">5</span></span></span> ч (1 ч 12 мин)</p></div>
+<div class="ex mine"><span class="src">✏️ «Вторая на … медленнее» — как в СОР</span><p class="q">Первая бригада — 4 ч, вторая на 4 ч медленнее. Вместе?</p><ol><li>вторая: 4 + 4 = 8 ч</li><li>за 1 ч: <span class="fr"><span class="nu">1</span><span class="de">4</span></span> и <span class="fr"><span class="nu">1</span><span class="de">8</span></span></li><li>вместе: <span class="fr"><span class="nu">2</span><span class="de">8</span></span> + <span class="fr"><span class="nu">1</span><span class="de">8</span></span> = <span class="fr"><span class="nu">3</span><span class="de">8</span></span></li><li>1 : <span class="fr"><span class="nu">3</span><span class="de">8</span></span> = <span class="fr"><span class="nu">8</span><span class="de">3</span></span> = <span class="mx">2<span class="fr"><span class="nu">2</span><span class="de">3</span></span></span></li></ol><p class="ans"><span class="mx">2<span class="fr"><span class="nu">2</span><span class="de">3</span></span></span> ч (2 ч 40 мин)</p></div>
+</div>
+<p class="err"><b>⚠</b> Сложить время (3 + 2 = 5 ч) — <b>неверно</b>: вдвоём быстрее, чем самый быстрый в одиночку. Проверка: ответ меньше меньшего времени. «Медленнее» — значит времени <b>больше</b>; «быстрее» — меньше.</p>
+</section>
+
+<section class="blk"><h2><span class="n">7</span>Встречное движение — так же <small class="par">§30</small></h2>
+<div class="exs one"><div class="ex book"><span class="src">📖 Мотоциклисты, стр. 9</span><p class="q">Один проезжает путь между сёлами за 45 мин, другой — за 36 мин. Через сколько встретятся, выехав навстречу?</p><ol><li>весь путь = 1; за 1 мин: <span class="fr"><span class="nu">1</span><span class="de">45</span></span> и <span class="fr"><span class="nu">1</span><span class="de">36</span></span> пути</li><li>сближаются за 1 мин на <span class="fr"><span class="nu">4</span><span class="de">180</span></span> + <span class="fr"><span class="nu">5</span><span class="de">180</span></span> = <span class="fr"><span class="nu">9</span><span class="de">180</span></span> = <span class="fr"><span class="nu">1</span><span class="de">20</span></span> пути</li><li>1 : <span class="fr"><span class="nu">1</span><span class="de">20</span></span> = 20</li></ol><p class="ans">через 20 мин</p></div></div>
+</section>
+
+<section class="blk"><h2><span class="n">8</span>Шпаргалка: какой тип задачи</h2>
+<table class="rules">
+<tr><th>Слова в задаче</th><th>Что делать</th></tr>
+<tr><td>«<span class="fr"><span class="nu">m</span><span class="de">n</span></span> от …», «из них <span class="fr"><span class="nu">m</span><span class="de">n</span></span>»</td><td>умножить на дробь (бл. 2)</td></tr>
+<tr><td>«…, что составляет <span class="fr"><span class="nu">m</span><span class="de">n</span></span> …», «это <span class="fr"><span class="nu">m</span><span class="de">n</span></span> всего»</td><td>разделить на дробь (бл. 3)</td></tr>
+<tr><td>две части от одного целого, «сколько осталось»</td><td>сложить дроби, 1 − сумма, взять от целого (бл. 5)</td></tr>
+<tr><td>«…от оставшихся»</td><td>по шагам, каждый раз от нового остатка (бл. 5)</td></tr>
+<tr><td>«за сколько выполнят вместе», «через сколько встретятся», объём не дан</td><td>работа = 1, производительности сложить (бл. 6, 7)</td></tr>
+</table>
+</section>
+
+  <footer><span>Математика 5 · Глава 4 «Текстовые задачи», §29–30, стр. 4–10 (часть 2)</span><span class="noprint"><a href="sor_zadachi_probny.html">пробный СОР →</a> · <a href="../../index.html">на главную</a></span></footer>
+</div>
+
+</body>
+</html>

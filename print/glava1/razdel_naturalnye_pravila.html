@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Математика · §1–9 · правила для мамы</title>
+<link rel="icon" href="data:image/svg+xml,<svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22><text%20y=%22.9em%22%20font-size=%2290%22>📐</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700&family=Nunito+Sans:wght@400;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f5fb; --raised: #ffffff; --ink: #232a4d; --soft: #565f86; --faint: #8990b8;
+    --line: #d8dcf0; --accent: #3a4fa0; --accent-bg: #e4e8f9;
+    --book: #2f7d6f; --book-bg: #dcf2ee; --mine: #9a6417; --mine-bg: #faedd6;
+    --err: #b8453b; --err-bg: #fae2df;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1a1f36; --raised: #242a47; --ink: #eef0fb; --soft: #aab1d8; --faint: #7981ac;
+      --line: #363d5e; --accent: #8fa3ea; --accent-bg: #2a3364;
+      --book: #5fd0bd; --book-bg: #1f3c37; --mine: #f0c463; --mine-bg: #3d3320;
+      --err: #ea9184; --err-bg: #3d2925;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1a1f36; --raised: #242a47; --ink: #eef0fb; --soft: #aab1d8; --faint: #7981ac;
+    --line: #363d5e; --accent: #8fa3ea; --accent-bg: #2a3364;
+    --book: #5fd0bd; --book-bg: #1f3c37; --mine: #f0c463; --mine-bg: #3d3320;
+    --err: #ea9184; --err-bg: #3d2925;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: 'Nunito Sans', Arial, sans-serif; font-size: 14px; line-height: 1.4; }
+  .sheet { max-width: 780px; margin: 0 auto; padding: 24px 16px 36px; }
+  .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 4px; }
+  .eyebrow { font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0; }
+  .mark { font-size: 12px; font-weight: 800; color: var(--accent); background: var(--accent-bg); border-radius: 999px; padding: 3px 10px; white-space: nowrap; }
+  h1 { font-family: 'Baloo 2', 'Nunito Sans', sans-serif; font-size: 26px; line-height: 1.1; margin: 2px 0 4px; }
+  .lede { color: var(--soft); margin: 0 0 14px; font-size: 13px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: var(--soft); margin: 0 0 14px; }
+  .blk { background: var(--raised); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; break-inside: avoid; }
+  .blk h2 { font-family: 'Baloo 2', 'Nunito Sans', sans-serif; font-size: 17px; margin: 0 0 6px; display: flex; gap: 8px; align-items: baseline; }
+  .blk h2 .n { color: var(--accent); }
+  .f { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 16px; color: var(--accent); background: var(--accent-bg); border-radius: 8px; padding: 6px 10px; margin: 0 0 6px; }
+  .f.txt { font-family: 'Nunito Sans', Arial, sans-serif; font-size: 15px; }
+  .f small { font-weight: 500; font-size: 12.5px; color: var(--soft); margin-left: 6px; }
+  .where, .when { margin: 0 0 6px; font-size: 13px; }
+  .when b, .where b { color: var(--soft); }
+  .exs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0 0 6px; }
+  .exs.one { grid-template-columns: 1fr; }
+  @media (max-width: 620px) { .exs { grid-template-columns: 1fr; } }
+  .ex { border-radius: 8px; padding: 7px 10px; font-size: 13px; }
+  .ex.book { background: var(--book-bg); }
+  .ex.mine { background: var(--mine-bg); }
+  .ex .src { display: block; font-size: 11px; font-weight: 800; letter-spacing: .03em; margin-bottom: 3px; }
+  .ex.book .src { color: var(--book); }
+  .ex.mine .src { color: var(--mine); }
+  .ex .q { margin: 0 0 3px; }
+  .ex ol { margin: 0; padding-left: 20px; font-size: 13.5px; font-variant-numeric: tabular-nums; }
+  .ex ol li { margin: 1px 0; }
+  .ex .ans { margin: 3px 0 0; font-weight: 700; }
+  .err { margin: 0; font-size: 13px; background: var(--err-bg); border-radius: 8px; padding: 6px 10px; }
+  .err b { color: var(--err); }
+  table.rules { width: 100%; border-collapse: collapse; font-size: 13px; margin: 0 0 6px; }
+  table.rules th, table.rules td { border: 1px solid var(--line); padding: 4px 7px; text-align: left; vertical-align: top; }
+  table.rules th { background: var(--accent-bg); color: var(--accent); font-size: 12px; }
+  table.rules td.m { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; white-space: nowrap; }
+  footer { margin-top: 14px; padding-top: 8px; border-top: 1px dashed var(--line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 11.5px; color: var(--faint); }
+  footer a { color: var(--faint); }
+  @media print {
+    @page { size: A4; margin: 10mm; }
+    body { background: #fff !important; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+    .sheet { zoom: 1.0; max-width: none; padding: 0; }
+    .noprint { display: none !important; }
+  }
+
+
+
+  .blk h2 small.par { margin-left: auto; font-family: 'Nunito Sans', sans-serif; font-size: 11px; font-weight: 800; color: var(--accent); background: var(--accent-bg); border-radius: 999px; padding: 1px 8px; }
+
+  .cols { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 6px; }
+  .col-txt { flex: 1; }
+  table.stolb { border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 700; }
+  table.stolb td { padding: 1px 10px; text-align: right; }
+  table.stolb td:first-child { border-right: 2px solid var(--accent); }
+  table.stolb td:last-child { color: var(--accent); text-align: left; }
+  ol.steps { margin: 0 0 6px; padding-left: 20px; font-size: 13px; }
+  @media print { .sheet { zoom: 0.8; } .pb { break-before: page; } .blk { margin-bottom: 8px; padding: 9px 12px; } .lede { margin-bottom: 8px; } }
+
+  svg.ray { display: block; width: 330px; height: 50px; color: var(--ink); }
+  svg.ray text { font-family: 'Nunito Sans', Arial, sans-serif; font-size: 13px; font-weight: 800; fill: currentColor; }
+  svg.ray .pt { fill: var(--accent); }
+  .rays > div { display: flex; align-items: center; gap: 10px; margin: 2px 0; }
+  .rays.two { display: flex; gap: 24px; flex-wrap: wrap; }
+  .rays .rl { font-weight: 800; width: 18px; }
+  .rays .ra { font-size: 14px; white-space: nowrap; }
+  .col-ray { flex: none; padding-top: 6px; }
+  .line.xs { min-width: 50px; }
+
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="top">
+    <p class="eyebrow">Математика · 5 класс · Глава 1 · правила для мамы</p>
+    <span class="mark">§1–9 · к СОР №1</span>
+  </div>
+  <h1>Натуральные числа и нуль — всё, что нужно к СОР</h1>
+  <p class="lede">Лист для взрослого: правило простыми словами → пример по шагам → где ребёнок обычно ошибается. Номера блоков совпадают с подсказками «бл. N» в пробном СОР и листах повторения.</p>
+  <p class="legend"><span>📖 — пример из учебника (страница сверена)</span><span>✏️ — пример придуман для этого листа</span><span>⚠ — частая ошибка</span></p>
+
+<section class="blk"><h2><span class="n">1</span>Запись чисел: разряды и классы <small class="par">§1</small></h2>
+<div class="f txt">Цифры делим <b>по три справа налево</b>: единицы · тысячи · миллионы · миллиарды</div>
+<div class="exs">
+<div class="ex book"><span class="src">📖 Разрядные слагаемые, стр. 7</span><p class="q">5307</p><ol><li>5 тысяч, 3 сотни, 0 десятков, 7 единиц</li></ol><p class="ans">5307 = 5·1000 + 3·100 + 0·10 + 7</p></div>
+<div class="ex mine"><span class="src">✏️ Записать цифрами</span><p class="q">«два миллиона тридцать тысяч пять»</p><ol><li>млн: 2 &nbsp;|&nbsp; тыс.: 030 &nbsp;|&nbsp; ед.: 005</li></ol><p class="ans">2 030 005</p></div>
+</div>
+<p class="err"><b>⚠</b> В каждом классе ровно <b>три</b> цифры — пустые места заполняют нулями: «тридцать тысяч» в середине числа — это <b>030</b>, а не 30. Нуль — не натуральное число; наименьшее натуральное — 1.</p>
+</section>
+
+<section class="blk"><h2><span class="n">2</span>Координатный луч — главное задание СОР <small class="par">§2</small></h2>
+<div class="f">цена деления = (правое число − левое число) : число промежутков</div>
+<div class="cols"><div class="col-ray"><svg class="ray" viewBox="0 0 330 50" aria-label="координатный луч от 10 до 30"><line x1="12.0" y1="32.0" x2="322" y2="32.0" stroke="currentColor" stroke-width="1.6"/><path d="M322 32.0 l-9 -4.5 v9 z" fill="currentColor"/><line x1="12.0" y1="26.0" x2="12.0" y2="38.0" stroke="currentColor" stroke-width="1.4"/><line x1="40.8" y1="27.5" x2="40.8" y2="36.5" stroke="currentColor" stroke-width="1.4"/><line x1="69.6" y1="27.5" x2="69.6" y2="36.5" stroke="currentColor" stroke-width="1.4"/><line x1="98.4" y1="27.5" x2="98.4" y2="36.5" stroke="currentColor" stroke-width="1.4"/><line x1="127.2" y1="27.5" x2="127.2" y2="36.5" stroke="currentColor" stroke-width="1.4"/><line x1="156.0" y1="27.5" x2="156.0" y2="36.5" stroke="currentColor" stroke-width="1.4"/><line x1="184.8" y1="27.5" x2="184.8" y2="36.5" stroke="currentColor" stroke-width="1.4"/><line x1="213.6" y1="27.5" x2="213.6" y2="36.5" stroke="currentColor" stroke-width="1.4"/><line x1="242.4" y1="27.5" x2="242.4" y2="36.5" stroke="currentColor" stroke-width="1.4"/><line x1="271.2" y1="27.5" x2="271.2" y2="36.5" stroke="currentColor" stroke-width="1.4"/><line x1="300.0" y1="26.0" x2="300.0" y2="38.0" stroke="currentColor" stroke-width="1.4"/><text x="12.0" y="49.0" text-anchor="middle">10</text><text x="300.0" y="49.0" text-anchor="middle">30</text><text class="pt" x="127.2" y="11" text-anchor="middle">K</text><path class="pt" d="M127.2 29.0 l-4 -7 h8 z"/><line x1="127.2" y1="14" x2="127.2" y2="23.0" stroke="var(--accent)" stroke-width="1.6"/></svg></div>
+<div class="col-txt"><div class="ex mine"><span class="src">✏️ Найти координату K</span><ol><li>от 10 до 30 — 10 промежутков</li><li>цена деления: (30 − 10) : 10 = 2</li><li>K — 4 деления от 10: 10 + 4·2 = 18</li></ol><p class="ans">K(18)</p></div></div></div>
+<p class="err"><b>⚠</b> Считать <b>промежутки</b> между штрихами, а не сами штрихи. Луч может начинаться не с 0 — тогда к ответу прибавляют левое число. Проверка: последний штрих должен дать правое число.</p>
+</section>
+
+<section class="blk"><h2><span class="n">3</span>Сравнение и двойное неравенство <small class="par">§3</small></h2>
+<p class="where">Больше то число, где <b>больше цифр</b>. Цифр поровну — сравниваем <b>слева направо</b> до первой разной цифры. На луче больше то, что правее.</p>
+<div class="exs">
+<div class="ex book"><span class="src">📖 Двойное неравенство, стр. 18</span><p class="q">19 правее 14, но левее 22</p><p class="ans">14 &lt; 19 &lt; 22</p></div>
+<div class="ex mine"><span class="src">✏️ Все натуральные x: 25 &lt; x &lt; 29</span><ol><li>строго больше 25 и строго меньше 29</li></ol><p class="ans">x = 26, 27, 28 (сами 25 и 29 — нет)</p></div>
+</div>
+</section>
+
+<section class="blk"><h2><span class="n">4</span>Порядок действий и счёт в уме <small class="par">§4</small></h2>
+<div class="f txt">1) скобки → 2) × и : слева направо → 3) + и − слева направо</div>
+<div class="exs">
+<div class="ex mine"><span class="src">✏️ Порядок</span><p class="q">60 − 24 : 4 · 3</p><ol><li>24 : 4 = 6, &nbsp;6 · 3 = 18</li><li>60 − 18 = 42</li></ol></div>
+<div class="ex book"><span class="src">📖 Удобные пары 2·5 = 10, 4·25 = 100, 8·125 = 1000, стр. 23</span><p class="q">62 · 5 = 31 · (2 · 5) = 31 · 10 = 310</p></div>
+</div>
+</section>
+
+<section class="blk"><h2><span class="n">5</span>Упрощение выражений: раскрыть скобки, привести подобные <small class="par">§5</small></h2>
+<div class="f">a(b + c) = ab + ac &nbsp;&nbsp; a(b − c) = ab − ac &nbsp;&nbsp; 13k + 7k = 20k <small>📖 стр. 27</small></div>
+<div class="exs one"><div class="ex mine"><span class="src">✏️ Как в СОР: упростить 6(4a + 9) + 3(40 − 5a)</span><ol><li>раскрыть скобки — число перед скобкой умножаем на <b>каждое</b> слагаемое: 24a + 54 + 120 − 15a</li><li>буквы к буквам: 24a − 15a = 9a; &nbsp;числа к числам: 54 + 120 = 174</li></ol><p class="ans">9a + 174</p></div></div>
+<p class="err"><b>⚠</b> Умножить только первое слагаемое: 6(4a + 9) = 24a + 9 — <b>неверно</b>, нужно 24a + 54. Потерять минус: 3(40 − 5a) = 120 <b>−</b> 15a.</p>
+</section>
+
+<section class="blk pb"><h2><span class="n">6</span>Уравнения <small class="par">§6</small></h2>
+<table class="rules">
+<tr><th>Неизвестно</th><th>Как найти</th><th>Неизвестно</th><th>Как найти</th></tr>
+<tr><td>слагаемое</td><td>сумма − другое слагаемое</td><td>множитель</td><td>произведение : другой множитель</td></tr>
+<tr><td>уменьшаемое</td><td>разность + вычитаемое</td><td>делимое</td><td>частное · делитель</td></tr>
+<tr><td>вычитаемое</td><td>уменьшаемое − разность</td><td>делитель</td><td>делимое : частное</td></tr>
+</table>
+<div class="exs">
+<div class="ex mine"><span class="src">✏️ Продолжение блока 5: 6(4a + 9) + 3(40 − 5a) = 228</span><ol><li>упростили: 9a + 174 = 228</li><li>9a — слагаемое: 9a = 228 − 114 = 54</li><li>a — множитель: a = 54 : 9 = 6</li></ol><p class="ans">a = 6</p></div>
+<div class="ex book"><span class="src">📖 В несколько действий, стр. 31</span><p class="q">119 − 119 : x = 102</p><ol><li>119 : x — вычитаемое: 119 − 102 = 17</li><li>x — делитель: 119 : 17 = 7</li></ol><p class="ans">x = 7</p></div>
+</div>
+<p class="err"><b>⚠</b> Снимать действия надо с <b>последнего</b> по порядку. Проверка: подставить корень в исходное уравнение.</p>
+</section>
+
+<section class="blk"><h2><span class="n">7</span>Формулы <small class="par">§7</small></h2>
+<table class="rules">
+<tr><th>Что</th><th>Формула</th><th>Выразить другое</th><th>📖 пример</th></tr>
+<tr><td>Путь</td><td class="m">s = v · t</td><td class="m">v = s : t, &nbsp;t = s : v</td><td class="m">12 км/ч · 2 ч = 24 км, стр. 37</td></tr>
+<tr><td>Площадь прямоугольника</td><td class="m">S = a · b</td><td class="m">a = S : b</td><td class="m">4 · 5 = 20 см², стр. 37</td></tr>
+<tr><td>Периметр треугольника</td><td class="m">P = a + b + c</td><td class="m">a = P − b − c</td><td class="m">3 + 4 + 5 = 12 см, стр. 36</td></tr>
+<tr><td>По течению / против</td><td class="m">v + v<sub>р</sub> &nbsp;/&nbsp; v − v<sub>р</sub></td><td colspan="2">✏️ лодка 10 км/ч, течение 2 км/ч: по течению 12 км/ч, против 8 км/ч</td></tr>
+</table>
+</section>
+
+<section class="blk"><h2><span class="n">8</span>Буквенное выражение по задаче — задание СОР <small class="par">§5, §7</small></h2>
+<table class="rules">
+<tr><th>Слова</th><th>Запись</th><th>Слова</th><th>Запись</th></tr>
+<tr><td>«на m больше, чем n»</td><td class="m">n + m</td><td>«в 3 раза больше n»</td><td class="m">n · 3</td></tr>
+<tr><td>«на m меньше, чем n»</td><td class="m">n − m</td><td>«разделили по 5»</td><td class="m">(всего) : 5</td></tr>
+</table>
+<div class="exs one"><div class="ex mine"><span class="src">✏️ В классе a девочек, мальчиков на b меньше. Сели за парты по 2. Сколько парт?</span><ol><li>мальчики: a − b</li><li>всего: a + (a − b)</li><li>парт: (a + (a − b)) : 2</li><li>при a = 16, b = 4: (16 + 12) : 2 = 28 : 2 = 14</li></ol><p class="ans">14 парт</p></div></div>
+<p class="err"><b>⚠</b> Забывают скобки: a + a − b : 2 — это другое выражение (сначала делится только b). Всё, что делим, — <b>в скобки</b>.</p>
+</section>
+
+<section class="blk"><h2><span class="n">9</span>Текстовые задачи: два приёма <small class="par">§8</small></h2>
+<div class="exs">
+<div class="ex book"><span class="src">📖 «Норма одинаковая», стр. 41</span><p class="q">50 м² — 600 л воды. 70 м² — ?</p><ol><li>600 : 50 = 12 л на 1 м²</li><li>12 · 70 = 840</li></ol><p class="ans">840 л</p></div>
+<div class="ex book"><span class="src">📖 «В несколько раз больше» — частями, стр. 42</span><p class="q">Арбуз + дыня = 8 кг, арбуз в 3 раза тяжелее</p><ol><li>дыня 1 часть, арбуз 3 → всего 4 части</li><li>8 : 4 = 2 кг</li></ol><p class="ans">дыня 2 кг</p></div>
+</div>
+</section>
+
+<section class="blk"><h2><span class="n">10</span>Последовательности <small class="par">§9</small></h2>
+<p class="where">Найди правило: сколько <b>прибавляют</b> (разность соседних) или <b>во сколько раз умножают</b>. ✏️ 4, 9, 14, 19 → +5 → <b>24</b>; &nbsp;3, 6, 12, 24 → ×2 → <b>48</b>; &nbsp;1, 4, 9, 16 — квадраты (1², 2², 3², 4²) → <b>25</b>.</p>
+</section>
+
+  <footer><span>Математика 5 · Глава 1 «Натуральные числа и нуль», стр. 5–49</span><span class="noprint"><a href="sor1_probny.html">пробный СОР №1 →</a> · <a href="../../index.html">на главную</a></span></footer>
+</div>
+
+</body>
+</html>

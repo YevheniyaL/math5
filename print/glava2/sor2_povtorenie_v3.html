@@ -105,6 +105,21 @@
   .task { margin-bottom: 7px; }
   table.ans td:nth-child(3) { white-space: normal; text-align: left; font-size: 12px; color: var(--soft); width: 24%; }
 
+  h3.part .bl { font-family: 'Nunito Sans', sans-serif; }
+  .task p { line-height: 1.55; }
+  table.oral { border-collapse: collapse; margin: 4px 0 2px; font-size: 14.5px; font-weight: 700; }
+  table.oral td { border: 1px solid var(--line); padding: 5px 10px 18px; min-width: 96px; vertical-align: top; }
+
+  .space { height: 120px; margin: 4px 0 6px; border: 1px solid var(--line); border-radius: 6px;
+    background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 18px 18px; }
+  .space.tall { height: 170px; }
+  .space.xl { height: 230px; }
+  .space.short { height: 72px; }
+  table.oral td span { display: block; font-weight: 400; font-size: 13px; color: var(--soft); margin-top: 6px; }
+  table.oral td { padding: 6px 10px 8px; min-width: 130px; }
+  .task { margin-bottom: 12px; }
+
 </style>
 </head>
 <body>
@@ -114,55 +129,82 @@
     <span class="mark">§10–15 · СОР №2</span>
   </div>
   <h1>Повторение, вариант 3: делимость, НОД, НОК</h1>
-  <p class="lede">Решай в тетради, ответ — на строчке. ⭐ — задания как в СОР: если мало времени, сначала их. «бл. N» — где подсмотреть правило на листе правил.</p>
+  <p class="lede">Ответ — на строчке, решение — в клетках под заданием. ⭐ — задания как в СОР. «бл. N» — где подсмотреть правило на листе «правила к СОР №2».</p>
 
   <div class="task"><span class="tn">1</span><div><p>⭐ Первые пять чисел, кратных 11: <span class="line"></span> <span class="bl">бл. 1</span></p></div></div>
   <div class="task"><span class="tn">2</span><div><p>⭐ Все делители числа 32: <span class="line"></span> <span class="bl">бл. 1</span></p></div></div>
   <div class="task"><span class="tn">3</span><div><p>Подчеркни простые числа: &nbsp; 1, &nbsp;5, &nbsp;21, &nbsp;33, &nbsp;43, &nbsp;47, &nbsp;63, &nbsp;71, &nbsp;77, &nbsp;81 <span class="bl">бл. 2</span></p></div></div>
-  <div class="task"><span class="tn">4</span><div><p>⭐ При каких цифрах * число <b>912*</b> делится: &nbsp;а) на 2? <span class="line s"></span> &nbsp;б) на 9? <span class="line s"></span> &nbsp;в) на 6? <span class="line s"></span> <span class="bl">бл. 4</span></p></div></div>
-  <div class="task"><span class="tn">5</span><div><p>Вычисли: 4³ = <span class="line xs"></span> &nbsp; 3⁴ = <span class="line xs"></span> &nbsp; 2⁶ = <span class="line xs"></span> &nbsp; Запиши степенями: 2·2·3·3·3·5 = <span class="line s"></span> <span class="bl">бл. 5</span></p></div></div>
-  <div class="task"><span class="tn">6</span><div><p>⭐ Разложи «столбиком» на простые множители и запиши со степенями: &nbsp;336 = <span class="line"></span> <span class="bl">бл. 6</span></p></div></div>
-  <div class="task"><span class="tn">7</span><div><p>⭐ Выпиши первые пять кратных и все делители чисел 12 и 16. Найди НОК(12; 16) = <span class="line s"></span> &nbsp;НОД(12; 16) = <span class="line s"></span> <span class="bl">бл. 7, 8</span></p></div></div>
-  <div class="task"><span class="tn">8</span><div><p>Разложи 66 и 110 на простые множители. НОД = <span class="line s"></span> &nbsp;НОК = <span class="line s"></span> &nbsp;<b>Проверка</b>: НОД · НОК = 66 · 110? <span class="line s"></span> <span class="bl">бл. 7–9</span></p></div></div>
-  <div class="task"><span class="tn">9</span><div><p>Устно: &nbsp;НОД(7; 20) = <span class="line xs"></span> &nbsp;НОК(7; 20) = <span class="line xs"></span> &nbsp;НОД(15; 60) = <span class="line xs"></span> &nbsp;НОК(15; 60) = <span class="line xs"></span> <span class="bl">бл. 9</span></p></div></div>
-  <div class="task"><span class="tn">10</span><div><p>Взаимно простые или нет? &nbsp;а) 22 и 35 <span class="line xs"></span> &nbsp;б) 26 и 39 <span class="line xs"></span> &nbsp;в) 49 и 50 <span class="line xs"></span> <span class="bl">бл. 9</span></p></div></div>
-  <div class="task"><span class="tn">11</span><div><p>54 карандаша и 72 ластика разложили в одинаковые наборы, всё без остатка. Какое <b>наибольшее</b> число наборов? Сколько карандашей и ластиков в каждом? <span class="bl">бл. 10</span></p><p>Ответ: <span class="line"></span></p></div></div>
-  <div class="task"><span class="tn">12</span><div><p>С остановки в 9:00 одновременно отошли два автобуса. Первый возвращается каждые 10 минут, второй — каждые 25 минут. В котором часу они снова будут на остановке вместе? <span class="bl">бл. 10</span></p><p>Ответ: <span class="line"></span></p></div></div>
-  <div class="task"><span class="tn">13</span><div><p>Найди <b>наименьшее</b> число, которое делится и на 14, и на 21. <span class="line s"></span> <span class="bl">бл. 8, 10</span></p></div></div>
 
-  <p class="score">Верно: ____ из 13</p>
+  <div class="task"><span class="tn">4</span><div>
+    <p><b>Взаимно простые числа</b> <span class="bl">бл. 9</span></p>
+    <p>а) Допиши: числа называются взаимно простыми, если <span class="line"></span></p>
+    <p>б) Взаимно простые или нет (если нет — назови общий делитель)? &nbsp; 22 и 35 <span class="line xs"></span> &nbsp; 26 и 39 <span class="line xs"></span> &nbsp; 49 и 50 <span class="line xs"></span></p>
+    <p>в) Три числа. Найди НОД всех трёх. Взаимно простые ли эти числа? Есть ли среди них пара взаимно простых?</p>
+    <p>&nbsp;&nbsp; 5, 8, 9: <span class="line"></span><br>&nbsp;&nbsp; 8, 12, 20: <span class="line"></span><br>&nbsp;&nbsp; 10, 14, 35: <span class="line"></span></p>
+  </div></div>
+
+  <div class="task"><span class="tn">5</span><div>
+    <p>⭐ При каких цифрах * число <b>912*</b> делится: <span class="bl">бл. 4</span></p>
+    <p>а) на 2? <span class="line s"></span> &nbsp; б) на 5? <span class="line s"></span> &nbsp; в) на 10? <span class="line s"></span><br>г) на 9? <span class="line s"></span> &nbsp; д) на 6? <span class="line s"></span></p>
+  </div></div>
+
+  <div class="task"><span class="tn">6</span><div>
+    <p>⭐ Выпиши первые пять кратных и все делители чисел 12 и 16. Найди НОК и НОД. <b>Сделай проверку: НОД · НОК = 12 · 16?</b> <span class="bl">бл. 7–9</span></p>
+    <div class="space xl"></div>
+    <p>НОК(12; 16) = <span class="line s"></span> &nbsp; НОД(12; 16) = <span class="line s"></span> &nbsp; проверка: <span class="line"></span></p>
+  </div></div>
+
+  <div class="task"><span class="tn">7</span><div>
+    <p>Разложи 66 и 110 на простые множители «столбиком». Найди НОД и НОК. <b>Сделай проверку: НОД · НОК = 66 · 110?</b> <span class="bl">бл. 6–9</span></p>
+    <div class="space tall"></div>
+    <p>НОД = <span class="line s"></span> &nbsp; НОК = <span class="line s"></span> &nbsp; проверка: <span class="line"></span></p>
+  </div></div>
+
+  <div class="task"><span class="tn">8</span><div>
+    <p><b>Посчитай устно — без разложения</b> <span class="bl">бл. 9</span></p>
+    <p>а) Допиши правила: &nbsp; если НОД(a; b) = 1, то НОК(a; b) = <span class="line s"></span><br>&nbsp;&nbsp;&nbsp; если a делится на b, то НОД(a; b) = <span class="line s"></span>, &nbsp;НОК(a; b) = <span class="line s"></span></p>
+    <p>б) Найди НОД и НОК. Сначала реши, какое правило подходит (одна пара — с подвохом):</p>
+    <table class="oral">
+      <tr><td>7 и 20<span>НОД ___ НОК ___</span></td><td>4 и 15<span>НОД ___ НОК ___</span></td><td>11 и 12<span>НОД ___ НОК ___</span></td><td>15 и 60<span>НОД ___ НОК ___</span></td></tr>
+      <tr><td>9 и 27<span>НОД ___ НОК ___</span></td><td>16 и 48<span>НОД ___ НОК ___</span></td><td>6 и 30<span>НОД ___ НОК ___</span></td><td>6 и 15<span>НОД ___ НОК ___</span></td></tr>
+    </table>
+  </div></div>
+
+  <div class="task"><span class="tn">9</span><div><p>54 карандаша и 72 ластика разложили в одинаковые наборы, всё без остатка. Какое <b>наибольшее</b> число наборов? Сколько карандашей и ластиков в каждом? <span class="bl">бл. 10</span></p><div class="space short"></div><p>Ответ: <span class="line"></span></p></div></div>
+  <div class="task"><span class="tn">10</span><div><p>С остановки в 9:00 одновременно отошли два автобуса. Первый возвращается каждые 10 минут, второй — каждые 25 минут. В котором часу они снова будут на остановке вместе? <span class="bl">бл. 10</span></p><div class="space short"></div><p>Ответ: <span class="line"></span></p></div></div>
+  <div class="task"><span class="tn">11</span><div><p>Найди <b>наименьшее</b> число, которое делится и на 14, и на 21. <span class="bl">бл. 8, 10</span></p><div class="space short"></div><p>Ответ: <span class="line s"></span></p></div></div>
+
+  <p class="score">Верно: ____ из 11</p>
 </div>
 
 <div class="sheet page2">
   <div class="top">
-    <p class="eyebrow">Для мамы · ответы · не показывать до проверки</p>
+    <p class="eyebrow">Ответы · не показывать до проверки</p>
     <span class="mark">§10–15 · СОР №2</span>
   </div>
   <h2 class="h2p">Ответы</h2>
-  <p class="lede">«Если ошибка» — какой блок листа правил разобрать ещё раз.</p>
+  <p class="lede">«Если ошибка» — какой блок листа «правила к СОР №2» разобрать ещё раз.</p>
   <table class="ans">
   <tr><th>№</th><th>Ответ и решение</th><th>Если ошибка</th></tr>
   <tr><td>1</td><td>11, 22, 33, 44, 55</td><td>бл. 1</td></tr>
   <tr><td>2</td><td>1, 2, 4, 8, 16, 32 &nbsp;(пары 1·32, 2·16, 4·8)</td><td>бл. 1: не забыть 1 и 32</td></tr>
   <tr><td>3</td><td><b>5, 43, 47, 71</b>. &nbsp;1 — ни простое, ни составное; 21 = 3·7; 33 = 3·11; 63 = 7·9; 77 = 7·11; 81 = 9·9</td><td>бл. 2: 77 и 81 — ловушки</td></tr>
-  <tr><td>4</td><td>а) * = 0, 2, 4, 6, 8 &nbsp; б) 9+1+2 = 12; 12 + * = 18 → <b>* = 6</b> &nbsp; в) на 3: 12 + * → * = 0, 3, 6, 9; чётные из них → <b>* = 0, 6</b> (9120 и 9126)</td><td>бл. 4: на 9 — сумма цифр делится на 9</td></tr>
-  <tr><td>5</td><td>4³ = 64; &nbsp;3⁴ = 81; &nbsp;2⁶ = 64; &nbsp;2·2·3·3·3·5 = <b>2² · 3³ · 5</b></td><td>бл. 5: 4³ — не 12!</td></tr>
-  <tr><td>6</td><td>336 : 2 = 168 : 2 = 84 : 2 = 42 : 2 = 21 : 3 = 7 : 7 = 1 → <b>336 = 2⁴ · 3 · 7</b></td><td>бл. 6</td></tr>
-  <tr><td>7</td><td>кратные 12: 12, 24, 36, <u>48</u>, 60; кратные 16: 16, 32, <u>48</u>, 64, 80 → <b>НОК = 48</b><br>делители 12: 1, 2, 3, <u>4</u>, 6, 12; делители 16: 1, 2, <u>4</u>, 8, 16 → <b>НОД = 4</b></td><td>бл. 7, 8</td></tr>
-  <tr><td>8</td><td>66 = 2 · 3 · 11; &nbsp;110 = 2 · 5 · 11<br>НОД = 2 · 11 = <b>22</b>; &nbsp;НОК = 2 · 3 · 5 · 11 = <b>330</b>; &nbsp;проверка: 22 · 330 = 7260 и 66 · 110 = 7260 ✓</td><td>бл. 7–9: если проверка не сошлась — ошибка в НОД или НОК</td></tr>
-  <tr><td>9</td><td>7 и 20 взаимно простые → НОД = <b>1</b>, НОК = <b>140</b>; &nbsp;60 делится на 15 → НОД = <b>15</b>, НОК = <b>60</b></td><td>бл. 9</td></tr>
-  <tr><td>10</td><td>а) <b>да</b> (22 = 2·11, 35 = 5·7) &nbsp; б) <b>нет</b>, оба делятся на 13 &nbsp; в) <b>да</b> (соседние числа всегда взаимно простые)</td><td>бл. 9</td></tr>
-  <tr><td>11</td><td>«одинаковые, наибольшее» → НОД(54; 72) = <b>18 наборов</b>; в каждом 54 : 18 = <b>3 карандаша</b>, 72 : 18 = <b>4 ластика</b></td><td>бл. 10: если 216 — посчитан НОК</td></tr>
-  <tr><td>12</td><td>«снова вместе» → НОК(10; 25) = 50 мин → <b>в 9:50</b></td><td>бл. 10: если 250 — просто перемножили</td></tr>
-  <tr><td>13</td><td>НОК(14; 21): 14 = 2·7, 21 = 3·7 → 2 · 3 · 7 = <b>42</b></td><td>бл. 8: 294 (14·21) — общее, но не наименьшее</td></tr>
+  <tr><td>4</td><td>а) их <b>НОД = 1</b><br>б) 22 и 35 — <b>да</b>; &nbsp;26 и 39 — нет, <b>13</b>; &nbsp;49 и 50 — <b>да</b> (соседние числа всегда взаимно простые)<br>в) 5, 8, 9: НОД = 1 → <b>взаимно простые</b>, каждая пара тоже<br>&nbsp;&nbsp; 8, 12, 20: НОД = 4 → <b>не</b> взаимно простые, пар взаимно простых нет<br>&nbsp;&nbsp; 10, 14, 35: НОД = 1 → <b>взаимно простые</b>, но <b>ни одной</b> взаимно простой пары: 10 и 14 (2), 10 и 35 (5), 14 и 35 (7)</td><td>бл. 9; 10, 14, 35 — та же хитрость, что 6, 10, 15 в вечернем листе</td></tr>
+  <tr><td>5</td><td>сумма цифр 9+1+2 = 12<br>а) * = 0, 2, 4, 6, 8 &nbsp; б) * = 0, 5 &nbsp; в) <b>* = 0</b> &nbsp; г) 12 + * = 18 → <b>* = 6</b> &nbsp; д) на 3: * = 0, 3, 6, 9; чётные → <b>* = 0, 6</b></td><td>бл. 4: на 5 и 10 — последняя цифра; на 9 и 3 — сумма цифр</td></tr>
+  <tr><td>6</td><td>кратные 12: 12, 24, 36, <u>48</u>, 60; кратные 16: 16, 32, <u>48</u>, 64, 80 → <b>НОК = 48</b><br>делители 12: 1, 2, 3, <u>4</u>, 6, 12; делители 16: 1, 2, <u>4</u>, 8, 16 → <b>НОД = 4</b><br>проверка: 4 · 48 = <b>192</b>, 12 · 16 = <b>192</b> ✓</td><td>бл. 7, 8</td></tr>
+  <tr><td>7</td><td>66 : 2 = 33 : 3 = 11 : 11 = 1 → 66 = 2 · 3 · 11; &nbsp;110 : 2 = 55 : 5 = 11 : 11 = 1 → 110 = 2 · 5 · 11<br>НОД = 2 · 11 = <b>22</b>; &nbsp;НОК = 2 · 3 · 5 · 11 = <b>330</b>; &nbsp;проверка: 22 · 330 = <b>7260</b>, 66 · 110 = <b>7260</b> ✓</td><td>бл. 6–9: не сошлось — ошибка в НОД или НОК</td></tr>
+  <tr><td>8</td><td>а) НОК = <b>a · b</b>; &nbsp;НОД = <b>b</b>, НОК = <b>a</b><br>б) <b>взаимно простые</b>: 7 и 20 → 1 и 140; &nbsp;4 и 15 → 1 и 60; &nbsp;11 и 12 → 1 и 132<br>&nbsp;&nbsp; <b>одно делится на другое</b>: 15 и 60 → 15 и 60; &nbsp;9 и 27 → 9 и 27; &nbsp;16 и 48 → 16 и 48; &nbsp;6 и 30 → 6 и 30<br>&nbsp;&nbsp; <b>подвох — 6 и 15</b>: общий делитель 3, 15 на 6 не делится → НОД = <b>3</b>, НОК = <b>30</b>; «90» — ошибка</td><td>бл. 9</td></tr>
+  <tr><td>9</td><td>«одинаковые, наибольшее» → НОД(54; 72) = <b>18 наборов</b>; в каждом 54 : 18 = <b>3 карандаша</b>, 72 : 18 = <b>4 ластика</b></td><td>бл. 10: если 216 — посчитан НОК</td></tr>
+  <tr><td>10</td><td>«снова вместе» → НОК(10; 25) = 50 мин → <b>в 9:50</b></td><td>бл. 10: если 250 — просто перемножили</td></tr>
+  <tr><td>11</td><td>НОК(14; 21): 14 = 2·7, 21 = 3·7 → 2 · 3 · 7 = <b>42</b></td><td>бл. 8: 294 (14·21) — общее, но не наименьшее</td></tr>
   </table>
   <div class="blk tips"><h2><span class="n">!</span>Утром перед школой — за 5 минут</h2>
   <ul>
     <li>«Как проверить НОД и НОК двух чисел?» — <b>НОД · НОК = a · b</b>. Не сошлось — где-то ошибка.</li>
-    <li>«На 9 делится, если…» — <b>сумма цифр делится на 9</b>. «На 6 — если…» — <b>и на 2, и на 3</b>.</li>
-    <li>«“Поровну, наибольшее” — это…» — <b>НОД</b>. «“Снова вместе, наименьшее” — это…» — <b>НОК</b>.</li>
+    <li>«НОД = 1 — какой НОК?» — <b>a · b</b>. «a делится на b?» — <b>НОД = b, НОК = a</b>.</li>
+    <li>«На 5 — последняя цифра…» — <b>0 или 5</b>; «на 10» — <b>0</b>; «на 9» — <b>сумма цифр делится на 9</b>; «на 6» — <b>и на 2, и на 3</b>.</li>
   </ul></div>
-  <footer><span>Математика 5 · Глава 2 · все числа свои (✏️), не совпадают с вариантами 1–2 и пробным СОР</span><span class="noprint"><a href="razdel_delimost_pravila.html">правила к СОР №2</a> · <a href="sor2_vecher.html">вечерний лист</a> · <a href="../../index.html">на главную</a></span></footer>
+  <footer><span>Математика 5 · Глава 2 · все числа свои (✏️)</span><span class="noprint"><a href="razdel_delimost_pravila.html">правила к СОР №2</a> · <a href="sor2_vecher.html">вечерний лист</a> · <a href="../../index.html">на главную</a></span></footer>
 </div>
 
 </body>

@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Математика · СОР 1 (2 четв.) · правила и формулы</title>
+<link rel="icon" href="data:image/svg+xml,<svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22><text%20y=%22.9em%22%20font-size=%2290%22>📐</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700&family=Nunito+Sans:wght@400;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f5fb; --raised: #ffffff; --ink: #232a4d; --soft: #565f86; --faint: #8990b8;
+    --line: #d8dcf0; --accent: #3a4fa0; --accent-bg: #e4e8f9;
+    --book: #2f7d6f; --book-bg: #dcf2ee; --mine: #9a6417; --mine-bg: #faedd6;
+    --err: #b8453b; --err-bg: #fae2df;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1a1f36; --raised: #242a47; --ink: #eef0fb; --soft: #aab1d8; --faint: #7981ac;
+      --line: #363d5e; --accent: #8fa3ea; --accent-bg: #2a3364;
+      --book: #5fd0bd; --book-bg: #1f3c37; --mine: #f0c463; --mine-bg: #3d3320;
+      --err: #ea9184; --err-bg: #3d2925;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1a1f36; --raised: #242a47; --ink: #eef0fb; --soft: #aab1d8; --faint: #7981ac;
+    --line: #363d5e; --accent: #8fa3ea; --accent-bg: #2a3364;
+    --book: #5fd0bd; --book-bg: #1f3c37; --mine: #f0c463; --mine-bg: #3d3320;
+    --err: #ea9184; --err-bg: #3d2925;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: 'Nunito Sans', Arial, sans-serif; font-size: 14px; line-height: 1.4; }
+  .sheet { max-width: 780px; margin: 0 auto; padding: 24px 16px 36px; }
+  .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 4px; }
+  .eyebrow { font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0; }
+  .mark { font-size: 12px; font-weight: 800; color: var(--accent); background: var(--accent-bg); border-radius: 999px; padding: 3px 10px; white-space: nowrap; }
+  h1 { font-family: 'Baloo 2', 'Nunito Sans', sans-serif; font-size: 26px; line-height: 1.1; margin: 2px 0 4px; }
+  .lede { color: var(--soft); margin: 0 0 14px; font-size: 13px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: var(--soft); margin: 0 0 14px; }
+  .blk { background: var(--raised); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; break-inside: avoid; }
+  .blk h2 { font-family: 'Baloo 2', 'Nunito Sans', sans-serif; font-size: 17px; margin: 0 0 6px; display: flex; gap: 8px; align-items: baseline; }
+  .blk h2 .n { color: var(--accent); }
+  .f { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 16px; color: var(--accent); background: var(--accent-bg); border-radius: 8px; padding: 6px 10px; margin: 0 0 6px; }
+  .f.txt { font-family: 'Nunito Sans', Arial, sans-serif; font-size: 15px; }
+  .f small { font-weight: 500; font-size: 12.5px; color: var(--soft); margin-left: 6px; }
+  .where, .when { margin: 0 0 6px; font-size: 13px; }
+  .when b, .where b { color: var(--soft); }
+  .exs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0 0 6px; }
+  .exs.one { grid-template-columns: 1fr; }
+  @media (max-width: 620px) { .exs { grid-template-columns: 1fr; } }
+  .ex { border-radius: 8px; padding: 7px 10px; font-size: 13px; }
+  .ex.book { background: var(--book-bg); }
+  .ex.mine { background: var(--mine-bg); }
+  .ex .src { display: block; font-size: 11px; font-weight: 800; letter-spacing: .03em; margin-bottom: 3px; }
+  .ex.book .src { color: var(--book); }
+  .ex.mine .src { color: var(--mine); }
+  .ex .q { margin: 0 0 3px; }
+  .ex ol { margin: 0; padding-left: 20px; font-size: 13.5px; font-variant-numeric: tabular-nums; }
+  .ex ol li { margin: 1px 0; }
+  .ex .ans { margin: 3px 0 0; font-weight: 700; }
+  .err { margin: 0; font-size: 13px; background: var(--err-bg); border-radius: 8px; padding: 6px 10px; }
+  .err b { color: var(--err); }
+  table.rules { width: 100%; border-collapse: collapse; font-size: 13px; margin: 0 0 6px; }
+  table.rules th, table.rules td { border: 1px solid var(--line); padding: 4px 7px; text-align: left; vertical-align: top; }
+  table.rules th { background: var(--accent-bg); color: var(--accent); font-size: 12px; }
+  table.rules td.m { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; white-space: nowrap; }
+  footer { margin-top: 14px; padding-top: 8px; border-top: 1px dashed var(--line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 11.5px; color: var(--faint); }
+  footer a { color: var(--faint); }
+  @media print {
+    @page { size: A4; margin: 10mm; }
+    body { background: #fff !important; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+    .sheet { zoom: 1.0; max-width: none; padding: 0; }
+    .noprint { display: none !important; }
+  }
+
+
+
+  .blk h2 small.par { margin-left: auto; font-family: 'Nunito Sans', sans-serif; font-size: 11px; font-weight: 800; color: var(--accent); background: var(--accent-bg); border-radius: 999px; padding: 1px 8px; }
+
+  h3.part { font-family: 'Baloo 2', sans-serif; font-size: 16px; color: var(--accent); margin: 10px 0 6px; border-bottom: 2px solid var(--accent-bg); }
+  .task { display: flex; gap: 10px; margin: 0 0 9px; break-inside: avoid; }
+  .task .tn { flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .task p { margin: 0 0 5px; font-size: 14.5px; }
+  .line { display: inline-block; min-width: 260px; border-bottom: 1px solid var(--ink); height: 1em; vertical-align: bottom; }
+  .line.s { min-width: 90px; }
+  .score { margin-top: 12px; font-weight: 800; text-align: right; }
+  h2.h2p { font-family: 'Baloo 2', sans-serif; font-size: 22px; margin: 2px 0 4px; }
+  table.ans { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 12px; }
+  table.ans th, table.ans td { border: 1px solid var(--line); padding: 4px 7px; vertical-align: top; text-align: left; }
+  table.ans th { background: var(--accent-bg); color: var(--accent); font-size: 12px; }
+  table.ans td:first-child { font-weight: 800; text-align: center; }
+  table.ans td:nth-child(3) { white-space: nowrap; text-align: center; }
+  table.ans td:nth-child(4) { font-size: 12px; color: var(--soft); width: 22%; }
+  table.ans tr.sep td { background: var(--paper); font-weight: 800; text-align: left; color: var(--accent); }
+  .tips ul { margin: 0; padding-left: 20px; font-size: 13px; }
+  .tips li { margin: 3px 0; }
+  .page2 { margin-top: 30px; }
+  @media print { .page2 { break-before: page; margin-top: 0; } .sheet { zoom: 1.0; } }
+
+  .line.xs { min-width: 50px; }
+  .bl { font-size: 10.5px; font-weight: 800; color: var(--faint); white-space: nowrap; margin-left: 4px; }
+  .task { margin-bottom: 7px; }
+  table.ans td:nth-child(3) { white-space: normal; text-align: left; font-size: 12px; color: var(--soft); width: 24%; }
+
+  svg.ray { display: block; width: 330px; height: 50px; color: var(--ink); }
+  svg.ray text { font-family: 'Nunito Sans', Arial, sans-serif; font-size: 13px; font-weight: 800; fill: currentColor; }
+  svg.ray .pt { fill: var(--accent); }
+  .rays > div { display: flex; align-items: center; gap: 10px; margin: 2px 0; }
+  .rays.two { display: flex; gap: 24px; flex-wrap: wrap; }
+  .rays .rl { font-weight: 800; width: 18px; }
+  .rays .ra { font-size: 14px; white-space: nowrap; }
+  .col-ray { flex: none; padding-top: 6px; }
+  .line.xs { min-width: 50px; }
+
+  .fr { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; line-height: 1.08; margin: 0 2px; font-size: 0.92em; }
+  .fr > .nu { border-bottom: 1.4px solid currentColor; padding: 0 3px; }
+  .fr > .de { padding: 0 3px; }
+  .mx { white-space: nowrap; }
+  .f .fr { font-size: 0.85em; }
+  p.big { font-size: 15.5px; line-height: 2.1; }
+  table.ans td { line-height: 1.9; }
+  table.rules td { line-height: 1.8; }
+  .ex .q, .ex ol li, .ex .ans { line-height: 1.9; }
+
+
+  .space { height: 90px; margin: 4px 0 6px; border: 1px solid var(--line); border-radius: 6px;
+    background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 18px 18px; }
+  .space.short { height: 56px; }
+  .space.tall { height: 130px; }
+  .task > div { flex: 1; }
+  .fr > .nu sup.dm { font-size: 0.72em; font-weight: 800; color: var(--accent); margin-left: 1px; vertical-align: 0.55em; }
+  svg.ray { width: 420px; height: 58px; }
+  table.sor { width: 100%; border-collapse: collapse; font-size: 13px; margin: 0 0 6px; }
+  table.sor th, table.sor td { border: 1px solid var(--line); padding: 4px 7px; text-align: left; vertical-align: top; line-height: 1.8; }
+  table.sor th { background: var(--accent-bg); color: var(--accent); font-size: 12px; }
+  .soon { border-style: dashed; color: var(--soft); }
+  @media print { .pb { break-before: page; } .sheet.page2 { zoom: 0.86; } .sheet.rules { zoom: 0.8; } }
+</style>
+</head>
+<body>
+<div class="sheet rules">
+  <div class="top">
+    <p class="eyebrow">Математика · 5 класс · Глава 3 · к СОР 1 (2 четверть)</p>
+    <span class="mark">§19–22 · дальше §23–27</span>
+  </div>
+  <h1>СОР 1 (2 четверть) · Действия над обыкновенными дробями: правила и формулы</h1>
+  <p class="lede">Правило → пример по шагам → где обычно ошибаются. Способы и запись — как в учебнике: учитель снижает балл, если записано по-другому. Номера блоков совпадают с подсказками «бл. N» в вечерних листах.</p>
+  <p class="legend"><span>📖 — из учебника (страница сверена)</span><span>✏️ — пример придуман для этого листа</span><span>⚠ — частая ошибка</span></p>
+
+<section class="blk "><h2><span class="n">0</span>Что будет в СОР 1 (2 четверть) <small class="par">методичка СОР</small></h2>
+<table class="sor"><tr><th>Задание</th><th>Баллы</th><th>Что нужно уметь</th><th>Блоки</th></tr><tr><td>1. Записать дроби в порядке возрастания (правильные, неправильные и смешанные вместе)</td><td>1</td><td>§19 перевод, §21 общий знаменатель, §22 сравнение</td><td>1, 2, 4, 5, 6</td></tr><tr><td>2. Три одинаковых прямоугольника — найти закрашенную часть среднего</td><td>3</td><td>§21 общий знаменатель, §23 сложение и вычитание дробей, вычитание из 1</td><td>4 + §23 (позже)</td></tr><tr><td>3. Найти значение выражения с умножением и делением дробей и смешанных чисел</td><td>6</td><td>§19 смешанное → дробь, §26 умножение, §27 деление, сокращение</td><td>2 + §26–27 (позже)</td></tr><tr><td colspan="2"><b>Итого 10 баллов, 20 минут</b></td><td colspan="2">§19 нужен в заданиях 1 и 3 — поэтому лист начинается с него</td></tr></table>
+</section>
+
+<section class="blk "><h2><span class="n">1</span>Неправильная дробь → смешанное число <small class="par">§19</small></h2>
+<div class="f txt">разделить числитель на знаменатель <b>с остатком</b>: частное — целая часть, остаток — числитель дробной части, знаменатель тот же</div><div class="exs"><div class="ex book"><span class="src">📖 стр. 96 — так и записывать</span><p class="q"><span class="fr"><span class="nu">59</span><span class="de">9</span></span> = <span class="mx">6<span class="fr"><span class="nu">5</span><span class="de">9</span></span></span>, так как 59 : 9 = 6 (ост. 5).</p></div><div class="ex mine"><span class="src">✏️ Частное → дробь → целая часть</span><p class="q">23 : 4 = <span class="fr"><span class="nu">23</span><span class="de">4</span></span> = <span class="mx">5<span class="fr"><span class="nu">3</span><span class="de">4</span></span></span>, так как 23 : 4 = 5 (ост. 3).</p></div></div><p class="err"><b>⚠</b> Остаток всегда меньше знаменателя. Если остаток 0 — получилось целое число: <span class="fr"><span class="nu">24</span><span class="de">6</span></span> = 4.</p>
+</section>
+
+<section class="blk "><h2><span class="n">2</span>Смешанное число → неправильная дробь <small class="par">§19</small></h2>
+<div class="f txt"><span class="mx">a<span class="fr"><span class="nu">b</span><span class="de">c</span></span></span> = <span class="fr"><span class="nu">a · c + b</span><span class="de">c</span></span> <small>целую часть умножить на знаменатель, прибавить числитель; знаменатель тот же</small></div><div class="exs"><div class="ex book"><span class="src">📖 стр. 97 — так и записывать</span><p class="q"><span class="mx">5<span class="fr"><span class="nu">7</span><span class="de">9</span></span></span> = <span class="fr"><span class="nu">5·9+7</span><span class="de">9</span></span> = <span class="fr"><span class="nu">52</span><span class="de">9</span></span></p></div><div class="ex mine"><span class="src">✏️</span><p class="q"><span class="mx">4<span class="fr"><span class="nu">3</span><span class="de">8</span></span></span> = <span class="fr"><span class="nu">4·8+3</span><span class="de">8</span></span> = <span class="fr"><span class="nu">35</span><span class="de">8</span></span></p></div></div><p class="err"><b>⚠</b> Сложить вместо умножения: <span class="mx">4<span class="fr"><span class="nu">3</span><span class="de">8</span></span></span> ≠ <span class="fr"><span class="nu">4+3</span><span class="de">8</span></span>. Проверка — обратно: 35 : 8 = 4 (ост. 3) ✓.</p>
+</section>
+
+<section class="blk "><h2><span class="n">3</span>Дроби и смешанные числа на луче <small class="par">§20</small></h2>
+<div class="cols"><div class="col-ray"><svg class="ray" viewBox="0 0 330 58" aria-label="координатный луч"><line x1="14.0" y1="34.0" x2="324" y2="34.0" stroke="currentColor" stroke-width="1.6"/><path d="M324 34.0 l-9 -4.5 v9 z" fill="currentColor"/><line x1="14.0" y1="27.0" x2="14.0" y2="41.0" stroke="currentColor" stroke-width="1.8"/><text x="14.0" y="56.0" text-anchor="middle">0</text><line x1="40.4" y1="30.0" x2="40.4" y2="38.0" stroke="currentColor" stroke-width="1.1"/><line x1="66.7" y1="30.0" x2="66.7" y2="38.0" stroke="currentColor" stroke-width="1.1"/><line x1="93.1" y1="30.0" x2="93.1" y2="38.0" stroke="currentColor" stroke-width="1.1"/><line x1="119.5" y1="30.0" x2="119.5" y2="38.0" stroke="currentColor" stroke-width="1.1"/><line x1="145.8" y1="27.0" x2="145.8" y2="41.0" stroke="currentColor" stroke-width="1.8"/><text x="145.8" y="56.0" text-anchor="middle">1</text><line x1="172.2" y1="30.0" x2="172.2" y2="38.0" stroke="currentColor" stroke-width="1.1"/><line x1="198.5" y1="30.0" x2="198.5" y2="38.0" stroke="currentColor" stroke-width="1.1"/><line x1="224.9" y1="30.0" x2="224.9" y2="38.0" stroke="currentColor" stroke-width="1.1"/><line x1="251.3" y1="30.0" x2="251.3" y2="38.0" stroke="currentColor" stroke-width="1.1"/><line x1="277.6" y1="27.0" x2="277.6" y2="41.0" stroke="currentColor" stroke-width="1.8"/><text x="277.6" y="56.0" text-anchor="middle">2</text><circle class="pt" cx="66.7" cy="34.0" r="4"/><text x="66.7" y="22.0" text-anchor="middle">A</text><circle class="pt" cx="224.9" cy="34.0" r="4"/><text x="224.9" y="22.0" text-anchor="middle">B</text><text x="14.0" y="22.0" text-anchor="middle">O</text></svg></div><div class="col-txt"><div class="ex book"><span class="src">📖 стр. 100 (рис. 38, Алия)</span><p class="q">Единичный отрезок разделён на 5 частей — по знаменателю.</p><ol><li>A — 2 части от O: A(<span class="fr"><span class="nu">2</span><span class="de">5</span></span>)</li><li>B — целый отрезок и ещё 3 части: B(<span class="mx">1<span class="fr"><span class="nu">3</span><span class="de">5</span></span></span>)</li></ol></div></div></div><p class="err"><b>⚠</b> Делят на части <b>единичный</b> отрезок (от 0 до 1), а не весь луч. Разные дроби могут быть одной точкой: <span class="fr"><span class="nu">3</span><span class="de">6</span></span> = <span class="fr"><span class="nu">1</span><span class="de">2</span></span>.</p>
+</section>
+
+<section class="blk "><h2><span class="n">4</span>Приведение к наименьшему общему знаменателю <small class="par">§21</small></h2>
+<ol class="steps"><li>найти <b>НОК знаменателей</b> — это наименьший общий знаменатель;</li><li>найти <b>дополнительный множитель</b>: общий знаменатель : знаменатель дроби;</li><li>умножить <b>и числитель, и знаменатель</b> на дополнительный множитель.</li></ol><div class="f txt">Запись как в учебнике — дополнительный множитель <b>над числителем справа</b>: &nbsp;<span class="fr"><span class="nu">1<sup class="dm">\7</sup></span><span class="de">4</span></span> = <span class="fr"><span class="nu">7</span><span class="de">28</span></span>; &nbsp; <span class="fr"><span class="nu">3<sup class="dm">\4</sup></span><span class="de">7</span></span> = <span class="fr"><span class="nu">12</span><span class="de">28</span></span> <small>📖 стр. 103</small></div><table class="rules"><tr><th>Случай (📖 стр. 103)</th><th>Общий знаменатель</th><th>✏️ пример</th></tr><tr><td>больший знаменатель делится на меньшие</td><td>больший</td><td><span class="fr"><span class="nu">1<sup class="dm">\3</sup></span><span class="de">4</span></span> = <span class="fr"><span class="nu">3</span><span class="de">12</span></span> и <span class="fr"><span class="nu">5</span><span class="de">12</span></span></td></tr><tr><td>знаменатели взаимно простые</td><td>их произведение</td><td><span class="fr"><span class="nu">2<sup class="dm">\5</sup></span><span class="de">3</span></span> = <span class="fr"><span class="nu">10</span><span class="de">15</span></span> и <span class="fr"><span class="nu">3<sup class="dm">\3</sup></span><span class="de">5</span></span> = <span class="fr"><span class="nu">9</span><span class="de">15</span></span></td></tr><tr><td>остальные</td><td>НОК</td><td>НОК(6; 8) = 24: <span class="fr"><span class="nu">5<sup class="dm">\4</sup></span><span class="de">6</span></span> = <span class="fr"><span class="nu">20</span><span class="de">24</span></span> и <span class="fr"><span class="nu">7<sup class="dm">\3</sup></span><span class="de">8</span></span> = <span class="fr"><span class="nu">21</span><span class="de">24</span></span></td></tr></table><p class="err"><b>⚠</b> Умножить только знаменатель (<span class="fr"><span class="nu">5</span><span class="de">24</span></span> вместо <span class="fr"><span class="nu">20</span><span class="de">24</span></span>). Взять 6 · 8 = 48 — общий знаменатель, но не наименьший: в учебнике приводят к <b>наименьшему</b>.</p>
+</section>
+
+<section class="blk "><h2><span class="n">5</span>Сравнение дробей и смешанных чисел <small class="par">§22</small></h2>
+<table class="rules"><tr><th>Случай (📖 стр. 106)</th><th>Как сравнивать</th><th>📖 пример из учебника</th></tr><tr><td>знаменатели равные</td><td>меньше та, у которой меньше числитель</td><td><span class="fr"><span class="nu">3</span><span class="de">7</span></span> &lt; <span class="fr"><span class="nu">5</span><span class="de">7</span></span></td></tr><tr><td>знаменатели разные</td><td>привести к общему знаменателю, потом сравнить числители</td><td><span class="fr"><span class="nu">2<sup class="dm">\2</sup></span><span class="de">3</span></span> = <span class="fr"><span class="nu">4</span><span class="de">6</span></span>. Так как <span class="fr"><span class="nu">4</span><span class="de">6</span></span> &lt; <span class="fr"><span class="nu">5</span><span class="de">6</span></span>, то <span class="fr"><span class="nu">2</span><span class="de">3</span></span> &lt; <span class="fr"><span class="nu">5</span><span class="de">6</span></span></td></tr><tr><td>смешанные, целые части разные</td><td>больше то, у которого больше целая часть</td><td><span class="mx">14<span class="fr"><span class="nu">6</span><span class="de">7</span></span></span> &lt; <span class="mx">17<span class="fr"><span class="nu">1</span><span class="de">2</span></span></span></td></tr><tr><td>смешанные, целые части равные</td><td>сравнить дробные части</td><td><span class="mx">73<span class="fr"><span class="nu">2</span><span class="de">3</span></span></span> &gt; <span class="mx">73<span class="fr"><span class="nu">1</span><span class="de">3</span></span></span></td></tr></table><p class="err"><b>⚠</b> Сравнивать числители у дробей с <b>разными</b> знаменателями нельзя: <span class="fr"><span class="nu">3</span><span class="de">4</span></span> и <span class="fr"><span class="nu">5</span><span class="de">7</span></span> — сначала к 28.</p>
+</section>
+
+<section class="blk "><h2><span class="n">6</span>Расположить в порядке возрастания — задание 1 СОР <small class="par">§19 + §22</small></h2>
+<p class="where">✏️ Порядок действий мой, каждое действие — из учебника (§19, §22, упр. 410: правильная дробь меньше 1, неправильная — больше или равна 1).</p><ol class="steps"><li>разделить на две группы: <b>меньше 1</b> (правильные) и <b>больше 1</b> (неправильные и смешанные);</li><li>правильные — привести к общему знаменателю и сравнить (бл. 4–5);</li><li>неправильные — перевести в смешанные (бл. 1) и сравнить по целой части, а если она равна — по дробной (бл. 5);</li><li>записать: сначала группа «меньше 1», потом «больше 1».</li></ol><div class="exs one"><div class="ex mine"><span class="src">✏️ <span class="fr"><span class="nu">5</span><span class="de">8</span></span>; <span class="fr"><span class="nu">1</span><span class="de">4</span></span>; <span class="fr"><span class="nu">1</span><span class="de">2</span></span>; <span class="fr"><span class="nu">11</span><span class="de">6</span></span>; <span class="mx">1<span class="fr"><span class="nu">1</span><span class="de">3</span></span></span></span><p class="q"></p><ol><li>меньше 1: <span class="fr"><span class="nu">1<sup class="dm">\2</sup></span><span class="de">4</span></span> = <span class="fr"><span class="nu">2</span><span class="de">8</span></span>, <span class="fr"><span class="nu">1<sup class="dm">\4</sup></span><span class="de">2</span></span> = <span class="fr"><span class="nu">4</span><span class="de">8</span></span>, <span class="fr"><span class="nu">5</span><span class="de">8</span></span> → <span class="fr"><span class="nu">1</span><span class="de">4</span></span> &lt; <span class="fr"><span class="nu">1</span><span class="de">2</span></span> &lt; <span class="fr"><span class="nu">5</span><span class="de">8</span></span></li><li>больше 1: <span class="fr"><span class="nu">11</span><span class="de">6</span></span> = <span class="mx">1<span class="fr"><span class="nu">5</span><span class="de">6</span></span></span>, так как 11 : 6 = 1 (ост. 5); целые равны → <span class="fr"><span class="nu">1<sup class="dm">\2</sup></span><span class="de">3</span></span> = <span class="fr"><span class="nu">2</span><span class="de">6</span></span> &lt; <span class="fr"><span class="nu">5</span><span class="de">6</span></span> → <span class="mx">1<span class="fr"><span class="nu">1</span><span class="de">3</span></span></span> &lt; <span class="fr"><span class="nu">11</span><span class="de">6</span></span></li></ol><p class="ans"><span class="fr"><span class="nu">1</span><span class="de">4</span></span>; <span class="fr"><span class="nu">1</span><span class="de">2</span></span>; <span class="fr"><span class="nu">5</span><span class="de">8</span></span>; <span class="mx">1<span class="fr"><span class="nu">1</span><span class="de">3</span></span></span>; <span class="fr"><span class="nu">11</span><span class="de">6</span></span></p></div></div><p class="err"><b>⚠</b> Поставить <span class="fr"><span class="nu">11</span><span class="de">6</span></span> в конец «потому что 11 большое» без перевода. И не потерять ни одну дробь: в ответе столько же чисел, сколько в задании.</p>
+</section>
+
+<section class="blk soon"><h2><span class="n">…</span>Дальше: §23–27 <small class="par">добавлю по ходу</small></h2>
+<p class="where">Сложение и вычитание дробей (§23), смешанных чисел (§24–25), умножение (§26), деление (§27) — блоки появятся здесь, когда класс дойдёт до этих параграфов и я сверю их с учебником.</p>
+</section>
+
+  <footer><span>Математика 5 · Глава 3, §19–22, стр. 96–109 · образец СОР — методичка, стр. 13–14</span><span class="noprint"><a href="vecher_19_20.html">вечер §19–20</a> · <a href="vecher_21_22.html">вечер §21–22</a> · <a href="../../index.html">на главную</a></span></footer>
+</div>
+</body>
+</html>

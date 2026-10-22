@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Математика · §23 · вечерняя отработка</title>
+<link rel="icon" href="data:image/svg+xml,<svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22><text%20y=%22.9em%22%20font-size=%2290%22>📐</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700&family=Nunito+Sans:wght@400;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f5fb; --raised: #ffffff; --ink: #232a4d; --soft: #565f86; --faint: #8990b8;
+    --line: #d8dcf0; --accent: #3a4fa0; --accent-bg: #e4e8f9;
+    --book: #2f7d6f; --book-bg: #dcf2ee; --mine: #9a6417; --mine-bg: #faedd6;
+    --err: #b8453b; --err-bg: #fae2df;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1a1f36; --raised: #242a47; --ink: #eef0fb; --soft: #aab1d8; --faint: #7981ac;
+      --line: #363d5e; --accent: #8fa3ea; --accent-bg: #2a3364;
+      --book: #5fd0bd; --book-bg: #1f3c37; --mine: #f0c463; --mine-bg: #3d3320;
+      --err: #ea9184; --err-bg: #3d2925;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1a1f36; --raised: #242a47; --ink: #eef0fb; --soft: #aab1d8; --faint: #7981ac;
+    --line: #363d5e; --accent: #8fa3ea; --accent-bg: #2a3364;
+    --book: #5fd0bd; --book-bg: #1f3c37; --mine: #f0c463; --mine-bg: #3d3320;
+    --err: #ea9184; --err-bg: #3d2925;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: 'Nunito Sans', Arial, sans-serif; font-size: 14px; line-height: 1.4; }
+  .sheet { max-width: 780px; margin: 0 auto; padding: 24px 16px 36px; }
+  .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 4px; }
+  .eyebrow { font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0; }
+  .mark { font-size: 12px; font-weight: 800; color: var(--accent); background: var(--accent-bg); border-radius: 999px; padding: 3px 10px; white-space: nowrap; }
+  h1 { font-family: 'Baloo 2', 'Nunito Sans', sans-serif; font-size: 26px; line-height: 1.1; margin: 2px 0 4px; }
+  .lede { color: var(--soft); margin: 0 0 14px; font-size: 13px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: var(--soft); margin: 0 0 14px; }
+  .blk { background: var(--raised); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; break-inside: avoid; }
+  .blk h2 { font-family: 'Baloo 2', 'Nunito Sans', sans-serif; font-size: 17px; margin: 0 0 6px; display: flex; gap: 8px; align-items: baseline; }
+  .blk h2 .n { color: var(--accent); }
+  .f { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 16px; color: var(--accent); background: var(--accent-bg); border-radius: 8px; padding: 6px 10px; margin: 0 0 6px; }
+  .f.txt { font-family: 'Nunito Sans', Arial, sans-serif; font-size: 15px; }
+  .f small { font-weight: 500; font-size: 12.5px; color: var(--soft); margin-left: 6px; }
+  .where, .when { margin: 0 0 6px; font-size: 13px; }
+  .when b, .where b { color: var(--soft); }
+  .exs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0 0 6px; }
+  .exs.one { grid-template-columns: 1fr; }
+  @media (max-width: 620px) { .exs { grid-template-columns: 1fr; } }
+  .ex { border-radius: 8px; padding: 7px 10px; font-size: 13px; }
+  .ex.book { background: var(--book-bg); }
+  .ex.mine { background: var(--mine-bg); }
+  .ex .src { display: block; font-size: 11px; font-weight: 800; letter-spacing: .03em; margin-bottom: 3px; }
+  .ex.book .src { color: var(--book); }
+  .ex.mine .src { color: var(--mine); }
+  .ex .q { margin: 0 0 3px; }
+  .ex ol { margin: 0; padding-left: 20px; font-size: 13.5px; font-variant-numeric: tabular-nums; }
+  .ex ol li { margin: 1px 0; }
+  .ex .ans { margin: 3px 0 0; font-weight: 700; }
+  .err { margin: 0; font-size: 13px; background: var(--err-bg); border-radius: 8px; padding: 6px 10px; }
+  .err b { color: var(--err); }
+  table.rules { width: 100%; border-collapse: collapse; font-size: 13px; margin: 0 0 6px; }
+  table.rules th, table.rules td { border: 1px solid var(--line); padding: 4px 7px; text-align: left; vertical-align: top; }
+  table.rules th { background: var(--accent-bg); color: var(--accent); font-size: 12px; }
+  table.rules td.m { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; white-space: nowrap; }
+  footer { margin-top: 14px; padding-top: 8px; border-top: 1px dashed var(--line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 11.5px; color: var(--faint); }
+  footer a { color: var(--faint); }
+  @media print {
+    @page { size: A4; margin: 10mm; }
+    body { background: #fff !important; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+    .sheet { zoom: 1.0; max-width: none; padding: 0; }
+    .noprint { display: none !important; }
+  }
+
+
+
+  .blk h2 small.par { margin-left: auto; font-family: 'Nunito Sans', sans-serif; font-size: 11px; font-weight: 800; color: var(--accent); background: var(--accent-bg); border-radius: 999px; padding: 1px 8px; }
+
+  h3.part { font-family: 'Baloo 2', sans-serif; font-size: 16px; color: var(--accent); margin: 10px 0 6px; border-bottom: 2px solid var(--accent-bg); }
+  .task { display: flex; gap: 10px; margin: 0 0 9px; break-inside: avoid; }
+  .task .tn { flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .task p { margin: 0 0 5px; font-size: 14.5px; }
+  .line { display: inline-block; min-width: 260px; border-bottom: 1px solid var(--ink); height: 1em; vertical-align: bottom; }
+  .line.s { min-width: 90px; }
+  .score { margin-top: 12px; font-weight: 800; text-align: right; }
+  h2.h2p { font-family: 'Baloo 2', sans-serif; font-size: 22px; margin: 2px 0 4px; }
+  table.ans { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 12px; }
+  table.ans th, table.ans td { border: 1px solid var(--line); padding: 4px 7px; vertical-align: top; text-align: left; }
+  table.ans th { background: var(--accent-bg); color: var(--accent); font-size: 12px; }
+  table.ans td:first-child { font-weight: 800; text-align: center; }
+  table.ans td:nth-child(3) { white-space: nowrap; text-align: center; }
+  table.ans td:nth-child(4) { font-size: 12px; color: var(--soft); width: 22%; }
+  table.ans tr.sep td { background: var(--paper); font-weight: 800; text-align: left; color: var(--accent); }
+  .tips ul { margin: 0; padding-left: 20px; font-size: 13px; }
+  .tips li { margin: 3px 0; }
+  .page2 { margin-top: 30px; }
+  @media print { .page2 { break-before: page; margin-top: 0; } .sheet { zoom: 1.0; } }
+
+  .line.xs { min-width: 50px; }
+  .bl { font-size: 10.5px; font-weight: 800; color: var(--faint); white-space: nowrap; margin-left: 4px; }
+  .task { margin-bottom: 7px; }
+  table.ans td:nth-child(3) { white-space: normal; text-align: left; font-size: 12px; color: var(--soft); width: 24%; }
+
+  svg.ray { display: block; width: 330px; height: 50px; color: var(--ink); }
+  svg.ray text { font-family: 'Nunito Sans', Arial, sans-serif; font-size: 13px; font-weight: 800; fill: currentColor; }
+  svg.ray .pt { fill: var(--accent); }
+  .rays > div { display: flex; align-items: center; gap: 10px; margin: 2px 0; }
+  .rays.two { display: flex; gap: 24px; flex-wrap: wrap; }
+  .rays .rl { font-weight: 800; width: 18px; }
+  .rays .ra { font-size: 14px; white-space: nowrap; }
+  .col-ray { flex: none; padding-top: 6px; }
+  .line.xs { min-width: 50px; }
+
+  .fr { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; line-height: 1.08; margin: 0 2px; font-size: 0.92em; }
+  .fr > .nu { border-bottom: 1.4px solid currentColor; padding: 0 3px; }
+  .fr > .de { padding: 0 3px; }
+  .mx { white-space: nowrap; }
+  .f .fr { font-size: 0.85em; }
+  p.big { font-size: 15.5px; line-height: 2.1; }
+  table.ans td { line-height: 1.9; }
+  table.rules td { line-height: 1.8; }
+  .ex .q, .ex ol li, .ex .ans { line-height: 1.9; }
+
+
+  .space { height: 90px; margin: 4px 0 6px; border: 1px solid var(--line); border-radius: 6px;
+    background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 18px 18px; }
+  .space.short { height: 56px; }
+  .space.tall { height: 130px; }
+  .task > div { flex: 1; }
+  .fr > .nu sup.dm { font-size: 0.72em; font-weight: 800; color: var(--accent); margin-left: 1px; vertical-align: 0.55em; }
+  svg.ray { width: 420px; height: 58px; }
+  table.sor { width: 100%; border-collapse: collapse; font-size: 13px; margin: 0 0 6px; }
+  table.sor th, table.sor td { border: 1px solid var(--line); padding: 4px 7px; text-align: left; vertical-align: top; line-height: 1.8; }
+  table.sor th { background: var(--accent-bg); color: var(--accent); font-size: 12px; }
+  .soon { border-style: dashed; color: var(--soft); }
+  @media print { .pb { break-before: page; } .sheet.page2 { zoom: 0.86; } .sheet.rules { zoom: 0.8; } }
+
+  s { text-decoration-thickness: 1.4px; }
+  sup.cn, sub.cn { font-size: 0.68em; font-weight: 800; color: var(--accent); }
+  svg.rects { display: block; width: 300px; height: 150px; color: var(--ink); }
+  svg.rects .sh { fill: var(--accent-bg); stroke: none; }
+  svg.rects text { font-family: 'Nunito Sans', Arial, sans-serif; font-size: 14px; font-weight: 800; fill: currentColor; }
+  .fr .fr { font-size: 0.95em; }
+  .big2 { font-size: 19px; line-height: 2.4; }
+  .space.xl { height: 330px; }
+</style>
+</head>
+<body>
+<div class="sheet ">
+  <div class="top">
+    <p class="eyebrow">Математика · 5 класс · Глава 3 · вечерняя отработка</p>
+    <span class="mark">§23</span>
+  </div>
+  <h1>Вечер: сложение и вычитание дробей</h1>
+  <p class="lede">Решай в клетках, ответ — на строчке. ⭐ — задание в формате СОР 1 (2 четверть). Серая подсказка: параграф, номер упражнения-образца в учебнике и блок листа правил.</p>
+  <h3 class="part">§23. Сложение и вычитание дробей <span class="bl">правила, бл. 7–9</span></h3>
+  <div class="task"><span class="tn">1</span><div><p>Вычисли, ответ сократи и выдели целую часть, если можно: &nbsp; а) <span class="fr"><span class="nu">3</span><span class="de">11</span></span> + <span class="fr"><span class="nu">5</span><span class="de">11</span></span> &nbsp; б) <span class="fr"><span class="nu">9</span><span class="de">13</span></span> − <span class="fr"><span class="nu">4</span><span class="de">13</span></span> &nbsp; в) <span class="fr"><span class="nu">5</span><span class="de">12</span></span> + <span class="fr"><span class="nu">1</span><span class="de">12</span></span> &nbsp; г) <span class="fr"><span class="nu">7</span><span class="de">10</span></span> + <span class="fr"><span class="nu">9</span><span class="de">10</span></span> <span class="bl">§23 · как упр. 421–422 · бл. 7</span></p><div class="space short"></div></div></div>
+  <div class="task"><span class="tn">2</span><div><p>Вычисли (один знаменатель делится на другой): &nbsp; а) <span class="fr"><span class="nu">1</span><span class="de">4</span></span> + <span class="fr"><span class="nu">7</span><span class="de">20</span></span> &nbsp; б) <span class="fr"><span class="nu">7</span><span class="de">8</span></span> − <span class="fr"><span class="nu">1</span><span class="de">4</span></span> <span class="bl">§23 · как упр. 423–425 · бл. 7</span></p><div class="space short"></div></div></div>
+  <div class="task"><span class="tn">3</span><div><p>Вычисли, дополнительный множитель пиши над числителем: &nbsp; а) <span class="fr"><span class="nu">2</span><span class="de">3</span></span> + <span class="fr"><span class="nu">3</span><span class="de">5</span></span> &nbsp; б) <span class="fr"><span class="nu">5</span><span class="de">6</span></span> − <span class="fr"><span class="nu">3</span><span class="de">8</span></span> &nbsp; в) <span class="fr"><span class="nu">7</span><span class="de">9</span></span> + <span class="fr"><span class="nu">5</span><span class="de">12</span></span> <span class="bl">§23 · как упр. 426–427 · бл. 7</span></p><div class="space "></div></div></div>
+  <div class="task"><span class="tn">4</span><div><p>Найди значение выражения: &nbsp; <span class="fr"><span class="nu">1</span><span class="de">2</span></span> + <span class="fr"><span class="nu">2</span><span class="de">3</span></span> − <span class="fr"><span class="nu">5</span><span class="de">6</span></span> <span class="bl">§23 · как упр. 437 · бл. 7</span></p><div class="space short"></div></div></div>
+  <div class="task"><span class="tn">5</span><div><p>Вычисли удобным способом (сначала сгруппируй дроби с одинаковым знаменателем): &nbsp; <span class="fr"><span class="nu">5</span><span class="de">14</span></span> + <span class="fr"><span class="nu">2</span><span class="de">7</span></span> + <span class="fr"><span class="nu">9</span><span class="de">14</span></span> <span class="bl">§23 · как пример стр. 111</span></p><div class="space short"></div></div></div>
+  <div class="task"><span class="tn">6</span><div><p>а) В первый день прочитали <span class="fr"><span class="nu">2</span><span class="de">9</span></span> книги, во второй — <span class="fr"><span class="nu">4</span><span class="de">9</span></span>. Какую часть книги осталось прочитать?<br>б) Какую дробь надо прибавить к <span class="fr"><span class="nu">5</span><span class="de">8</span></span>, чтобы получилась 1? <span class="bl">§23 · как упр. 430, 441 · бл. 8</span></p><div class="space short"></div><p>Ответ: <span class="line"></span></p></div></div>
+  <div class="task"><span class="tn">7</span><div><p>Мама убирала <span class="fr"><span class="nu">3</span><span class="de">4</span></span> ч, а готовила <span class="fr"><span class="nu">5</span><span class="de">6</span></span> ч. Сколько всего времени она потратила? <span class="bl">§23 · как упр. 433 · бл. 7</span></p><div class="space short"></div><p>Ответ: <span class="line"></span></p></div></div>
+  <div class="task"><span class="tn">8</span><div><p>Реши уравнения: &nbsp; а) x + <span class="fr"><span class="nu">1</span><span class="de">4</span></span> = <span class="fr"><span class="nu">5</span><span class="de">6</span></span> &nbsp;&nbsp; б) <span class="fr"><span class="nu">7</span><span class="de">9</span></span> − x = <span class="fr"><span class="nu">1</span><span class="de">3</span></span> <span class="bl">§23 · как упр. 434–435</span></p><div class="space short"></div></div></div>
+  <div class="task"><span class="tn">9</span><div><p>⭐ Три одинаковых прямоугольника. У левого закрашено <span class="fr"><span class="nu">4</span><span class="de">5</span></span> снизу, у правого — <span class="fr"><span class="nu">2</span><span class="de">3</span></span> сверху. Какая часть закрашена у среднего? <span class="bl">⚠ нет в учебнике — формат задания 2 СОР · бл. 9</span></p><svg class="rects" viewBox="0 0 300 150" aria-label="три прямоугольника"><rect x="20.0" y="36.0" width="46.0" height="88.0" class="sh"/><rect x="100.0" y="36.0" width="46.0" height="51.3" class="sh"/><rect x="180.0" y="14.0" width="46.0" height="73.3" class="sh"/><rect x="20.0" y="14.0" width="46.0" height="110.0" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="100.0" y="14.0" width="46.0" height="110.0" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="180.0" y="14.0" width="46.0" height="110.0" fill="none" stroke="currentColor" stroke-width="1.6"/><line x1="66.0" y1="36.0" x2="146.0" y2="36.0" stroke="currentColor" stroke-dasharray="4 3"/><line x1="100.0" y1="87.3" x2="180.0" y2="87.3" stroke="currentColor" stroke-dasharray="4 3"/><text x="43.0" y="142.0" text-anchor="middle">4/5</text><text x="123.0" y="142.0" text-anchor="middle">?</text><text x="203.0" y="142.0" text-anchor="middle">2/3</text></svg><div class="space short"></div><p>Ответ: <span class="line"></span></p></div></div>
+  <p class="score">Верно: ____ из 9</p>
+</div>
+<div class="sheet page2">
+  <div class="top">
+    <p class="eyebrow">Для мамы · ответы · не показывать до проверки</p>
+    <span class="mark">§23</span>
+  </div>
+  <h1>Ответы</h1>
+  <p class="lede">Запись решений — как в учебнике: учитель снижает балл, если записано по-другому.</p>
+<table class="ans">
+<tr><th>№</th><th>Ответ и запись — как в учебнике</th><th>Образец в учебнике / если ошибка</th></tr>
+<tr><td>1</td><td>а) <span class="fr"><span class="nu">3</span><span class="de">11</span></span> + <span class="fr"><span class="nu">5</span><span class="de">11</span></span> = <span class="fr"><span class="nu">3 + 5</span><span class="de">11</span></span> = <span class="fr"><span class="nu">8</span><span class="de">11</span></span> &nbsp; б) <span class="fr"><span class="nu">9</span><span class="de">13</span></span> − <span class="fr"><span class="nu">4</span><span class="de">13</span></span> = <span class="fr"><span class="nu">5</span><span class="de">13</span></span><br>в) <span class="fr"><span class="nu">5</span><span class="de">12</span></span> + <span class="fr"><span class="nu">1</span><span class="de">12</span></span> = <span class="fr"><span class="nu">6</span><span class="de">12</span></span> = <span class="fr"><span class="nu">1</span><span class="de">2</span></span> &nbsp; г) <span class="fr"><span class="nu">7</span><span class="de">10</span></span> + <span class="fr"><span class="nu">9</span><span class="de">10</span></span> = <span class="fr"><span class="nu">16</span><span class="de">10</span></span> = <span class="mx">1<span class="fr"><span class="nu">6</span><span class="de">10</span></span></span> = <span class="mx">1<span class="fr"><span class="nu">3</span><span class="de">5</span></span></span></td><td>📖 стр. 110. ⚠ в), г): не сократили / не выделили целую часть</td></tr>
+<tr><td>2</td><td>а) <span class="fr"><span class="nu">1<sup class="dm">\5</sup></span><span class="de">4</span></span> + <span class="fr"><span class="nu">7</span><span class="de">20</span></span> = <span class="fr"><span class="nu">5</span><span class="de">20</span></span> + <span class="fr"><span class="nu">7</span><span class="de">20</span></span> = <span class="fr"><span class="nu">12</span><span class="de">20</span></span> = <span class="fr"><span class="nu">3</span><span class="de">5</span></span> &nbsp; б) <span class="fr"><span class="nu">7</span><span class="de">8</span></span> − <span class="fr"><span class="nu">1<sup class="dm">\2</sup></span><span class="de">4</span></span> = <span class="fr"><span class="nu">7</span><span class="de">8</span></span> − <span class="fr"><span class="nu">2</span><span class="de">8</span></span> = <span class="fr"><span class="nu">5</span><span class="de">8</span></span></td><td>бл. 4: больший знаменатель — общий</td></tr>
+<tr><td>3</td><td>а) <span class="fr"><span class="nu">2<sup class="dm">\5</sup></span><span class="de">3</span></span> + <span class="fr"><span class="nu">3<sup class="dm">\3</sup></span><span class="de">5</span></span> = <span class="fr"><span class="nu">10</span><span class="de">15</span></span> + <span class="fr"><span class="nu">9</span><span class="de">15</span></span> = <span class="fr"><span class="nu">19</span><span class="de">15</span></span> = <span class="mx">1<span class="fr"><span class="nu">4</span><span class="de">15</span></span></span><br>б) <span class="fr"><span class="nu">5<sup class="dm">\4</sup></span><span class="de">6</span></span> − <span class="fr"><span class="nu">3<sup class="dm">\3</sup></span><span class="de">8</span></span> = <span class="fr"><span class="nu">20</span><span class="de">24</span></span> − <span class="fr"><span class="nu">9</span><span class="de">24</span></span> = <span class="fr"><span class="nu">11</span><span class="de">24</span></span><br>в) <span class="fr"><span class="nu">7<sup class="dm">\4</sup></span><span class="de">9</span></span> + <span class="fr"><span class="nu">5<sup class="dm">\3</sup></span><span class="de">12</span></span> = <span class="fr"><span class="nu">28</span><span class="de">36</span></span> + <span class="fr"><span class="nu">15</span><span class="de">36</span></span> = <span class="fr"><span class="nu">43</span><span class="de">36</span></span> = <span class="mx">1<span class="fr"><span class="nu">7</span><span class="de">36</span></span></span></td><td>📖 стр. 111: <span class="fr"><span class="nu">3<sup class="dm">\3</sup></span><span class="de">8</span></span> + <span class="fr"><span class="nu">5<sup class="dm">\4</sup></span><span class="de">6</span></span> = <span class="fr"><span class="nu">9</span><span class="de">24</span></span> + <span class="fr"><span class="nu">20</span><span class="de">24</span></span></td></tr>
+<tr><td>4</td><td><span class="fr"><span class="nu">1<sup class="dm">\3</sup></span><span class="de">2</span></span> + <span class="fr"><span class="nu">2<sup class="dm">\2</sup></span><span class="de">3</span></span> − <span class="fr"><span class="nu">5</span><span class="de">6</span></span> = <span class="fr"><span class="nu">3</span><span class="de">6</span></span> + <span class="fr"><span class="nu">4</span><span class="de">6</span></span> − <span class="fr"><span class="nu">5</span><span class="de">6</span></span> = <span class="fr"><span class="nu">2</span><span class="de">6</span></span> = <span class="fr"><span class="nu">1</span><span class="de">3</span></span></td><td>упр. 437</td></tr>
+<tr><td>5</td><td>(<span class="fr"><span class="nu">5</span><span class="de">14</span></span> + <span class="fr"><span class="nu">9</span><span class="de">14</span></span>) + <span class="fr"><span class="nu">2</span><span class="de">7</span></span> = <span class="fr"><span class="nu">14</span><span class="de">14</span></span> + <span class="fr"><span class="nu">2</span><span class="de">7</span></span> = 1 + <span class="fr"><span class="nu">2</span><span class="de">7</span></span> = <span class="mx">1<span class="fr"><span class="nu">2</span><span class="de">7</span></span></span></td><td>📖 стр. 111: сначала дроби с одинаковым знаменателем</td></tr>
+<tr><td>6</td><td>а) <span class="fr"><span class="nu">2</span><span class="de">9</span></span> + <span class="fr"><span class="nu">4</span><span class="de">9</span></span> = <span class="fr"><span class="nu">6</span><span class="de">9</span></span>; &nbsp; 1 − <span class="fr"><span class="nu">6</span><span class="de">9</span></span> = <span class="fr"><span class="nu">9</span><span class="de">9</span></span> − <span class="fr"><span class="nu">6</span><span class="de">9</span></span> = <span class="fr"><span class="nu">3</span><span class="de">9</span></span> = <span class="fr"><span class="nu">1</span><span class="de">3</span></span> &nbsp; б) 1 − <span class="fr"><span class="nu">5</span><span class="de">8</span></span> = <span class="fr"><span class="nu">8</span><span class="de">8</span></span> − <span class="fr"><span class="nu">5</span><span class="de">8</span></span> = <span class="fr"><span class="nu">3</span><span class="de">8</span></span></td><td>бл. 8. ⚠ а) ответ <span class="fr"><span class="nu">6</span><span class="de">9</span></span> — это прочитано, а не осталось</td></tr>
+<tr><td>7</td><td><span class="fr"><span class="nu">3<sup class="dm">\3</sup></span><span class="de">4</span></span> + <span class="fr"><span class="nu">5<sup class="dm">\2</sup></span><span class="de">6</span></span> = <span class="fr"><span class="nu">9</span><span class="de">12</span></span> + <span class="fr"><span class="nu">10</span><span class="de">12</span></span> = <span class="fr"><span class="nu">19</span><span class="de">12</span></span> = <span class="mx">1<span class="fr"><span class="nu">7</span><span class="de">12</span></span></span> ч</td><td>упр. 433</td></tr>
+<tr><td>8</td><td>а) x = <span class="fr"><span class="nu">5</span><span class="de">6</span></span> − <span class="fr"><span class="nu">1</span><span class="de">4</span></span> = <span class="fr"><span class="nu">10</span><span class="de">12</span></span> − <span class="fr"><span class="nu">3</span><span class="de">12</span></span> = <span class="fr"><span class="nu">7</span><span class="de">12</span></span> &nbsp; б) x = <span class="fr"><span class="nu">7</span><span class="de">9</span></span> − <span class="fr"><span class="nu">1</span><span class="de">3</span></span> = <span class="fr"><span class="nu">7</span><span class="de">9</span></span> − <span class="fr"><span class="nu">3</span><span class="de">9</span></span> = <span class="fr"><span class="nu">4</span><span class="de">9</span></span></td><td>неизвестное слагаемое / вычитаемое — как в главе 1</td></tr>
+<tr><td>9</td><td><span class="fr"><span class="nu">4<sup class="dm">\3</sup></span><span class="de">5</span></span> + <span class="fr"><span class="nu">2<sup class="dm">\5</sup></span><span class="de">3</span></span> − 1 = <span class="fr"><span class="nu">12</span><span class="de">15</span></span> + <span class="fr"><span class="nu">10</span><span class="de">15</span></span> − <span class="fr"><span class="nu">15</span><span class="de">15</span></span> = <span class="fr"><span class="nu">7</span><span class="de">15</span></span></td><td>бл. 9. ⚠ <span class="fr"><span class="nu">22</span><span class="de">15</span></span> — забыли вычесть 1</td></tr>
+</table>
+<div class="blk tips"><h2><span class="n">!</span>Утром перед школой — за 5 минут</h2><ul><li>«Как сложить <span class="fr"><span class="nu">3</span><span class="de">8</span></span> и <span class="fr"><span class="nu">5</span><span class="de">6</span></span>?» — <b>к общему знаменателю</b> 24, потом сложить числители: <span class="fr"><span class="nu">29</span><span class="de">24</span></span> = <span class="mx">1<span class="fr"><span class="nu">5</span><span class="de">24</span></span></span>.</li><li>«Что делать с ответом <span class="fr"><span class="nu">16</span><span class="de">10</span></span>?» — <b>выделить целую часть и сократить</b>: <span class="mx">1<span class="fr"><span class="nu">3</span><span class="de">5</span></span></span>.</li><li>«Сколько осталось, если сделали <span class="fr"><span class="nu">2</span><span class="de">3</span></span>?» — <b>1 − <span class="fr"><span class="nu">2</span><span class="de">3</span></span></b> = <span class="fr"><span class="nu">3</span><span class="de">3</span></span> − <span class="fr"><span class="nu">2</span><span class="de">3</span></span> = <span class="fr"><span class="nu">1</span><span class="de">3</span></span>.</li><li>«Средний прямоугольник?» — <b>левая + правая − 1</b>.</li></ul></div>
+<footer><span>Математика 5 · Глава 3 · вечер §23 · все числа свои (✏️), с упражнениями учебника и образцом СОР не совпадают</span><span class="noprint"><a href="razdel_deystviya_pravila.html">правила к СОР 1 · 2 четв.</a> · <a href="../../index.html">на главную</a></span></footer></div>
+
+</body>
+</html>

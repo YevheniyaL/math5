@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Математика · §19 · игра</title>
+<link rel="icon" href="data:image/svg+xml,<svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22><text%20y=%22.9em%22%20font-size=%2290%22>🍕</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #faf9f4; --paper-raised: #ffffff; --rule: #b9cfe0; --rule-soft: #dbe8f1;
+    --margin: #2f6690; --margin-soft: #c7dbea; --ink: #24304a; --ink-soft: #647089; --ink-faint: #97a2b8;
+    --good: #3c8a5c; --good-bg: #dff1e5; --bad: #c85a4f; --bad-bg: #fbe4e1;
+    --mark: #2f9e8f; --mark-bg: #d7f0ec; --shadow: rgba(36, 48, 74, 0.14); --star: #e0a526;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1b2431; --paper-raised: #232f3f; --rule: #3c5468; --rule-soft: #29394a;
+      --margin: #7fb1de; --margin-soft: #2c3f4f; --ink: #eceff5; --ink-soft: #a7b2c8; --ink-faint: #6d788e;
+      --good: #6fcb93; --good-bg: #23392c; --bad: #e0847a; --bad-bg: #402b2a;
+      --mark: #5fd0bd; --mark-bg: #1f3d38; --shadow: rgba(0, 0, 0, 0.35); --star: #f0c04a;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1b2431; --paper-raised: #232f3f; --rule: #3c5468; --rule-soft: #29394a;
+    --margin: #7fb1de; --margin-soft: #2c3f4f; --ink: #eceff5; --ink-soft: #a7b2c8; --ink-faint: #6d788e;
+    --good: #6fcb93; --good-bg: #23392c; --bad: #e0847a; --bad-bg: #402b2a;
+    --mark: #5fd0bd; --mark-bg: #1f3d38; --shadow: rgba(0, 0, 0, 0.35); --star: #f0c04a;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: 'PT Sans', Arial, sans-serif; line-height: 1.5; -webkit-tap-highlight-color: transparent; overflow-x: hidden; }
+  h1, .hand { font-family: 'Caveat', 'Comic Sans MS', cursive; font-weight: 700; text-wrap: balance; }
+  .back-link { font-size: 13px; color: var(--ink-faint); text-decoration: none; }
+  .back-link:hover { color: var(--margin); }
+  .sheet { max-width: 640px; margin: 0 auto; padding: 22px 16px 60px 44px; position: relative; min-height: 100vh; }
+  .sheet::before { content: ""; position: absolute; top: 0; bottom: 0; left: 26px; width: 2px; background: var(--margin); opacity: 0.75; }
+  header.page { padding-top: 6px; padding-bottom: 10px; }
+  h1 { font-size: 36px; margin: 0 0 2px; line-height: 1.1; }
+  .subtitle { font-size: 15px; color: var(--ink-soft); margin: 0 0 6px; }
+
+  .progress { display: flex; justify-content: space-between; align-items: center; font-family: 'Caveat', cursive; font-size: 22px; font-weight: 700; color: var(--margin); margin: 10px 0 8px; }
+  .stars { color: var(--star); letter-spacing: 2px; }
+
+  .card { background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 10px; padding: 16px 16px 18px; box-shadow: 1px 2px 0 var(--shadow); }
+  .task-title { font-size: 17px; font-weight: 700; margin: 0 0 6px; }
+  .task-show { font-size: 30px; margin: 6px 0 10px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .task-text { font-size: 16px; margin: 4px 0 10px; }
+
+  .frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; line-height: 1.1; margin: 0 2px; }
+  .frac > span:first-child { border-bottom: 2px solid currentColor; padding: 0 4px 2px; }
+  .frac > span:last-child { padding: 2px 4px 0; }
+  .mixed { display: inline-flex; align-items: center; gap: 2px; }
+
+  details.rule { font-size: 14px; color: var(--ink-soft); margin: 0 0 12px; }
+  details.rule summary { cursor: pointer; color: var(--margin); }
+  details.rule p { margin: 6px 0 0; padding: 8px 10px; background: var(--mark-bg); border-radius: 6px; color: var(--ink); }
+
+  .step { border-top: 1px dashed var(--rule); padding: 12px 0 4px; }
+  .step-q { font-weight: 700; font-size: 15px; margin-bottom: 8px; }
+  .step.done { opacity: 0.72; }
+  .step.done .step-q::after { content: "  ✓"; color: var(--good); }
+  .step-body { font-size: 22px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .step-body input { font-family: 'PT Sans', sans-serif; font-size: 22px; width: 58px; text-align: center; padding: 3px 4px; border: 2px solid var(--ink-faint); border-radius: 6px; background: var(--paper); color: var(--ink); }
+  .step-body input:focus { outline: none; border-color: var(--margin); }
+  .step-body input.bad { border-color: var(--bad); background: var(--bad-bg); }
+  .step-body input.ok { border-color: var(--good); background: var(--good-bg); color: var(--good); }
+  .frac input { margin: 2px 0; }
+
+  .choices { display: flex; flex-direction: column; gap: 8px; }
+  .choice { font-family: 'PT Sans', sans-serif; font-size: 16px; text-align: left; padding: 10px 12px; border-radius: 8px; border: 2px solid var(--rule); background: var(--paper); color: var(--ink); cursor: pointer; }
+  .choice:hover:not(:disabled) { border-color: var(--margin); }
+  .choice.wrong { border-color: var(--bad); background: var(--bad-bg); text-decoration: line-through; cursor: default; }
+  .choice.right { border-color: var(--good); background: var(--good-bg); }
+
+  .btn { font-family: 'PT Sans', sans-serif; font-size: 16px; font-weight: 700; background: var(--margin); color: var(--paper); border: none; border-radius: 8px; padding: 9px 18px; cursor: pointer; margin-top: 10px; }
+  .btn:hover { opacity: 0.9; }
+  .btn.big { font-size: 19px; padding: 12px 22px; }
+  .hint { margin-top: 8px; padding: 8px 11px; border-radius: 6px; background: var(--bad-bg); color: var(--ink); font-size: 15px; }
+  .hint.show-answer { background: var(--margin-soft); }
+  .away-note { margin: 0 0 12px; padding: 9px 12px; border-radius: 8px; border: 2px solid var(--star); background: var(--paper); font-size: 15px; }
+  .praise { margin-top: 12px; font-family: 'Caveat', cursive; font-size: 26px; font-weight: 700; color: var(--good); }
+
+  /* награда */
+  .reward { text-align: center; }
+  .reward h2 { font-family: 'Caveat', cursive; font-size: 40px; margin: 6px 0 0; color: var(--margin); }
+  .drobka-wrap { width: 230px; max-width: 70vw; margin: 0 auto; }
+  .drobka-wrap svg { width: 100%; height: auto; overflow: visible; }
+  .dance { animation: dance 0.9s ease-in-out infinite; transform-origin: 50% 90%; }
+  @keyframes dance { 0%,100% { transform: rotate(-7deg) translateY(0); } 50% { transform: rotate(7deg) translateY(-14px); } }
+  .slice { transition: transform 0.6s cubic-bezier(.3,1.6,.5,1); }
+  .boom .slice { transform: translate(var(--dx), var(--dy)); }
+  .arm-l, .arm-r { transform-box: fill-box; animation: wave 0.45s ease-in-out infinite alternate; }
+  .arm-l { transform-origin: right bottom; }
+  .arm-r { transform-origin: left bottom; animation-delay: 0.2s; }
+  @keyframes wave { from { transform: rotate(-25deg); } to { transform: rotate(25deg); } }
+  .eye { transform-box: fill-box; transform-origin: center; animation: blink 3s infinite; }
+  @keyframes blink { 0%,92%,100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
+  .whole-count { font-family: 'Caveat', cursive; font-size: 26px; font-weight: 700; color: var(--ink); min-height: 36px; margin: 4px 0; }
+  .joke { margin: 14px auto 0; max-width: 460px; padding: 12px 14px; border-radius: 10px; background: var(--mark-bg); font-size: 16px; text-align: left; }
+  .joke b { font-family: 'Caveat', cursive; font-size: 21px; color: var(--mark); }
+  .stickers { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin: 10px 0 4px; }
+  .sticker { width: 64px; height: 64px; border-radius: 50%; border: 2px dashed var(--rule); display: flex; align-items: center; justify-content: center; position: relative; font-family: 'Caveat', cursive; font-size: 28px; color: var(--ink-faint); }
+  .sticker.got { border: 2px solid var(--star); background: var(--paper-raised); }
+  .sticker.new { animation: pop 0.8s ease-out 2; }
+  @keyframes pop { 50% { transform: scale(1.25) rotate(8deg); } }
+  .sticker.got { cursor: pointer; }
+  .sticker.got:hover { transform: scale(1.08); }
+  .sticker.picked { box-shadow: 0 0 0 3px var(--mark); }
+  .sticker svg { width: 50px; height: 50px; }
+  .tok { font-family: 'PT Sans', sans-serif; font-size: 26px; padding: 2px 10px; border-radius: 8px; border: 2px dashed var(--margin); background: var(--paper); color: var(--ink); cursor: pointer; }
+  .tok:hover:not(:disabled) { background: var(--margin-soft); }
+  .tok.wrong { border-style: solid; border-color: var(--bad); background: var(--bad-bg); }
+  .tok.right { border-style: solid; border-color: var(--good); background: var(--good-bg); color: var(--good); }
+  .tok:disabled { cursor: default; }
+  .frac .tok { margin: 3px 0; }
+  .sticker .acc { position: absolute; top: -10px; font-size: 26px; }
+  .report-box { margin-top: 18px; text-align: left; }
+  .report-box pre { white-space: pre-wrap; font-family: 'PT Sans', sans-serif; font-size: 14px; background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; padding: 10px 12px; color: var(--ink); }
+  .sent-note { font-size: 14px; color: var(--good); min-height: 20px; }
+
+  .confetti { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 5; }
+  .confetti i { position: absolute; top: -20px; width: 9px; height: 14px; border-radius: 2px; animation: fall linear forwards; }
+  @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dance, .arm-l, .arm-r, .eye, .sticker.new, .confetti i { animation: none; }
+    .slice { transition: none; }
+  }
+  footer.page { margin-top: 30px; font-size: 12px; color: var(--ink-faint); }
+  footer.page a { color: var(--ink-faint); }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header class="page">
+    <a class="back-link" href="../index.html#games">&larr; к играм</a>
+    <h1>Шаг за шагом: &sect;19</h1>
+    <p class="subtitle">&sect;19. Неправильная дробь &harr; смешанное число &middot; Глава 3 &middot; стр. 96–99 &middot; <b>разминка + 3 задания, в каждом раунде новые числа</b></p>
+  </header>
+
+  <div class="progress"><span id="progress"></span><span class="stars" id="stars"></span></div>
+  <main id="app"></main>
+
+  <footer class="page">Правила — 📖 из учебника (стр. 96–99); подсказки и Дробька — ✏️ мои.</footer>
+</div>
+<div class="confetti" id="confetti"></div>
+
+<script>
+// ---------- помощники ----------
+const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+const shuffle = arr => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = rnd(0, i); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const gcd = (a, b) => b ? gcd(b, a % b) : a;
+const pair = (x, y, a, b) => (x === a && y === b) || (x === b && y === a);
+const plural = (k, f) => { const m10 = k % 10, m100 = k % 100; return f[m10 === 1 && m100 !== 11 ? 0 : m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14) ? 1 : 2]; };
+const E = (hint, code, bad) => ({ hint, code, bad });
+const F = (n, d) => `<span class="frac"><span>${n}</span><span>${d}</span></span>`;
+const MX = (w, n, d) => `<span class="mixed">${w}${F(n, d)}</span>`;
+const IN = name => `<input data-f="${name}" inputmode="numeric" autocomplete="off" maxlength="3">`;
+const FIN = (a, b) => `<span class="frac"><span>${IN(a)}</span><span>${IN(b)}</span></span>`;
+
+// деление с остатком: n : d = q (ост. r), все четыре числа разные; d — от 3 до 9 (таблица умножения), r/d несократимая
+function genDiv() {
+  for (;;) {
+    const d = rnd(3, 9), q = rnd(2, 9), r = rnd(1, d - 1);
+    if (q !== d && q !== r && gcd(r, d) === 1) return { n: q * d + r, d, q, r };
+  }
+}
+
+// ---------- задания раунда ----------
+// Шаги: tap (нажми на число), choice (варианты перемешиваются при показе), inputs (окошки).
+// inputs.check(v) → null, если верно, иначе E(подсказка, код, неверные окошки); sol — верные значения.
+const ROLES = {
+  dividend: { name: 'делимое', desc: 'число, которое делят' },
+  divisor: { name: 'делитель', desc: 'число, на которое делят' },
+  quotient: { name: 'частное', desc: 'результат деления' },
+  remainder: { name: 'остаток', desc: 'то, что осталось после деления' },
+  numer: { name: 'числитель', desc: 'число над дробной чертой' },
+  denom: { name: 'знаменатель', desc: 'число под дробной чертой' },
+};
+const TOK = (v, role) => `<button class="tok" data-role="${role}">${v}</button>`;
+
+function warmup() {
+  const g = genDiv(), f = genDiv();
+  const divBody = `${TOK(g.n, 'dividend')} : ${TOK(g.d, 'divisor')} = ${TOK(g.q, 'quotient')} (ост. ${TOK(g.r, 'remainder')})`;
+  const fracBody = `<span class="frac"><span>${TOK(f.n, 'numer')}</span><span>${TOK(f.d, 'denom')}</span></span>`;
+  const tap = (body, code) => role => ({ type: 'tap', q: `Нажми на ${ROLES[role].name}`, body, correct: role, code });
+  return {
+    title: 'Разминка: как называются числа', label: 'разминка',
+    rule: 'делимое : делитель = частное (ост. остаток). В дроби над чертой — числитель, под чертой — знаменатель; дробная черта — знак деления. (📖)',
+    steps: [
+      ...shuffle(['dividend', 'divisor', 'quotient', 'remainder']).map(tap(divBody, 'term_div')),
+      ...shuffle(['numer', 'denom']).map(tap(fracBody, 'term_frac')),
+      { type: 'choice', q: `В дроби ${f.n}/${f.d} числитель ${f.n} — это…`, options: [
+        { t: 'делимое', ok: true },
+        { t: 'делитель', hint: `Дробная черта — знак деления: ${f.n}/${f.d} = ${f.n} : ${f.d}. Делитель здесь — знаменатель ${f.d}.`, code: 'term_link' },
+        { t: 'частное', hint: `Частное — это результат деления. А ${f.n}/${f.d} = ${f.n} : ${f.d}: на каком месте стоит ${f.n}?`, code: 'term_link' } ] },
+    ],
+  };
+}
+
+function toMixed() {
+  const { n, d, q, r } = genDiv();
+  return {
+    title: 'Преврати в смешанное число', show: F(n, d), label: `${n}/${d} → ${q} ${r}/${d}`,
+    rule: 'Числитель делим на знаменатель с остатком. Частное — целая часть, остаток — числитель, знаменатель остаётся тем же. (📖 стр. 96)',
+    steps: [
+      { type: 'choice', q: 'Шаг 1. Что делаем?', options: [
+        { t: 'делим числитель на знаменатель', ok: true },
+        { t: 'делим знаменатель на числитель', hint: 'Наоборот: делим то, что над чертой, на то, что под чертой.', code: 'rule_swap' },
+        { t: 'складываем числитель и знаменатель', hint: 'Складывать не нужно: дробная черта — это знак деления.', code: 'rule_add' } ] },
+      { type: 'inputs', id: 'div', q: 'Шаг 2. Запиши деление и раздели с остатком',
+        body: `${IN('a')} : ${IN('b')} = ${IN('q')} (ост. ${IN('r')})`, sol: { a: n, b: d, q, r },
+        check: v => {
+          if (v.a === d && v.b === n) return E('Наоборот: делимое — числитель, делитель — знаменатель.', 'rule_swap', ['a', 'b']);
+          if (v.a !== n) return E('Делимое — это числитель дроби.', 'term_div', ['a']);
+          if (v.b !== d) return E('Делитель — это знаменатель дроби.', 'term_div', ['b']);
+          if (v.r >= d) return E(`Остаток ${v.r} не может быть больше или равен ${d} — значит, ${d} помещается в ${n} ещё раз.`, 'rem_big', ['r']);
+          if (v.q * d + v.r !== n) return E(`Проверь: ${d} · ${v.q} + ${v.r} = ${v.q * d + v.r}, а должно быть ${n}.`, 'div_err', ['q', 'r']);
+          return null;
+        },
+        answer: `${n} : ${d} = ${q} (ост. ${r}), потому что ${d} · ${q} = ${d * q}, и ${n} − ${d * q} = ${r}.` },
+      { type: 'inputs', id: 'build', q: 'Шаг 3. Собери смешанное число',
+        body: `<span class="mixed">${IN('w')}${FIN('n', 'd')}</span>`, sol: { w: q, n: r, d },
+        check: v => {
+          if (v.w === r && v.n === q) return E(`Перепутано: частное (${q}) — это целая часть, а остаток (${r}) — числитель.`, 'swap_q_r', ['w', 'n']);
+          if (v.d !== d) return E(`Знаменатель не меняется — он остаётся ${d}.`, 'den_change', ['d']);
+          if (v.w !== q) return E('Целая часть — это частное из шага 2.', 'whole_err', ['w']);
+          if (v.n !== r) return E('Числитель — это остаток из шага 2.', 'num_err', ['n']);
+          return null;
+        },
+        answer: `целая часть ${q} (частное), числитель ${r} (остаток), знаменатель ${d}.` },
+      { type: 'inputs', id: 'check', q: 'Шаг 4. Проверка: вернись к неправильной дроби',
+        body: `${MX(q, r, d)}: ${IN('x')} · ${IN('y')} + ${IN('z')} = ${IN('s')}`, sol: { x: q, y: d, z: r, s: n },
+        check: v => {
+          if (!pair(v.x, v.y, q, d)) return E('Умножаем целую часть на знаменатель.', 'check_mul', ['x', 'y']);
+          if (v.z !== r) return E('Потом прибавляем числитель.', 'check_add', ['z']);
+          if (v.s === q * d) return E(`${q} · ${d} = ${q * d} — верно, но числитель ${r} тоже нужно прибавить.`, 'forgot_add', ['s']);
+          if (v.s !== n) return E(`Посчитай ещё раз: ${q} · ${d} = ?, потом прибавь ${r}.`, 'calc_err', ['s']);
+          return null;
+        },
+        answer: `${q} · ${d} + ${r} = ${q * d} + ${r} = ${n} — как в исходной дроби, значит, всё верно.` },
+    ],
+  };
+}
+
+function toImproper() {
+  let d, n;
+  do { d = rnd(3, 9); n = rnd(1, d - 1); } while (gcd(n, d) !== 1);
+  const w = rnd(2, 9), N = w * d + n;
+  return {
+    title: 'Преврати в неправильную дробь', show: MX(w, n, d), label: `${w} ${n}/${d} → ${N}/${d}`,
+    rule: 'Целую часть умножаем на знаменатель и прибавляем числитель — это новый числитель. Знаменатель тот же. (📖 стр. 97)',
+    steps: [
+      { type: 'choice', q: 'Шаг 1. С чего начинаем?', options: [
+        { t: 'умножаем целую часть на знаменатель', ok: true },
+        { t: 'умножаем целую часть на числитель', hint: 'Умножаем на знаменатель: так узнаём, сколько долей в целых.', code: 'mul_num' },
+        { t: 'складываем все три числа', hint: 'Нет, сначала узнаём, сколько долей в целых, — умножением.', code: 'rule_add' } ] },
+      { type: 'inputs', id: 'mul', q: 'Шаг 2. Умножь целую часть на знаменатель',
+        body: `${IN('x')} · ${IN('y')} = ${IN('p')}`, sol: { x: w, y: d, p: w * d },
+        check: v => {
+          if (pair(v.x, v.y, w, n) && !pair(v.x, v.y, w, d)) return E('Это целая часть и числитель. А умножаем на знаменатель.', 'mul_num', ['x', 'y']);
+          if (!pair(v.x, v.y, w, d)) return E('Целая часть — число перед дробью, знаменатель — под чертой.', 'term_frac', ['x', 'y']);
+          if (v.p !== w * d) return E(`Вспомни таблицу умножения: ${w} · ${d}.`, 'calc_err', ['p']);
+          return null;
+        },
+        answer: `${w} · ${d} = ${w * d}.` },
+      { type: 'inputs', id: 'add', q: 'Шаг 3. Прибавь числитель',
+        body: `${IN('x')} + ${IN('y')} = ${IN('s')}`, sol: { x: w * d, y: n, s: N },
+        check: v => {
+          if (pair(v.x, v.y, w * d, d)) return E('Прибавляем числитель, а не знаменатель.', 'add_den', ['x', 'y']);
+          if (!pair(v.x, v.y, w * d, n)) return E('Складываем результат шага 2 и числитель.', 'add_err', ['x', 'y']);
+          if (v.s !== N) return E(`Посчитай ещё раз: ${w * d} + ${n}.`, 'calc_err', ['s']);
+          return null;
+        },
+        answer: `${w * d} + ${n} = ${N}.` },
+      { type: 'inputs', id: 'frac', q: 'Шаг 4. Запиши неправильную дробь',
+        body: `${MX(w, n, d)} = ${FIN('n', 'd')}`, sol: { n: N, d },
+        check: v => {
+          if (v.d !== d) return E(`Знаменатель не меняется — он остаётся ${d}.`, 'den_change', ['d']);
+          if (v.n === w * d) return E(`${w * d} — это только целые. Числитель ${n} тоже нужно прибавить.`, 'forgot_add', ['n']);
+          if (v.n !== N) return E('Числитель — это число из шага 3.', 'num_err', ['n']);
+          return null;
+        },
+        answer: `${MX(w, n, d)} = ${N}/${d}.` },
+    ],
+  };
+}
+
+const THINGS = [['банка', 'банки', 'банок'], ['книга', 'книги', 'книг'], ['мяч', 'мяча', 'мячей'], ['игрушка', 'игрушки', 'игрушек'], ['тетрадь', 'тетради', 'тетрадей']];
+const BOX = ['коробка', 'коробки', 'коробок'];
+
+function boxes() {
+  // примерно в каждой третьей задаче остатка нет
+  const per = rnd(4, 9), q = rnd(3, 9), r = Math.random() < 0.3 ? 0 : rnd(1, per - 1), total = q * per + r;
+  const th = THINGS[rnd(0, THINGS.length - 1)], nm = k => `${k} ${plural(k, th)}`, ans = r ? q + 1 : q;
+  const steps = [
+    { type: 'inputs', id: 'boxdiv', q: 'Шаг 1. Что на что делим, чтобы узнать количество коробок?',
+      body: `${IN('a')} : ${IN('b')} = ${IN('q')} (ост. ${IN('r')})`, sol: { a: total, b: per, q, r },
+      check: v => {
+        if (v.a === per && v.b === total) return E('Наоборот: всё количество делим на то, сколько помещается в одну коробку.', 'box_swap', ['a', 'b']);
+        if (v.a !== total) return E('Делимое — сколько всего нужно упаковать.', 'box_what', ['a']);
+        if (v.b !== per) return E('Делитель — сколько помещается в одну коробку.', 'box_what', ['b']);
+        if (v.r >= per) return E(`Остаток ${v.r} не может быть больше или равен ${per} — значит, ещё одна полная коробка поместится.`, 'rem_big', ['r']);
+        if (v.q * per + v.r !== total) return E(`Проверь: ${per} · ${v.q} + ${v.r} = ${v.q * per + v.r}, а должно быть ${total}. Если остатка нет, впиши 0.`, 'div_err', ['q', 'r']);
+        return null;
+      },
+      answer: `${total} : ${per} = ${q} (ост. ${r}), потому что ${per} · ${q} = ${per * q}, и ${total} − ${per * q} = ${r}.` },
+    { type: 'choice', q: 'Шаг 2. Остался остаток?', options: [
+      { t: 'да', ok: r > 0, hint: 'Остаток 0 — значит, всё разложилось ровно.', code: 'rem_miss' },
+      { t: 'нет', ok: r === 0, hint: `В шаге 1 остаток ${r}, а не 0.`, code: 'rem_miss' } ] },
+  ];
+  if (r) steps.push({ type: 'choice', q: `Шаг 3. Что делать с остатком (${nm(r)})?`, options: [
+    { t: 'для остатка нужна ещё одна коробка', ok: true },
+    { t: 'остаток можно не считать', hint: 'Их же не выбросишь! Остаток тоже нужно упаковать.', code: 'no_round_up' },
+    { t: 'доложить в полную коробку', hint: `В коробку помещается только ${per} — полная коробка уже полная.`, code: 'no_round_up' } ] });
+  steps.push({ type: 'inputs', id: 'answer', q: `Шаг ${steps.length + 1}. Ответ`,
+    body: `Количество коробок: ${IN('x')}`, sol: { x: ans },
+    check: v => {
+      if (v.x === ans) return null;
+      if (r && v.x === q) return E(`${q} ${plural(q, BOX)} — это только ${per * q}. А куда девать остаток?`, 'no_round_up', ['x']);
+      if (!r && v.x === q + 1) return E('Остатка нет — всё разложилось ровно, лишняя коробка не нужна.', 'extra_box', ['x']);
+      return E(r ? 'Полные коробки (частное) и ещё одна для остатка.' : 'Количество коробок — это частное.', 'calc_err', ['x']);
+    },
+    answer: r ? `${q} полных + 1 для остатка = ${ans}.` : `${ans} — остатка нет.` });
+  return {
+    title: 'Задача', text: `В одну коробку помещается ${nm(per)}. Сколько коробок нужно, чтобы упаковать ${nm(total)}?`,
+    label: `коробки ${total} : ${per}`,
+    rule: 'Делим с остатком. Если что-то осталось — для остатка нужна ещё одна коробка. (📖 задачи как № 359)',
+    steps,
+  };
+}
+
+const MAKERS = [warmup, toMixed, toImproper, boxes];
+const makeRound = () => MAKERS.map(make => make());
+
+const CODE_TEXT = {
+  term_div: 'путал делимое/делитель/частное/остаток',
+  term_frac: 'путал числитель/знаменатель/целую часть',
+  term_link: 'не связал числитель с делимым',
+  rule_swap: 'делил знаменатель на числитель',
+  rule_add: 'хотел сложить вместо деления/умножения',
+  rem_big: 'остаток больше делителя (не доделил деление)',
+  div_err: 'ошибка в делении с остатком',
+  swap_q_r: 'перепутал частное и остаток',
+  den_change: 'менял знаменатель',
+  whole_err: 'ошибка в целой части',
+  num_err: 'ошибка в числителе',
+  check_mul: 'в проверке умножал не те числа',
+  check_add: 'в проверке прибавлял не то число',
+  forgot_add: 'забыл прибавить числитель/остаток',
+  calc_err: 'ошибка в счёте (таблица умножения/сложение)',
+  mul_num: 'умножал на числитель, а не на знаменатель',
+  add_den: 'прибавлял знаменатель вместо числителя',
+  add_err: 'складывал не те числа',
+  box_swap: 'делил наоборот (коробку на количество)',
+  box_what: 'не понял, что на что делить',
+  rem_miss: 'не заметил, есть ли остаток',
+  no_round_up: 'не добавил коробку для остатка',
+  extra_box: 'добавил лишнюю коробку (остатка не было)',
+};
+
+// ✏️ шутки — по одной на наклейку (одобрены пользователем 2026-10-27)
+const JOKES = [
+  'Дробь 7/6 пришла к врачу: «Доктор, мне кажется, я неправильная!» Врач посмотрел: «Ничего страшного, вы просто смешанная — одна целая одна шестая».',
+  'Остаток говорит делителю: «Я всегда меньше тебя. Но без меня твой ответ неполный!»',
+  'Знаменатель на уроке §19 ни разу не поменялся. Учитель поставил ему «5» за стойкость.',
+  'Почему пицца не боится деления? Потому что, даже если её разрезать на 8 кусочков, 8/8 — это всё равно одна целая пицца!',
+  'Мама: «Раздели 7 конфет поровну с братом». Сын: «Нам по 3, а одна — остаток. А остаток по правилам достаётся тому, кто решил задачу!»',
+  'Дробь 9/4 пришла в пиццерию: «Мне 9 кусочков, если пицца режется на 4 части». Повар: «Так это же две целые пиццы и ещё один кусочек!»',
+];
+
+const STICKERS = [
+  { acc: '🎩', name: 'Дробька в шляпе' }, { acc: '😎', name: 'Дробька в очках' }, { acc: '👑', name: 'Дробька-королева' },
+  { acc: '🎧', name: 'Дробька-диджей' }, { acc: '🚀', name: 'Дробька-космонавт' }, { acc: '🛹', name: 'Дробька на скейте' },
+];
+
+// ---------- состояние ----------
+let TASKS = makeRound();
+const S = { round: 1, task: 0, step: 0, tries: 0, taskErrors: 0, stars: [], log: [], history: [], away: [], notice: false, start: Date.now() };
+const app = document.getElementById('app');
+
+function logErr(code) {
+  S.log.push({ round: S.round, task: S.task, code });
+  S.taskErrors++;
+}
+
+function renderProgress() {
+  const p = document.getElementById('progress');
+  if (S.task >= TASKS.length) p.textContent = `Раунд ${S.round} пройден!`;
+  else p.textContent = `Раунд ${S.round} · ` + (S.task === 0 ? 'разминка' : `задание ${S.task} из ${TASKS.length - 1}`);
+  document.getElementById('stars').textContent = S.stars.slice(1).map(n => '★'.repeat(n) + '☆'.repeat(3 - n)).join(' ');
+}
+
+function renderTask(keepErrors) {
+  renderProgress();
+  const t = TASKS[S.task];
+  S.step = 0;
+  if (!keepErrors) S.taskErrors = 0;
+  app.innerHTML = `<div class="card">
+      ${S.notice ? '<div class="away-note">Ты уходил со страницы, поэтому пример заменён новым. Считай в уме или на черновике 🙂</div>' : ''}
+      <p class="task-title">${t.title}</p>
+      ${t.show ? `<div class="task-show">${t.show}</div>` : ''}
+      ${t.text ? `<p class="task-text">${t.text}</p>` : ''}
+      <details class="rule"><summary>Вспомнить правило</summary><p>${t.rule}</p></details>
+      <div id="steps"></div>
+    </div>`;
+  renderStep();
+}
+
+function renderStep() {
+  const st = TASKS[S.task].steps[S.step];
+  S.tries = 0;
+  const el = document.createElement('div');
+  el.className = 'step';
+  if (st.type === 'tap') {
+    el.innerHTML = `<div class="step-q">${st.q}</div><div class="step-body">${st.body}</div><div class="fb"></div>`;
+    el.querySelectorAll('.tok').forEach(b => b.onclick = () => onTap(el, st, b));
+  } else if (st.type === 'choice') {
+    el.innerHTML = `<div class="step-q">${st.q}</div><div class="choices">${
+      shuffle(st.options.map((o, i) => i)).map(i => `<button class="choice" data-i="${i}">${st.options[i].t}</button>`).join('')}</div><div class="fb"></div>`;
+    el.querySelectorAll('.choice').forEach(b => b.onclick = () => onChoice(el, st, b));
+  } else {
+    el.innerHTML = `<div class="step-q">${st.q}</div><div class="step-body">${st.body}</div>
+      <button class="btn">Проверить</button><div class="fb"></div>`;
+    el.querySelector('.btn').onclick = () => onCheck(el, st);
+    el.querySelectorAll('input').forEach(inp => {
+      inp.addEventListener('keydown', e => { if (e.key === 'Enter') onCheck(el, st); });
+      inp.addEventListener('input', () => { inp.value = inp.value.replace(/\D/g, ''); inp.classList.remove('bad'); });
+    });
+  }
+  document.getElementById('steps').appendChild(el);
+  const first = el.querySelector('input'); if (first) first.focus({ preventScroll: true });
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function onTap(el, st, btn) {
+  const role = btn.dataset.role;
+  if (role === st.correct) {
+    btn.classList.add('right');
+    el.querySelectorAll('.tok').forEach(b => b.disabled = true);
+    stepDone(el);
+    return;
+  }
+  btn.classList.add('wrong'); btn.disabled = true;
+  logErr(st.code);
+  const got = ROLES[role], want = ROLES[st.correct];
+  el.querySelector('.fb').innerHTML = `<div class="hint">Это ${got.name} — ${got.desc}. А ${want.name} — ${want.desc}.</div>`;
+}
+
+function onChoice(el, st, btn) {
+  const o = st.options[+btn.dataset.i];
+  if (o.ok) {
+    btn.classList.add('right');
+    el.querySelectorAll('.choice').forEach(b => b.disabled = true);
+    stepDone(el);
+    return;
+  }
+  btn.classList.add('wrong'); btn.disabled = true;
+  logErr(o.code);
+  el.querySelector('.fb').innerHTML = `<div class="hint">${o.hint}</div>`;
+}
+
+function onCheck(el, st) {
+  const inputs = [...el.querySelectorAll('input')];
+  const fb = el.querySelector('.fb');
+  const empty = inputs.filter(x => x.value === '');
+  if (empty.length) {
+    empty.forEach(x => x.classList.add('bad'));
+    fb.innerHTML = '<div class="hint">Заполни все окошки.</div>';
+    return;
+  }
+  const v = {}; inputs.forEach(x => v[x.dataset.f] = parseInt(x.value, 10));
+  const err = st.check(v);
+  if (!err) {
+    inputs.forEach(x => { x.classList.add('ok'); x.disabled = true; });
+    el.querySelector('.btn').remove();
+    stepDone(el);
+    return;
+  }
+  logErr(err.code);
+  S.tries++;
+  inputs.forEach(x => { if (err.bad.includes(x.dataset.f)) x.classList.add('bad'); });
+  // после 3 ошибок показываем решение, но вписать его всё равно нужно самому
+  fb.innerHTML = `<div class="hint">${err.hint}</div>` +
+    (S.tries >= 3 ? `<div class="hint show-answer">Подсказка-решение: ${st.answer} Впиши и нажми «Проверить».</div>` : '');
+}
+
+function stepDone(el) {
+  el.classList.add('done');
+  el.querySelector('.fb').innerHTML = '';
+  S.step++;
+  if (S.step < TASKS[S.task].steps.length) { renderStep(); return; }
+  const stars = S.taskErrors === 0 ? 3 : S.taskErrors <= 2 ? 2 : 1;
+  S.stars[S.task] = stars;
+  renderProgress();
+  const last = S.task + 1 >= TASKS.length;
+  const box = document.createElement('div');
+  box.innerHTML = `<div class="praise">${['Разминка пройдена!', 'Отлично!', 'Молодец!', 'Супер!'][S.task]} ${S.task ? '★'.repeat(stars) : ''}</div>
+    <button class="btn big" id="next">${last ? 'Забрать награду 🎁' : S.task === 0 ? 'К заданиям →' : 'Дальше →'}</button>`;
+  document.getElementById('steps').appendChild(box);
+  box.querySelector('button').onclick = () => {
+    S.task++;
+    S.task < TASKS.length ? renderTask() : renderReward();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// уход со страницы (калькулятор, другая вкладка) дольше 3 с — текущее задание заменяется новым,
+// пройденные задания раунда остаются; на экране награды и после решённого задания не реагируем
+let awaySince = null;
+function goneAway() { if (awaySince === null) awaySince = Date.now(); }
+function cameBack() {
+  if (awaySince === null) return;
+  const sec = (Date.now() - awaySince) / 1000;
+  awaySince = null;
+  if (sec < 3 || S.task >= TASKS.length || S.step >= TASKS[S.task].steps.length) return;
+  S.away.push({ round: S.round, task: S.task });
+  TASKS[S.task] = MAKERS[S.task]();
+  S.notice = true;
+  renderTask(true);
+  S.notice = false;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+window.addEventListener('blur', goneAway);
+window.addEventListener('focus', cameBack);
+document.addEventListener('visibilitychange', () => document.hidden ? goneAway() : cameBack());
+
+function newRound() {
+  S.round++; S.task = 0; S.stars = [];
+  TASKS = makeRound();
+  renderTask();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ---------- Дробька ----------
+function drobkaSVG(mini) {
+  const cx = 100, cy = 100, R = 80, N = 6;
+  const pt = (a, r) => [cx + r * Math.cos(a * Math.PI / 180), cy + r * Math.sin(a * Math.PI / 180)];
+  let slices = '';
+  for (let i = 0; i < N; i++) {
+    const a1 = -90 + i * 360 / N, a2 = a1 + 360 / N, mid = (a1 + a2) / 2;
+    const [x1, y1] = pt(a1, R), [x2, y2] = pt(a2, R), [px, py] = pt(mid, 50), [dx, dy] = pt(mid, 34);
+    slices += `<g class="slice" style="--dx:${(dx - cx).toFixed(1)}px;--dy:${(dy - cy).toFixed(1)}px">
+      <path d="M${cx},${cy} L${x1.toFixed(1)},${y1.toFixed(1)} A${R},${R} 0 0,1 ${x2.toFixed(1)},${y2.toFixed(1)} Z" fill="#f6d27a" stroke="#c98a2e" stroke-width="5" stroke-linejoin="round"/>
+      <circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="9" fill="#c8553d"/></g>`;
+  }
+  const face = `<g><circle class="eye" cx="80" cy="88" r="11" fill="#fff" stroke="#24304a" stroke-width="2"/><circle class="eye" cx="120" cy="88" r="11" fill="#fff" stroke="#24304a" stroke-width="2"/>
+      <circle cx="82" cy="90" r="5" fill="#24304a"/><circle cx="122" cy="90" r="5" fill="#24304a"/>
+      <path d="M80,114 Q100,136 120,114" fill="#8a2f2f" stroke="#24304a" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="66" cy="110" r="6" fill="#f2a0a0" opacity=".7"/><circle cx="134" cy="110" r="6" fill="#f2a0a0" opacity=".7"/></g>`;
+  if (mini) return `<svg viewBox="15 15 170 170">${slices}${face}</svg>`;
+  return `<svg viewBox="-30 -10 260 250" role="img" aria-label="Дробька — пицца, которая танцует">
+    <line class="arm-l" x1="-12" y1="62" x2="24" y2="100" stroke="#c98a2e" stroke-width="7" stroke-linecap="round"/>
+    <line class="arm-r" x1="176" y1="100" x2="212" y2="62" stroke="#c98a2e" stroke-width="7" stroke-linecap="round"/>
+    <line x1="82" y1="176" x2="76" y2="218" stroke="#c98a2e" stroke-width="7" stroke-linecap="round"/>
+    <line x1="118" y1="176" x2="124" y2="218" stroke="#c98a2e" stroke-width="7" stroke-linecap="round"/>
+    <ellipse cx="70" cy="222" rx="14" ry="7" fill="#2f6690"/><ellipse cx="130" cy="222" rx="14" ry="7" fill="#2f6690"/>
+    <g id="pizza">${slices}</g>${face}</svg>`;
+}
+
+function confetti() {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const box = document.getElementById('confetti');
+  const colors = ['#e0a526', '#2f9e8f', '#c85a4f', '#2f6690', '#8f6cc8', '#3c8a5c'];
+  let html = '';
+  for (let i = 0; i < 70; i++) {
+    html += `<i style="left:${Math.random() * 100}%;background:${colors[i % colors.length]};animation-duration:${2.5 + Math.random() * 2.5}s;animation-delay:${Math.random() * 1.5}s"></i>`;
+  }
+  box.innerHTML = html;
+  setTimeout(() => box.innerHTML = '', 7000);
+}
+
+// одна наклейка за каждый пройденный раунд; счётчик только в этом браузере, без хранилища — считаем раунды этого вечера
+function takeSticker() {
+  let got = S.round - 1;
+  try { got = parseInt(localStorage.getItem('drobka_stickers') || '0', 10) || 0; } catch (e) {}
+  const now = Math.min(got + 1, STICKERS.length);
+  try { localStorage.setItem('drobka_stickers', String(now)); } catch (e) {}
+  return { now, isNew: got < STICKERS.length };
+}
+
+const jokeOf = i => JOKES[i % JOKES.length];
+
+function renderReward() {
+  S.history.push({ round: S.round, stars: S.stars.slice(), labels: TASKS.map(t => t.label) });
+  renderProgress();
+  const { now, isNew } = takeSticker();
+  app.innerHTML = `<div class="card reward">
+      <h2>Ура! Раунд ${S.round} пройден!</h2>
+      <div class="drobka-wrap"><div class="dance">${drobkaSVG(false)}</div></div>
+      <div class="whole-count" id="wc">Я Дробька! Смотри, как я делюсь…</div>
+      <p class="hand" style="font-size:22px;margin:16px 0 0">${isNew ? `Новая наклейка: ${STICKERS[now - 1].name}!` : 'Все наклейки собраны! 🏆'}</p>
+      <div class="stickers">${STICKERS.map((s, i) => i < now
+        ? `<div class="sticker got${isNew && i === now - 1 ? ' new picked' : ''}" data-i="${i}" title="${s.name} — нажми, чтобы прочитать шутку">${drobkaSVG(true)}<span class="acc">${s.acc}</span></div>`
+        : `<div class="sticker">?</div>`).join('')}</div>
+      <div class="joke" id="joke"><b>Шутка от ${STICKERS[now - 1].name.replace('Дробька', 'Дробьки')}:</b><br>${jokeOf(now - 1)}</div>
+      <p style="font-size:14px;color:var(--ink-soft);margin:8px 0 0">Нажми на любую открытую наклейку — у каждой своя шутка.</p>
+      ${now < STICKERS.length ? `<button class="btn big" id="again">🔄 Ещё раунд с новыми числами — открыть наклейку ${now + 1}</button>` : `<button class="btn big" id="again">🔄 Ещё раунд с новыми числами</button>`}
+      <div class="report-box">
+        <button class="btn big" id="send">📨 Отправить маме</button>
+        <div class="sent-note" id="sent"></div>
+        <pre id="report"></pre>
+      </div>
+    </div>`;
+  confetti();
+  app.querySelectorAll('.sticker.got').forEach(st => st.onclick = () => {
+    const i = +st.dataset.i;
+    app.querySelectorAll('.sticker').forEach(x => x.classList.remove('picked'));
+    st.classList.add('picked');
+    document.getElementById('joke').innerHTML = `<b>Шутка от ${STICKERS[i].name.replace('Дробька', 'Дробьки')}:</b><br>${jokeOf(i)}`;
+  });
+  document.getElementById('again').onclick = newRound;
+  // Дробька разламывается на 6 кусочков и собирается обратно
+  const pizza = document.getElementById('pizza'), wc = document.getElementById('wc');
+  [
+    [900, () => { pizza.classList.add('boom'); wc.textContent = 'Раз — и я 6 кусочков, 6/6!'; }],
+    [2300, () => { pizza.classList.remove('boom'); wc.textContent = 'А 6/6 — это 1 целая пицца!'; }],
+    [3700, () => { pizza.classList.add('boom'); wc.textContent = 'Делюсь…'; }],
+    [4600, () => { pizza.classList.remove('boom'); wc.textContent = 'Ты умеешь выделять целую часть! 🎉'; }],
+  ].forEach(([ms, fn]) => setTimeout(fn, ms));
+
+  const report = buildReport();
+  document.getElementById('report').textContent = report;
+  document.getElementById('send').onclick = () => sendReport(report);
+}
+
+function buildReport() {
+  const d = new Date(), mins = Math.max(1, Math.round((Date.now() - S.start) / 60000));
+  const date = `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}`;
+  const lines = [`Тренажёр §19 · ${date} · ${mins} мин · раундов: ${S.history.length}`];
+  S.history.forEach(h => {
+    lines.push('', `Раунд ${h.round}: ${h.stars.slice(1).map(n => '★'.repeat(n) + '☆'.repeat(3 - n)).join(' ')}`);
+    const away = S.away.filter(a => a.round === h.round);
+    if (away.length) lines.push(`⚠ уходил со страницы: ${away.length} р. (${away.map(a => a.task ? 'задание ' + a.task : 'разминка').join(', ')})`);
+    h.labels.forEach((label, t) => {
+      const errs = S.log.filter(e => e.round === h.round && e.task === t);
+      if (!errs.length) { lines.push(`• ${label} — ✓`); return; }
+      const byCode = {};
+      errs.forEach(e => byCode[e.code] = (byCode[e.code] || 0) + 1);
+      lines.push(`• ${label} — ` + Object.entries(byCode).map(([c, k]) => `${CODE_TEXT[c] || c} (${k})`).join('; '));
+    });
+  });
+  return lines.join('\n');
+}
+
+async function sendReport(text) {
+  const note = document.getElementById('sent');
+  if (navigator.share) {
+    try { await navigator.share({ title: 'Тренажёр §19', text }); note.textContent = 'Отправлено!'; return; }
+    catch (e) { if (e.name === 'AbortError') return; }
+  }
+  try { await navigator.clipboard.writeText(text); note.textContent = 'Скопировано! Вставь в сообщение маме (Ctrl+V).'; }
+  catch (e) { note.textContent = 'Выдели текст ниже и скопируй его маме.'; }
+}
+
+renderTask();
+</script>
+</body>
+</html>

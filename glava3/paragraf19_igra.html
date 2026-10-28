@@ -373,8 +373,8 @@ const JOKES = [
 ];
 
 const STICKERS = [
-  { acc: '🎩', name: 'Дробька в шляпе' }, { acc: '😎', name: 'Дробька в очках' }, { acc: '👑', name: 'Дробька-королева' },
-  { acc: '🎧', name: 'Дробька-диджей' }, { acc: '🚀', name: 'Дробька-космонавт' }, { acc: '🛹', name: 'Дробька на скейте' },
+  { acc: '🎩', name: 'Дробька в шляпе', of: 'Дробьки в шляпе' }, { acc: '😎', name: 'Дробька в очках', of: 'Дробьки в очках' }, { acc: '👑', name: 'Дробька-королева', of: 'Дробьки-королевы' },
+  { acc: '🎧', name: 'Дробька-диджей', of: 'Дробьки-диджея' }, { acc: '🚀', name: 'Дробька-космонавт', of: 'Дробьки-космонавта' }, { acc: '🛹', name: 'Дробька на скейте', of: 'Дробьки на скейте' },
 ];
 
 // ---------- состояние ----------
@@ -584,6 +584,7 @@ function takeSticker() {
 }
 
 const jokeOf = i => JOKES[i % JOKES.length];
+const ofName = i => STICKERS[i].of;
 
 function renderReward() {
   S.history.push({ round: S.round, stars: S.stars.slice(), labels: TASKS.map(t => t.label) });
@@ -597,7 +598,7 @@ function renderReward() {
       <div class="stickers">${STICKERS.map((s, i) => i < now
         ? `<div class="sticker got${isNew && i === now - 1 ? ' new picked' : ''}" data-i="${i}" title="${s.name} — нажми, чтобы прочитать шутку">${drobkaSVG(true)}<span class="acc">${s.acc}</span></div>`
         : `<div class="sticker">?</div>`).join('')}</div>
-      <div class="joke" id="joke"><b>Шутка от ${STICKERS[now - 1].name.replace('Дробька', 'Дробьки')}:</b><br>${jokeOf(now - 1)}</div>
+      <div class="joke" id="joke"><b>Шутка от ${ofName(now - 1)}:</b><br>${jokeOf(now - 1)}</div>
       <p style="font-size:14px;color:var(--ink-soft);margin:8px 0 0">Нажми на любую открытую наклейку — у каждой своя шутка.</p>
       ${now < STICKERS.length ? `<button class="btn big" id="again">🔄 Ещё раунд с новыми числами — открыть наклейку ${now + 1}</button>` : `<button class="btn big" id="again">🔄 Ещё раунд с новыми числами</button>`}
       <div class="report-box">
@@ -611,7 +612,7 @@ function renderReward() {
     const i = +st.dataset.i;
     app.querySelectorAll('.sticker').forEach(x => x.classList.remove('picked'));
     st.classList.add('picked');
-    document.getElementById('joke').innerHTML = `<b>Шутка от ${STICKERS[i].name.replace('Дробька', 'Дробьки')}:</b><br>${jokeOf(i)}`;
+    document.getElementById('joke').innerHTML = `<b>Шутка от ${ofName(i)}:</b><br>${jokeOf(i)}`;
   });
   document.getElementById('again').onclick = newRound;
   // Дробька разламывается на 6 кусочков и собирается обратно

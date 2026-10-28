@@ -1,0 +1,988 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Математика · §21 · игра</title>
+<link rel="icon" href="data:image/svg+xml,<svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22><text%20y=%22.9em%22%20font-size=%2290%22>🤝</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #faf9f4; --paper-raised: #ffffff; --rule: #b9cfe0; --rule-soft: #dbe8f1;
+    --margin: #2f6690; --margin-soft: #c7dbea; --ink: #24304a; --ink-soft: #647089; --ink-faint: #97a2b8;
+    --good: #3c8a5c; --good-bg: #dff1e5; --bad: #c85a4f; --bad-bg: #fbe4e1;
+    --mark: #2f9e8f; --mark-bg: #d7f0ec; --shadow: rgba(36, 48, 74, 0.14); --star: #e0a526;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1b2431; --paper-raised: #232f3f; --rule: #3c5468; --rule-soft: #29394a;
+      --margin: #7fb1de; --margin-soft: #2c3f4f; --ink: #eceff5; --ink-soft: #a7b2c8; --ink-faint: #6d788e;
+      --good: #6fcb93; --good-bg: #23392c; --bad: #e0847a; --bad-bg: #402b2a;
+      --mark: #5fd0bd; --mark-bg: #1f3d38; --shadow: rgba(0, 0, 0, 0.35); --star: #f0c04a;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1b2431; --paper-raised: #232f3f; --rule: #3c5468; --rule-soft: #29394a;
+    --margin: #7fb1de; --margin-soft: #2c3f4f; --ink: #eceff5; --ink-soft: #a7b2c8; --ink-faint: #6d788e;
+    --good: #6fcb93; --good-bg: #23392c; --bad: #e0847a; --bad-bg: #402b2a;
+    --mark: #5fd0bd; --mark-bg: #1f3d38; --shadow: rgba(0, 0, 0, 0.35); --star: #f0c04a;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: 'PT Sans', Arial, sans-serif; line-height: 1.5; -webkit-tap-highlight-color: transparent; overflow-x: hidden; }
+  h1, .hand { font-family: 'Caveat', 'Comic Sans MS', cursive; font-weight: 700; text-wrap: balance; }
+  .back-link { font-size: 13px; color: var(--ink-faint); text-decoration: none; }
+  .back-link:hover { color: var(--margin); }
+  .sheet { max-width: 640px; margin: 0 auto; padding: 22px 16px 60px 44px; position: relative; min-height: 100vh; }
+  .sheet::before { content: ""; position: absolute; top: 0; bottom: 0; left: 26px; width: 2px; background: var(--margin); opacity: 0.75; }
+  header.page { padding-top: 6px; padding-bottom: 10px; }
+  h1 { font-size: 36px; margin: 0 0 2px; line-height: 1.1; }
+  .subtitle { font-size: 15px; color: var(--ink-soft); margin: 0 0 6px; }
+  .rule-btn { font-family: 'PT Sans', sans-serif; font-size: 14px; background: none; border: 2px solid var(--margin); color: var(--margin); border-radius: 8px; padding: 4px 10px; cursor: pointer; }
+  .rule-btn:hover { background: var(--margin-soft); }
+
+  .progress { display: flex; justify-content: space-between; align-items: center; font-family: 'Caveat', cursive; font-size: 22px; font-weight: 700; color: var(--margin); margin: 10px 0 8px; }
+  .stars { color: var(--star); letter-spacing: 2px; }
+
+  .card { background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 10px; padding: 16px 16px 18px; box-shadow: 1px 2px 0 var(--shadow); }
+  .task-title { font-size: 17px; font-weight: 700; margin: 0 0 6px; }
+  .task-show { font-size: 30px; margin: 6px 0 10px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .task-text { font-size: 16px; margin: 4px 0 10px; }
+
+  .frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; line-height: 1.1; margin: 0 2px; }
+  .frac > span:first-child { border-bottom: 2px solid currentColor; padding: 0 4px 2px; }
+  .frac > span:last-child { padding: 2px 4px 0; }
+  /* дополнительный множитель — маленькая цифра над числителем справа, как в учебнике (стр. 103) */
+  .dm { font-size: 0.55em; vertical-align: super; margin-left: 2px; color: var(--mark); font-weight: 700; }
+  .dm input { font-size: 15px !important; width: 40px !important; padding: 1px 2px !important; vertical-align: super; }
+  .pair { display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+  details.rule { font-size: 14px; color: var(--ink-soft); margin: 0 0 12px; }
+  details.rule summary { cursor: pointer; color: var(--margin); }
+  details.rule p { margin: 6px 0 0; padding: 8px 10px; background: var(--mark-bg); border-radius: 6px; color: var(--ink); }
+
+  .step { border-top: 1px dashed var(--rule); padding: 12px 0 4px; }
+  .step-q { font-weight: 700; font-size: 15px; margin-bottom: 8px; }
+  .step.done { opacity: 0.72; }
+  .step.done .step-q::after { content: "  ✓"; color: var(--good); }
+  .step-body { font-size: 22px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .step-body input { font-family: 'PT Sans', sans-serif; font-size: 22px; width: 58px; text-align: center; padding: 3px 4px; border: 2px solid var(--ink-faint); border-radius: 6px; background: var(--paper); color: var(--ink); }
+  .step-body input:focus { outline: none; border-color: var(--margin); }
+  .step-body input.bad { border-color: var(--bad); background: var(--bad-bg); }
+  .step-body input.ok { border-color: var(--good); background: var(--good-bg); color: var(--good); }
+  .frac input { margin: 2px 0; }
+
+  .choices { display: flex; flex-direction: column; gap: 8px; }
+  .choice { font-family: 'PT Sans', sans-serif; font-size: 16px; text-align: left; padding: 10px 12px; border-radius: 8px; border: 2px solid var(--rule); background: var(--paper); color: var(--ink); cursor: pointer; }
+  .choice:hover:not(:disabled) { border-color: var(--margin); }
+  .choice.wrong { border-color: var(--bad); background: var(--bad-bg); text-decoration: line-through; cursor: default; }
+  .choice.right { border-color: var(--good); background: var(--good-bg); }
+
+  .tok { font-family: 'PT Sans', sans-serif; font-size: 26px; padding: 2px 10px; border-radius: 8px; border: 2px dashed var(--margin); background: var(--paper); color: var(--ink); cursor: pointer; }
+  .dm .tok { font-size: 16px; padding: 0 6px; color: var(--mark); }
+  .tok:hover:not(:disabled) { background: var(--margin-soft); }
+  .tok.wrong { border-style: solid; border-color: var(--bad); background: var(--bad-bg); }
+  .tok.right { border-style: solid; border-color: var(--good); background: var(--good-bg); color: var(--good); }
+  .frac .tok { margin: 3px 0; }
+  .picks { display: flex; gap: 10px; flex-wrap: wrap; font-size: 26px; }
+  .ptok { font-family: 'PT Sans', sans-serif; font-size: 24px; padding: 4px 12px; border-radius: 10px; border: 2px dashed var(--margin); background: var(--paper); color: var(--ink); cursor: pointer; }
+  .ptok:hover { background: var(--margin-soft); }
+  .ptok.sel { border-style: solid; border-color: var(--mark); background: var(--mark-bg); }
+  .ptok.right { border-style: solid; border-color: var(--good); background: var(--good-bg); }
+
+  .btn { font-family: 'PT Sans', sans-serif; font-size: 16px; font-weight: 700; background: var(--margin); color: var(--paper); border: none; border-radius: 8px; padding: 9px 18px; cursor: pointer; margin-top: 10px; }
+  .btn:hover { opacity: 0.9; }
+  .btn.big { font-size: 19px; padding: 12px 22px; }
+  .btn.ghost { background: none; color: var(--margin); border: 2px solid var(--margin); }
+  .hint { margin-top: 8px; padding: 8px 11px; border-radius: 6px; background: var(--bad-bg); color: var(--ink); font-size: 15px; }
+  .hint.show-answer { background: var(--margin-soft); }
+  .away-note { margin: 0 0 12px; padding: 9px 12px; border-radius: 8px; border: 2px solid var(--star); background: var(--paper); font-size: 15px; }
+  .praise { margin-top: 12px; font-family: 'Caveat', cursive; font-size: 26px; font-weight: 700; color: var(--good); }
+
+  /* объяснение правила */
+  .intro-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-family: 'Caveat', cursive; font-size: 22px; font-weight: 700; color: var(--margin); margin: 10px 0 8px; }
+  .skip { font-family: 'PT Sans', sans-serif; font-size: 14px; font-weight: 400; color: var(--ink-faint); background: none; border: none; cursor: pointer; text-decoration: underline; }
+  .intro-h { font-family: 'Caveat', cursive; font-size: 30px; font-weight: 700; margin: 0 0 4px; line-height: 1.15; }
+  .demo-cap p { margin: 8px 0; font-size: 17px; animation: capin 0.4s ease-out both; }
+  @keyframes capin { from { opacity: 0; transform: translateY(6px); } }
+  .demo-big { font-size: 28px; display: inline-flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 4px 6px; vertical-align: middle; }
+  .src { font-size: 13px; color: var(--ink-faint); margin: 8px 0 0; }
+  .sum-row { display: flex; gap: 12px; align-items: center; padding: 10px 0; border-top: 1px dashed var(--rule); font-size: 17px; }
+  .sum-row:first-of-type { border-top: none; }
+  .sum-key { font-family: 'Caveat', cursive; font-size: 34px; font-weight: 700; color: var(--margin); min-width: 46px; text-align: center; }
+  .overlay { position: fixed; inset: 0; background: var(--paper); z-index: 8; overflow-y: auto; }
+  .overlay .sheet { min-height: auto; }
+
+  /* награда */
+  .reward { text-align: center; }
+  .reward h2 { font-family: 'Caveat', cursive; font-size: 40px; margin: 6px 0 0; color: var(--margin); }
+  .hero-wrap { width: 220px; max-width: 64vw; margin: 0 auto; }
+  .hero-wrap svg { width: 100%; height: auto; overflow: visible; }
+  .dance { animation: dance 0.9s ease-in-out infinite; transform-origin: 50% 90%; }
+  @keyframes dance { 0%,100% { transform: rotate(-6deg) translateY(0); } 50% { transform: rotate(6deg) translateY(-12px); } }
+  .arm-l, .arm-r { transform-box: fill-box; animation: wave 0.45s ease-in-out infinite alternate; }
+  .arm-l { transform-origin: right bottom; }
+  .arm-r { transform-origin: left bottom; animation-delay: 0.2s; }
+  @keyframes wave { from { transform: rotate(-25deg); } to { transform: rotate(25deg); } }
+  .eye { transform-box: fill-box; transform-origin: center; animation: blink 3s infinite; }
+  @keyframes blink { 0%,92%,100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
+  .badge { transform-box: fill-box; transform-origin: center; }
+  .badge.pulse { animation: pop 0.5s ease-out; }
+  .whole-count { font-family: 'Caveat', cursive; font-size: 26px; font-weight: 700; color: var(--ink); min-height: 56px; margin: 4px 0; display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; }
+  .joke { margin: 14px auto 0; max-width: 460px; padding: 12px 14px; border-radius: 10px; background: var(--mark-bg); font-size: 16px; text-align: left; }
+  .joke b { font-family: 'Caveat', cursive; font-size: 21px; color: var(--mark); }
+  .stickers { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin: 10px 0 4px; }
+  .sticker { width: 64px; height: 64px; border-radius: 50%; border: 2px dashed var(--rule); display: flex; align-items: center; justify-content: center; position: relative; font-family: 'Caveat', cursive; font-size: 28px; color: var(--ink-faint); }
+  .sticker.got { border: 2px solid var(--star); background: var(--paper-raised); cursor: pointer; }
+  .sticker.new { animation: pop 0.8s ease-out 2; }
+  @keyframes pop { 50% { transform: scale(1.25) rotate(8deg); } }
+  .sticker.got:hover { transform: scale(1.08); }
+  .sticker.picked { box-shadow: 0 0 0 3px var(--mark); }
+  .sticker svg { width: 46px; height: 46px; }
+  .sticker .acc { position: absolute; top: -10px; font-size: 26px; }
+  .sticker.gold { border: 3px solid var(--star); background: radial-gradient(circle at 35% 30%, #fff8dc, #f3c54d 85%); }
+  .sticker.gold-empty { border-color: var(--star); color: var(--star); }
+  .album-h { font-family: 'Caveat', cursive; font-size: 24px; font-weight: 700; color: var(--star); margin: 12px 0 0; }
+  .joke .res { margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--rule); }
+  .joke .res pre { white-space: pre-wrap; font-family: 'PT Sans', sans-serif; font-size: 14px; margin: 4px 0 0; }
+  .report-box { margin-top: 18px; text-align: left; }
+  .report-box pre { white-space: pre-wrap; font-family: 'PT Sans', sans-serif; font-size: 14px; background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; padding: 10px 12px; color: var(--ink); }
+  .sent-note { font-size: 14px; color: var(--good); min-height: 20px; }
+
+  .confetti { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 9; }
+  .confetti i { position: absolute; top: -20px; width: 9px; height: 14px; border-radius: 2px; animation: fall linear forwards; }
+  @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dance, .arm-l, .arm-r, .eye, .sticker.new, .confetti i, .demo-cap p, .badge.pulse { animation: none; }
+  }
+  footer.page { margin-top: 30px; font-size: 12px; color: var(--ink-faint); }
+  footer.page a { color: var(--ink-faint); }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header class="page">
+    <a class="back-link" href="../index.html#games">&larr; к играм</a>
+    <h1>Общий знаменатель: &sect;21</h1>
+    <p class="subtitle">&sect;21. Приведение обыкновенных дробей к общему знаменателю &middot; Глава 3 &middot; стр. 103–105 &middot; <b>сначала правило, потом разминка + 4 задания, в каждом раунде новые числа</b></p>
+    <button class="rule-btn" id="ruleBtn" hidden>🤝 Объяснение правила ещё раз</button>
+  </header>
+
+  <div class="progress"><span id="progress"></span><span class="stars" id="stars"></span></div>
+  <main id="app"></main>
+
+  <footer class="page">Правило (три шага и два коротких случая), пример 1/4 и 3/7 и запись доп. множителя над числителем — 📖 из учебника (стр. 103); задания — как № 382–384 и 390; НОК разложением — 📖 §14–15, стр. 73. Слова объяснения, подсказки и Множик — ✏️ мои.</footer>
+</div>
+<div class="confetti" id="confetti"></div>
+
+<script>
+// ---------- помощники ----------
+const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+const pick = arr => arr[rnd(0, arr.length - 1)];
+const shuffle = arr => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = rnd(0, i); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const gcd = (a, b) => b ? gcd(b, a % b) : a;
+const lcm = (a, b) => a / gcd(a, b) * b;
+const isPrime = n => { if (n < 2) return false; for (let d = 2; d * d <= n; d++) if (n % d === 0) return false; return true; };
+const factor = n => { const f = []; for (let d = 2; n > 1; d++) while (n % d === 0) { f.push(d); n /= d; } return f; };
+const pair = (x, y, a, b) => (x === a && y === b) || (x === b && y === a);
+const E = (hint, code, bad) => ({ hint, code, bad: bad || [] });
+const F = (n, d) => `<span class="frac"><span>${n}</span><span>${d}</span></span>`;
+const FM = (m, k, d) => `<span class="frac"><span>${m}<span class="dm">\\${k}</span></span><span>${d}</span></span>`;
+const IN = name => `<input data-f="${name}" inputmode="numeric" autocomplete="off" maxlength="3">`;
+const FIN = (a, b) => `<span class="frac"><span>${IN(a)}</span><span>${IN(b)}</span></span>`;
+const FMIN = (m, name, d) => `<span class="frac"><span>${m}<span class="dm">\\${IN(name)}</span></span><span>${d}</span></span>`;
+const numerFor = d => { for (;;) { const m = rnd(1, d - 1); if (gcd(m, d) === 1) return m; } };
+const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+const sameSet = (a, b) => a.length === b.length && a.slice().sort((x, y) => x - y).join() === b.slice().sort((x, y) => x - y).join();
+const num = steps => steps.map((s, i) => ({ ...s, q: `Шаг ${i + 1}. ${s.q}` }));
+
+// пары знаменателей из упражнений учебника (№ 382–384, пример стр. 103) — не повторяем
+const BOOK = new Set(['5,25', '12,36', '4,40', '6,42', '20,40', '25,100', '32,96', '70,140', '3,8', '5,7', '5,9', '6,11', '3,10', '7,15', '8,11', '9,20',
+  '4,6', '6,8', '4,10', '6,15', '8,12', '12,16', '10,18', '16,24', '4,7']);
+const key = (a, b) => Math.min(a, b) + ',' + Math.max(a, b);
+function genDivides() { for (;;) { const s = rnd(2, 9), b = s * rnd(2, 8); if (b <= 60 && !BOOK.has(key(s, b))) return [s, b]; } }
+function genCoprime() { for (;;) { const a = rnd(2, 11), b = rnd(2, 12); if (a !== b && gcd(a, b) === 1 && a * b <= 99 && !BOOK.has(key(a, b))) return [a, b]; } }
+function genGeneral() { for (;;) { const a = rnd(4, 24), b = rnd(4, 24); if (a < b && gcd(a, b) > 1 && b % a !== 0 && lcm(a, b) <= 72 && !BOOK.has(key(a, b))) return [a, b]; } }
+
+// ---------- общие шаги «доп. множители» и «новые дроби» (📖 стр. 103, шаги 2 и 3) ----------
+// fr = [{m, d}, {m, d}], N — наименьший общий знаменатель
+function bringSteps(fr, N) {
+  const [A, B] = fr, ka = N / A.d, kb = N / B.d;
+  const multErr = (v, k, fr1, name) => {
+    if (v === k) return null;
+    if (k === 1) return E(`Знаменатель ${fr1.d} уже равен общему: ${N} : ${fr1.d} = 1. Доп. множитель — 1.`, 'mult_err', [name]);
+    if (v === fr1.d && k !== fr1.d) return E(`Доп. множитель — не знаменатель дроби. Раздели общий знаменатель на знаменатель: ${N} : ${fr1.d}.`, 'mult_den', [name]);
+    if (v === N && k !== N) return E(`Доп. множитель — не сам общий знаменатель, а ${N} : ${fr1.d}.`, 'mult_common', [name]);
+    if (v === 0) return E(`На 0 умножать нельзя. ${N} : ${fr1.d} = ?`, 'mult_err', [name]);
+    return E(`Раздели ещё раз: ${N} : ${fr1.d}.`, 'mult_err', [name]);
+  };
+  const typMult = [];
+  if (ka !== kb) typMult.push({ v: { x: kb, y: ka }, code: 'mult_swap' });
+  if (ka !== 1 && A.d !== ka && A.d !== kb) typMult.push({ v: { x: A.d }, code: 'mult_den' });
+  if (N !== ka && N !== kb && N !== A.d) typMult.push({ v: { x: N }, code: 'mult_common' });
+  const fracErr = (a, b, fr1, k, na, nb) => {
+    if (b !== N) return b === fr1.d && k !== 1 ? E(`Знаменатель тоже умножаем на доп. множитель: ${fr1.d} · ${k}.`, 'den_not_mult', [nb]) : E(`У обеих дробей знаменатель должен стать ${N}.`, 'den_err', [nb]);
+    if (a === fr1.m * k) return null;
+    if (a === fr1.m) return E(`Числитель тоже умножаем на доп. множитель: ${fr1.m} · ${k}.`, 'num_not_mult', [na]);
+    if (a === fr1.m + k) return E(`Умножаем, а не прибавляем: ${fr1.m} · ${k}.`, 'add_not_mult', [na]);
+    return E(`Посчитай ещё раз: ${fr1.m} · ${k}.`, 'calc_err', [na]);
+  };
+  const typFrac = [ka !== 1 ? { v: { b1: A.d }, code: 'den_not_mult' } : { v: { b1: 2 * N }, code: 'den_err' }];
+  if (ka !== 1) typFrac.push({ v: { a1: A.m }, code: 'num_not_mult' });
+  if (ka !== 1 && A.m + ka !== A.m * ka) typFrac.push({ v: { a1: A.m + ka }, code: 'add_not_mult' });
+  return [
+    { type: 'inputs', q: 'Найди дополнительные множители и запиши их над числителями', body: `<span class="pair">${FMIN(A.m, 'x', A.d)} и ${FMIN(B.m, 'y', B.d)}</span>`,
+      sol: { x: ka, y: kb }, typ: typMult,
+      check: v => {
+        if (ka !== kb && v.x === kb && v.y === ka) return E('Перепутаны: для каждой дроби делим общий знаменатель на ЕЁ знаменатель.', 'mult_swap', ['x', 'y']);
+        return multErr(v.x, ka, A, 'x') || multErr(v.y, kb, B, 'y');
+      },
+      answer: `${N} : ${A.d} = ${ka}, ${N} : ${B.d} = ${kb}.` },
+    { type: 'inputs', q: 'Умножь числитель и знаменатель каждой дроби на её доп. множитель', body: `<span class="pair">${FM(A.m, ka, A.d)} = ${FIN('a1', 'b1')} &nbsp; ${FM(B.m, kb, B.d)} = ${FIN('a2', 'b2')}</span>`,
+      sol: { a1: A.m * ka, b1: N, a2: B.m * kb, b2: N }, typ: typFrac,
+      check: v => fracErr(v.a1, v.b1, A, ka, 'a1', 'b1') || fracErr(v.a2, v.b2, B, kb, 'a2', 'b2'),
+      answer: `${A.m}·${ka} = ${A.m * ka}, ${A.d}·${ka} = ${N}; ${B.m}·${kb} = ${B.m * kb}, ${B.d}·${kb} = ${N}.` },
+  ];
+}
+
+// шаг 1 в заданиях 1–3: какой случай (заодно — найти главное)
+function caseStep(a, b, ok) {
+  const lo = Math.min(a, b), hi = Math.max(a, b), g = gcd(a, b);
+  const hints = {
+    div: `${hi} : ${lo} нацело не делится.`,
+    cop: `У ${a} и ${b} есть общий делитель ${g} — они не взаимно простые.`,
+    gen: hi % lo === 0 ? `Посмотри: ${hi} делится на ${lo} — это короткий случай.` : `У ${a} и ${b} нет общих делителей, кроме 1, — это короткий случай.`,
+  };
+  return { type: 'choice', q: `Какой это случай? Знаменатели ${a} и ${b}.`, options: [
+    { t: `больший знаменатель ${hi} делится на меньший ${lo}`, ok: ok === 'div', hint: hints.div, code: 'case_err' },
+    { t: `знаменатели ${a} и ${b} взаимно простые`, ok: ok === 'cop', hint: hints.cop, code: 'case_err' },
+    { t: 'ни то, ни другое — ищем НОК разложением', ok: ok === 'gen', hint: hints.gen, code: 'case_err' } ] };
+}
+
+const RULE_MAIN = 'Чтобы привести дроби к наименьшему общему знаменателю: 1) найти НОК знаменателей — это наименьший общий знаменатель; 2) найти доп. множитель каждой дроби: общий знаменатель : знаменатель дроби; 3) умножить числитель и знаменатель на доп. множитель. (📖 стр. 103)';
+const twoFr = (a, b) => shuffle([{ m: numerFor(a), d: a }, { m: numerFor(b), d: b }]);
+const show2 = fr => `${F(fr[0].m, fr[0].d)} и ${F(fr[1].m, fr[1].d)}`;
+const lab2 = (fr, N) => `${fr[0].m}/${fr[0].d} и ${fr[1].m}/${fr[1].d} → ${fr[0].m * N / fr[0].d}/${N} и ${fr[1].m * N / fr[1].d}/${N}`;
+
+// ---------- задания раунда ----------
+const ROLES = {
+  mult: { name: 'дополнительный множитель', desc: 'маленькое число над числителем — на него умножают числитель и знаменатель' },
+  denom: { name: 'знаменатель дроби', desc: 'число под чертой у исходной дроби' },
+  numer: { name: 'числитель дроби', desc: 'число над чертой у исходной дроби' },
+  common: { name: 'общий знаменатель', desc: 'знаменатель, который получился после умножения' },
+  newnum: { name: 'новый числитель', desc: 'числитель после умножения на доп. множитель' },
+};
+const TOK = (v, role) => `<button class="tok" data-role="${role}">${v}</button>`;
+
+function warmup() {
+  const d = rnd(3, 9), m = numerFor(d), k = rnd(2, 6);
+  return {
+    title: 'Разминка: как называются числа', label: 'разминка',
+    show: `<span class="frac"><span>${TOK(m, 'numer')}<span class="dm">\\${TOK(k, 'mult')}</span></span><span>${TOK(d, 'denom')}</span></span> = ${F(TOK(m * k, 'newnum'), TOK(d * k, 'common'))}`,
+    rule: 'Доп. множитель пишут маленькой цифрой над числителем справа. Числитель и знаменатель умножают на него — получается дробь с общим знаменателем. (📖 стр. 103)',
+    steps: [
+      ...shuffle(['mult', 'denom', 'common']).map(role => ({ type: 'tap', q: `Нажми на ${ROLES[role].name}`, correct: role, code: 'term' })),
+      { type: 'choice', q: `Как нашли доп. множитель ${k}?`, options: [
+        { t: `${d * k} : ${d} — общий знаменатель разделили на знаменатель дроби`, ok: true },
+        { t: `${d * k} − ${d} — из общего знаменателя вычли знаменатель`, hint: `${d * k} − ${d} = ${d * k - d}, а не ${k}. Доп. множитель находят делением.`, code: 'mult_how' },
+        { t: `${m * k} : ${m} — новый числитель разделили на числитель`, hint: 'Так тоже выйдет, но новый числитель мы ещё не знаем — он получается в конце. Делим общий знаменатель на знаменатель.', code: 'mult_how' } ] },
+      { type: 'choice', q: 'Наименьший общий знаменатель двух дробей — это…', options: [
+        { t: 'НОК их знаменателей', ok: true },
+        { t: 'НОД их знаменателей', hint: 'НОД меньше знаменателей — на него не разделятся оба знаменателя. Нужен НОК: наименьшее число, которое делится на оба.', code: 'lcm_gcd' },
+        { t: 'сумма их знаменателей', hint: 'Сумма обычно не делится на оба знаменателя: 4 + 6 = 10, а 10 на 4 не делится. Нужен НОК.', code: 'lcm_sum' } ] },
+    ],
+  };
+}
+
+function divides() {
+  const [lo, hi] = genDivides(), fr = twoFr(lo, hi), k = hi / lo;
+  return {
+    title: 'Приведи к наименьшему общему знаменателю', show: show2(fr), label: `делится: ${lab2(fr, hi)}`,
+    rule: RULE_MAIN + ' Если больший знаменатель делится на меньший — он и есть наименьший общий знаменатель (📖 стр. 103). Задания как № 382.',
+    steps: num([
+      caseStep(fr[0].d, fr[1].d, 'div'),
+      { type: 'inputs', q: 'Проверь делением', body: `${IN('x')} : ${IN('y')} = ${IN('k')}`, sol: { x: hi, y: lo, k },
+        typ: [{ v: { x: lo, y: hi }, code: 'div_swap' }, { v: { k: k + 1 }, code: 'calc_err' }],
+        check: v => {
+          if (v.x === lo && v.y === hi) return E('Наоборот: больший знаменатель делим на меньший.', 'div_swap', ['x', 'y']);
+          if (v.x !== hi || v.y !== lo) return E(`Делим больший знаменатель (${hi}) на меньший (${lo}).`, 'case_what', ['x', 'y']);
+          if (v.k !== k) return E(`Вспомни таблицу умножения: ${lo} · ? = ${hi}.`, 'calc_err', ['k']);
+          return null;
+        },
+        answer: `${hi} : ${lo} = ${k} — делится нацело.` },
+      { type: 'inputs', q: 'Наименьший общий знаменатель', body: `Общий знаменатель: ${IN('n')}`, sol: { n: hi },
+        typ: [{ v: { n: lo * hi }, code: 'not_least' }, { v: { n: lo }, code: 'too_small' }],
+        check: v => {
+          if (v.n === hi) return null;
+          if (v.n === lo * hi) return E(`${lo} · ${hi} тоже общий знаменатель, но не наименьший: ${hi} уже делится на ${lo}.`, 'not_least', ['n']);
+          if (v.n === lo) return E(`${lo} не делится на ${hi}. Общий знаменатель должен делиться на оба знаменателя.`, 'too_small', ['n']);
+          return E(`Больший знаменатель делится на меньший — он и есть общий знаменатель.`, 'den_err', ['n']);
+        },
+        answer: `${hi} — больший знаменатель.` },
+      ...bringSteps(fr, hi),
+    ]),
+  };
+}
+
+function coprime() {
+  const [a, b] = genCoprime(), fr = twoFr(a, b), N = a * b;
+  return {
+    title: 'Приведи к наименьшему общему знаменателю', show: show2(fr), label: `взаимно простые: ${lab2(fr, N)}`,
+    rule: RULE_MAIN + ' Если знаменатели взаимно простые — наименьший общий знаменатель равен их произведению (📖 стр. 103). Задания как № 383.',
+    steps: num([
+      caseStep(fr[0].d, fr[1].d, 'cop'),
+      { type: 'inputs', q: 'Знаменатели взаимно простые — перемножь их', body: `${IN('x')} · ${IN('y')} = ${IN('p')}`, sol: { x: fr[0].d, y: fr[1].d, p: N },
+        typ: [{ v: { p: a + b }, code: 'add_not_mult' }, { v: { p: N + 1 }, code: 'calc_err' }],
+        check: v => {
+          if (!pair(v.x, v.y, a, b)) return E(`Перемножаем знаменатели: ${a} и ${b}.`, 'case_what', ['x', 'y']);
+          if (v.p === a + b) return E('Умножаем, а не складываем.', 'add_not_mult', ['p']);
+          if (v.p !== N) return E(`Вспомни таблицу умножения: ${a} · ${b}.`, 'calc_err', ['p']);
+          return null;
+        },
+        answer: `${a} · ${b} = ${N}.` },
+      ...bringSteps(fr, N),
+    ]),
+  };
+}
+
+// разложение «столбиком» (📖 §14): столько окошек, сколько простых множителей
+function factorStep(n) {
+  const f = factor(n), names = f.map((_, i) => 'f' + i);
+  const nextPrime = p => { do p++; while (!isPrime(p)); return p; };
+  const typ = [{ v: Object.fromEntries(names.map((nm, i) => [nm, i === names.length - 1 ? nextPrime(f[i]) : f[i]])), code: 'factor_err' }];
+  if (f.length >= 2) typ.push({ v: Object.fromEntries(names.map((nm, i) => [nm, i === 0 ? 1 : i === 1 ? f[0] * f[1] : f[i]])), code: 'one_factor' });
+  return { type: 'inputs', q: `Разложи ${n} на простые множители`, body: `${n} = ${names.map(IN).join(' · ')}`, sol: Object.fromEntries(names.map((nm, i) => [nm, f[i]])), typ,
+    check: v => {
+      const vals = names.map(nm => v[nm]);
+      if (vals.includes(1)) return E('1 — не простое число, в разложение его не пишут.', 'one_factor', names.filter(nm => v[nm] === 1));
+      const bad = names.filter(nm => !isPrime(v[nm]));
+      if (bad.length) return E(`${v[bad[0]]} — составное число, его тоже раскладывают.`, 'not_prime', bad);
+      const p = vals.reduce((x, y) => x * y, 1);
+      if (p !== n) return E(`Перемножь: получилось ${p}, а должно быть ${n}.`, 'factor_err', names);
+      return null;
+    },
+    answer: `${n} = ${f.join(' · ')}.` };
+}
+
+function general() {
+  const [a, b] = genGeneral(), fr = twoFr(a, b), N = lcm(a, b), fN = factor(N);
+  const hi = Math.max(a, b), lo = Math.min(a, b), names = fN.map((_, i) => 'g' + i);
+  const wrongSet = fN.slice(); wrongSet[wrongSet.length - 1] = 2;
+  return {
+    title: 'Приведи к наименьшему общему знаменателю', show: show2(fr), label: `НОК: ${lab2(fr, N)}`,
+    rule: RULE_MAIN + ' НОК: разложить числа на простые множители, выписать множители одного числа и добавить недостающие из другого (📖 стр. 73). Задания как № 384.',
+    steps: num([
+      caseStep(fr[0].d, fr[1].d, 'gen'),
+      factorStep(lo),
+      factorStep(hi),
+      { type: 'inputs', q: `НОК(${lo}; ${hi}): выпиши множители ${hi} и добавь недостающие из ${lo}`,
+        body: `НОК = ${names.map(IN).join(' · ')} = ${IN('n')}`, sol: { ...Object.fromEntries(names.map((nm, i) => [nm, fN[i]])), n: N },
+        typ: [{ v: Object.fromEntries(names.map((nm, i) => [nm, wrongSet[i]])), code: 'lcm_missing' }, { v: { n: lo * hi }, code: 'not_least' }],
+        check: v => {
+          const vals = names.map(nm => v[nm]);
+          const bad = names.filter(nm => !isPrime(v[nm]));
+          if (bad.length) return E(`${v[bad[0]]} — не простое число. Пиши простые множители из разложений.`, 'not_prime', bad);
+          const p = vals.reduce((x, y) => x * y, 1);
+          if (p % lo || p % hi || !sameSet(vals, fN)) return E(`Не хватает множителей. ${hi} = ${factor(hi).join(' · ')}, ${lo} = ${factor(lo).join(' · ')}. Возьми все множители ${hi} и добавь из ${lo} те, которых не хватает.`, 'lcm_missing', names);
+          if (v.n === lo * hi) return E(`${lo} · ${hi} — общий знаменатель, но не наименьший. Перемножь множители, которые выписал.`, 'not_least', ['n']);
+          if (v.n !== N) return E('Перемножь выписанные множители ещё раз.', 'calc_err', ['n']);
+          return null;
+        },
+        answer: `НОК = ${fN.join(' · ')} = ${N}.` },
+      ...bringSteps(fr, N),
+    ]),
+  };
+}
+
+// обратное задание (как № 390): выбрать две дроби с заданным наименьшим общим знаменателем
+function choosePair() {
+  for (;;) {
+    const [a, b] = pick([genDivides, genCoprime, genGeneral])(), N = lcm(a, b);
+    const ds = [a, b];
+    for (let t = 0; ds.length < 6 && t < 300; t++) {
+      const d = rnd(3, 30);
+      if (!ds.includes(d) && ds.every(x => lcm(x, d) !== N)) ds.push(d);
+    }
+    if (ds.length < 6) continue;
+    const frs = shuffle(ds.map(d => ({ m: numerFor(d), d })));
+    const target = frs.filter(f => f.d === a || f.d === b);
+    const wrong = [frs.find(f => f.d !== a && f.d !== b), frs.find(f => f.d === a)];
+    return {
+      title: 'Выбери две дроби', text: `Из этих дробей выбери две, у которых наименьший общий знаменатель равен <b>${N}</b>, и приведи их к нему.`,
+      label: `выбрать пару для ${N}: ${lab2(target, N)}`,
+      show: `<div class="picks">${frs.map((f, i) => `<button class="ptok" data-pick="${i}">${F(f.m, f.d)}</button>`).join('')}</div>`,
+      rule: RULE_MAIN + ' Наименьший общий знаменатель = НОК знаменателей: проверяй пары знаменателей. Задания как № 390.',
+      steps: num([
+        { type: 'pick2', q: `Нажми на две дроби, у которых наименьший общий знаменатель ${N}`, frs, N, ok: [frs.indexOf(target[0]), frs.indexOf(target[1])],
+          typ: [{ pick: [frs.indexOf(wrong[0]), frs.indexOf(wrong[1])], code: 'pick_err' }],
+          answer: `${F(target[0].m, target[0].d)} и ${F(target[1].m, target[1].d)}: НОК(${target[0].d}; ${target[1].d}) = ${N}.` },
+        { type: 'inputs', q: 'Проверь: найди НОК знаменателей выбранных дробей', body: `НОК(${IN('x')}; ${IN('y')}) = ${IN('n')}`, sol: { x: target[0].d, y: target[1].d, n: N },
+          typ: [{ v: { n: a * b === N ? N + 1 : a * b }, code: a * b === N ? 'calc_err' : 'not_least' }],
+          check: v => {
+            if (!pair(v.x, v.y, a, b)) return E('Впиши знаменатели двух дробей, которые выбрал.', 'case_what', ['x', 'y']);
+            if (v.n === N) return null;
+            if (v.n === a * b) return E(`${a} · ${b} — общий знаменатель, но не наименьший.`, 'not_least', ['n']);
+            return E(`Найди наименьшее число, которое делится и на ${a}, и на ${b}.`, 'calc_err', ['n']);
+          },
+          answer: `НОК(${a}; ${b}) = ${N}.` },
+        ...bringSteps(target, N),
+      ]),
+    };
+  }
+}
+
+const MAKERS = [warmup, divides, coprime, general, choosePair];
+const makeRound = () => MAKERS.map(make => make());
+
+const CODE_TEXT = {
+  term: 'путал доп. множитель / знаменатель / общий знаменатель',
+  mult_how: 'не знал, как найти доп. множитель',
+  lcm_gcd: 'путал НОК и НОД',
+  lcm_sum: 'думал, что общий знаменатель — сумма',
+  case_err: 'не узнал случай (делится / взаимно простые / общий)',
+  case_what: 'брал не те числа',
+  div_swap: 'делил меньший знаменатель на больший',
+  not_least: 'брал произведение вместо НОК (не наименьший)',
+  too_small: 'брал меньший знаменатель за общий',
+  den_err: 'ошибка в общем знаменателе',
+  add_not_mult: 'складывал вместо умножения',
+  calc_err: 'ошибка в счёте (таблица умножения)',
+  one_factor: 'писал 1 в разложение',
+  not_prime: 'оставлял составные множители',
+  factor_err: 'ошибка в разложении',
+  lcm_missing: 'в НОК не хватало множителей',
+  mult_swap: 'перепутал доп. множители дробей',
+  mult_den: 'брал знаменатель вместо доп. множителя',
+  mult_common: 'брал общий знаменатель вместо доп. множителя',
+  mult_err: 'ошибка в доп. множителе',
+  den_not_mult: 'не умножил знаменатель',
+  num_not_mult: 'не умножил числитель',
+  pick_err: 'выбрал пару с другим общим знаменателем',
+};
+
+// ✏️ шутки — по одной на наклейку (одобрены пользователем 2026-10-28)
+const JOKES = [
+  'Дробь 1/4 жалуется: «Хочу дружить с 3/7, а у нас разные знаменатели!» Множик: «Не беда — наденьте обе знаменатель 28, и будете как близнецы!»',
+  'Множик нарисовал портрет дроби 1/2, умножив всё на 3. Дробь посмотрела: «3/6? Непохоже… Хотя нет, это точно я!»',
+  'Мама разрезала кекс на 4 части, папа — на 6. Множик говорит: «Режьте на 12 — тогда никто не запутается!»',
+  'Почему доп. множитель сидит над числителем? Чтобы его видели все: он в этом оркестре главный!',
+  'Знаменатели 4 и 9 спорят, кто главнее. Множик: «Хватит спорить! Встаньте вместе — будет 36!»',
+  'Ученик сложил знаменатели 3 и 5 и получил 8. Восьмёрка обиделась: «Я не делюсь ни на 3, ни на 5 — не зовите меня в общие!»',
+];
+
+const STICKERS = [
+  { acc: '🎈', name: 'Множик с шариком', of: 'Множика с шариком' }, { acc: '🎨', name: 'Множик-художник', of: 'Множика-художника' },
+  { acc: '🧁', name: 'Множик с кексом', of: 'Множика с кексом' }, { acc: '🎻', name: 'Множик-скрипач', of: 'Множика-скрипача' },
+  { acc: '🏀', name: 'Множик-баскетболист', of: 'Множика-баскетболиста' }, { acc: '🌟', name: 'Множик-звезда', of: 'Множика-звезды' },
+];
+
+// ---------- движок шагов (общий для объяснения и для игры) ----------
+function makeCtx(host, steps, onErr, onFinish) {
+  const ctx = { host, stepsEl: host.querySelector('.steps'), steps, i: 0, tries: 0, cur: null, onErr, onFinish, picked: [] };
+  host.addEventListener('click', e => onHostClick(ctx, e));
+  return ctx;
+}
+function runSteps(ctx) { ctx.i = 0; nextStep(ctx); }
+function nextStep(ctx) { ctx.i < ctx.steps.length ? renderStep(ctx, ctx.steps[ctx.i]) : ctx.onFinish(); }
+
+function renderStep(ctx, st) {
+  ctx.tries = 0; ctx.cur = st; ctx.picked = [];
+  const el = document.createElement('div');
+  el.className = 'step';
+  ctx.stepEl = el;
+  ctx.host.querySelectorAll('[data-role]').forEach(b => b.classList.remove('wrong', 'right'));
+  if (st.type === 'tap' || st.type === 'pick2') {
+    el.innerHTML = `<div class="step-q">${st.q}</div><div class="fb"></div>`;
+  } else if (st.type === 'choice') {
+    el.innerHTML = `<div class="step-q">${st.q}</div><div class="choices">${
+      shuffle(st.options.map((o, i) => i)).map(i => `<button class="choice" data-i="${i}">${st.options[i].t}</button>`).join('')}</div><div class="fb"></div>`;
+    el.querySelectorAll('.choice').forEach(b => b.onclick = () => onChoice(ctx, el, st, b));
+  } else {
+    el.innerHTML = `<div class="step-q">${st.q}</div><div class="step-body">${st.body}</div>
+      <button class="btn">Проверить</button><div class="fb"></div>`;
+    el.querySelector('.btn').onclick = () => onCheck(ctx, el, st);
+    el.querySelectorAll('input').forEach(inp => {
+      inp.addEventListener('keydown', e => { if (e.key === 'Enter') onCheck(ctx, el, st); });
+      inp.addEventListener('input', () => { inp.value = inp.value.replace(/\D/g, ''); inp.classList.remove('bad'); });
+    });
+  }
+  ctx.stepsEl.appendChild(el);
+  const first = el.querySelector('input'); if (first) first.focus({ preventScroll: true });
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function onHostClick(ctx, e) {
+  const st = ctx.cur;
+  if (!st) return;
+  if (st.type === 'tap') {
+    const b = e.target.closest('[data-role]');
+    if (b && ctx.host.contains(b) && !b.classList.contains('wrong')) onTap(ctx, st, b);
+  } else if (st.type === 'pick2') {
+    const b = e.target.closest('[data-pick]');
+    if (b && ctx.host.contains(b)) onPick(ctx, st, b);
+  }
+}
+
+function onTap(ctx, st, b) {
+  const role = b.dataset.role;
+  if (role === st.correct) { b.classList.add('right'); stepDone(ctx); return; }
+  b.classList.add('wrong');
+  ctx.onErr(st.code);
+  const got = ROLES[role], want = ROLES[st.correct];
+  ctx.stepEl.querySelector('.fb').innerHTML = `<div class="hint">Это ${got.name} — ${got.desc}. А ${want.name} — ${want.desc}.</div>`;
+}
+
+// выбор двух дробей: после второго нажатия проверяем пару
+function onPick(ctx, st, b) {
+  const i = +b.dataset.pick, fb = ctx.stepEl.querySelector('.fb');
+  if (ctx.picked.includes(i)) { ctx.picked = ctx.picked.filter(x => x !== i); b.classList.remove('sel'); return; }
+  ctx.picked.push(i); b.classList.add('sel');
+  if (ctx.picked.length < 2) { fb.innerHTML = ''; return; }
+  const [x, y] = ctx.picked.map(j => st.frs[j]);
+  if (pair(ctx.picked[0], ctx.picked[1], st.ok[0], st.ok[1])) {
+    ctx.host.querySelectorAll('[data-pick]').forEach(t => { t.classList.remove('sel'); if (ctx.picked.includes(+t.dataset.pick)) t.classList.add('right'); });
+    stepDone(ctx);
+    return;
+  }
+  ctx.onErr('pick_err'); ctx.tries++;
+  ctx.picked = [];
+  ctx.host.querySelectorAll('[data-pick]').forEach(t => t.classList.remove('sel'));
+  fb.innerHTML = `<div class="hint">НОК(${x.d}; ${y.d}) = ${lcm(x.d, y.d)}, а нужно ${st.N}. Попробуй другую пару.</div>` +
+    (ctx.tries >= 3 ? `<div class="hint show-answer">Подсказка-решение: ${st.answer} Нажми на них.</div>` : '');
+}
+
+function onChoice(ctx, el, st, btn) {
+  const o = st.options[+btn.dataset.i];
+  if (o.ok) {
+    btn.classList.add('right');
+    el.querySelectorAll('.choice').forEach(b => b.disabled = true);
+    stepDone(ctx);
+    return;
+  }
+  btn.classList.add('wrong'); btn.disabled = true;
+  ctx.onErr(o.code);
+  el.querySelector('.fb').innerHTML = `<div class="hint">${o.hint}</div>`;
+}
+
+function onCheck(ctx, el, st) {
+  if (ctx.cur !== st) return;
+  const inputs = [...el.querySelectorAll('input')];
+  const fb = el.querySelector('.fb');
+  const empty = inputs.filter(x => x.value === '');
+  if (empty.length) {
+    empty.forEach(x => x.classList.add('bad'));
+    fb.innerHTML = '<div class="hint">Заполни все окошки.</div>';
+    return;
+  }
+  const v = {}; inputs.forEach(x => v[x.dataset.f] = parseInt(x.value, 10));
+  const err = st.check(v);
+  if (!err) {
+    inputs.forEach(x => { x.classList.add('ok'); x.disabled = true; });
+    el.querySelector('.btn').remove();
+    stepDone(ctx);
+    return;
+  }
+  ctx.onErr(err.code);
+  ctx.tries++;
+  inputs.forEach(x => { if (err.bad.includes(x.dataset.f)) x.classList.add('bad'); });
+  // после 3 ошибок показываем решение, но вписать его всё равно нужно самому
+  fb.innerHTML = `<div class="hint">${err.hint}</div>` +
+    (ctx.tries >= 3 ? `<div class="hint show-answer">Подсказка-решение: ${st.answer} Впиши и нажми «Проверить».</div>` : '');
+}
+
+function stepDone(ctx) {
+  const el = ctx.stepEl;
+  ctx.cur = null;
+  el.classList.add('done');
+  el.querySelector('.fb').innerHTML = '';
+  ctx.i++;
+  nextStep(ctx);
+}
+
+// ---------- объяснение правила (📖 стр. 103: пример 1/4 и 3/7, три шага, два случая; слова — ✏️) ----------
+const SLIDES = [
+  { h: 'Что такое общий знаменатель',
+    demo: [
+      [300, cap => cap(`<span class="demo-big">${F(1, 4)} и ${F(3, 7)}</span>У этих дробей разные знаменатели — 4 и 7 (📖 стр. 103). Такие дроби трудно сравнивать и складывать.`)],
+      [2200, cap => cap('Их можно записать с одним и тем же знаменателем: <b>28, 56, 84…</b> — каждое из этих чисел делится и на 4, и на 7. Это <b>общие знаменатели</b>.')],
+      [4300, cap => cap('Обычно берут самый маленький — <b>наименьший общий знаменатель</b>. Для 4 и 7 это 28.')],
+    ],
+    steps: [
+      { type: 'choice', q: `Теперь ты: какое число может быть общим знаменателем для ${F(1, 3)} и ${F(1, 5)}?`, options: [
+        { t: '15', ok: true },
+        { t: '8', hint: '8 — это 3 + 5. Но 8 не делится ни на 3, ни на 5. Общий знаменатель делится на оба знаменателя.', code: 'lcm_sum' },
+        { t: '5', hint: '5 делится на 5, но не делится на 3. Нужно число, которое делится на оба знаменателя.', code: 'too_small' } ] } ] },
+  { h: 'Шаг 1 — НОК знаменателей',
+    demo: [
+      [300, cap => cap('Наименьший общий знаменатель — это <b>НОК знаменателей</b>: самое маленькое число, которое делится на оба.')],
+      [2200, cap => cap('4 и 7 — взаимно простые, поэтому НОК(4; 7) = 4 · 7 = <b>28</b>.')],
+    ],
+    steps: [
+      { type: 'inputs', q: `Теперь ты: наименьший общий знаменатель для ${F(1, 2)} и ${F(4, 9)}`, body: `НОК(2; 9) = ${IN('n')}`, sol: { n: 18 },
+        typ: [{ v: { n: 11 }, code: 'lcm_sum' }],
+        check: v => v.n === 18 ? null : v.n === 11 ? E('Складывать не нужно. 2 и 9 взаимно простые — перемножь их.', 'lcm_sum', ['n']) : E('2 и 9 взаимно простые: НОК = 2 · 9.', 'calc_err', ['n']),
+        answer: '2 · 9 = 18.' } ] },
+  { h: 'Шаг 2 — дополнительный множитель',
+    demo: [
+      [300, cap => cap('Доп. множитель = <b>общий знаменатель : знаменатель дроби</b>.')],
+      [2000, cap => cap(`Для ${F(1, 4)}: 28 : 4 = 7. Пишем 7 маленькой цифрой над числителем справа: <span class="demo-big">${FM(1, 7, 4)}</span>`)],
+      [4200, cap => cap(`Для ${F(3, 7)}: 28 : 7 = 4 → <span class="demo-big">${FM(3, 4, 7)}</span>`)],
+    ],
+    steps: [
+      { type: 'inputs', q: `Теперь ты: общий знаменатель 18. Найди доп. множитель для ${F(1, 2)}`, body: `18 : ${IN('d')} = ${IN('k')}`, sol: { d: 2, k: 9 },
+        typ: [{ v: { d: 1 }, code: 'mult_den' }],
+        check: v => v.d !== 2 ? E('Делим на знаменатель дроби — число под чертой.', 'mult_den', ['d']) : v.k !== 9 ? E('18 : 2 = ?', 'calc_err', ['k']) : null,
+        answer: '18 : 2 = 9.' } ] },
+  { h: 'Шаг 3 — умножаем числитель и знаменатель',
+    demo: [
+      [300, cap => cap('Числитель и знаменатель умножаем на доп. множитель:')],
+      [1800, cap => cap(`<span class="demo-big">${FM(1, 7, 4)} = ${F('1·7', '4·7')} = ${F(7, 28)}</span>`)],
+      [3600, cap => cap(`<span class="demo-big">${FM(3, 4, 7)} = ${F('3·4', '7·4')} = ${F(12, 28)}</span>Теперь у дробей общий знаменатель 28 (📖 стр. 103).`)],
+    ],
+    steps: [
+      { type: 'inputs', q: 'Теперь ты: умножь числитель и знаменатель на 9', body: `${FM(1, 9, 2)} = ${FIN('a', 'b')}`, sol: { a: 9, b: 18 },
+        typ: [{ v: { a: 1 }, code: 'num_not_mult' }, { v: { b: 2 }, code: 'den_not_mult' }],
+        check: v => v.b !== 18 ? E(v.b === 2 ? 'Знаменатель тоже умножаем: 2 · 9.' : '2 · 9 = ?', v.b === 2 ? 'den_not_mult' : 'calc_err', ['b']) : v.a !== 9 ? E(v.a === 1 ? 'Числитель тоже умножаем: 1 · 9.' : '1 · 9 = ?', v.a === 1 ? 'num_not_mult' : 'calc_err', ['a']) : null,
+        answer: `${F(9, 18)}.` } ] },
+  { h: 'Два коротких случая',
+    demo: [
+      [300, cap => cap('📖 Если <b>больший знаменатель делится на меньший</b> — он и есть наименьший общий знаменатель. ✏️ Например, 2/3 и 5/12: 12 : 3 = 4 → общий знаменатель 12.')],
+      [2600, cap => cap('📖 Если знаменатели <b>взаимно простые</b> — общий знаменатель равен их произведению. ✏️ Например, 1/2 и 3/5: 2 · 5 = 10.')],
+      [4800, cap => cap('Если ни то, ни другое — ищем НОК разложением на простые множители, как в §15.')],
+    ],
+    steps: [
+      { type: 'choice', q: `Теперь ты: наименьший общий знаменатель для ${F(1, 4)} и ${F(3, 8)}`, options: [
+        { t: '8 — потому что 8 делится на 4', ok: true },
+        { t: '32 — перемножить 4 и 8', hint: '32 — тоже общий знаменатель, но не наименьший: 8 уже делится на 4.', code: 'not_least' },
+        { t: '12 — сложить 4 и 8', hint: '12 не делится на 8. Складывать знаменатели нельзя.', code: 'lcm_sum' } ] } ] },
+];
+
+let introOpen = false, introTimers = [];
+function clearIntroTimers() { introTimers.forEach(clearTimeout); introTimers = []; }
+
+function renderIntro(container, onEnd, canSkip, endLabel) {
+  introOpen = true;
+  let idx = 0;
+  const finish = () => { clearIntroTimers(); introOpen = false; try { localStorage.setItem('mnozhik_intro_done', '1'); } catch (e) {} onEnd(); };
+  const top = () => `<div class="intro-top"><span>Сначала правило · ${idx + 1} из ${SLIDES.length + 1}</span>${canSkip ? '<button class="skip" data-skip>пропустить →</button>' : ''}</div>`;
+  function show() {
+    clearIntroTimers();
+    if (idx >= SLIDES.length) { summary(); return; }
+    const sl = SLIDES[idx];
+    container.innerHTML = `${top()}<div class="card">
+        <p class="intro-h">${sl.h}</p>
+        <div class="demo-cap"></div>
+        <button class="btn ghost" data-replay hidden>▶ Показать ещё раз</button>
+        <button class="btn big" data-try hidden>Понятно, теперь я сам →</button>
+        <div class="steps"></div>
+      </div>`;
+    const card = container.querySelector('.card');
+    const ctx = makeCtx(card, sl.steps, () => S.introErr++, () => {
+      const b = document.createElement('div');
+      b.innerHTML = `<div class="praise">Верно!</div><button class="btn big">Дальше →</button>`;
+      ctx.stepsEl.appendChild(b);
+      b.querySelector('button').onclick = () => { idx++; show(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+      b.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+    window.__introCtx = ctx;
+    const capEl = card.querySelector('.demo-cap');
+    const cap = html => capEl.insertAdjacentHTML('beforeend', `<p>${html}</p>`);
+    const replay = card.querySelector('[data-replay]'), tryBtn = card.querySelector('[data-try]');
+    function play() {
+      clearIntroTimers(); capEl.innerHTML = '';
+      const fast = reduceMotion();
+      sl.demo.forEach(([ms, fn], i) => introTimers.push(setTimeout(() => {
+        fn(cap);
+        if (i === sl.demo.length - 1) { replay.hidden = false; tryBtn.hidden = false; }
+      }, fast ? 0 : ms)));
+    }
+    replay.onclick = play;
+    tryBtn.onclick = () => {
+      clearIntroTimers();
+      if (!capEl.children.length || capEl.children.length < sl.demo.length) { capEl.innerHTML = ''; sl.demo.forEach(([, fn]) => fn(cap)); }
+      replay.hidden = true; tryBtn.hidden = true;
+      runSteps(ctx);
+    };
+    play();
+  }
+  function summary() {
+    container.innerHTML = `${top()}<div class="card">
+        <p class="intro-h">Запомни</p>
+        <div class="sum-row"><span class="sum-key">1</span><span>Найти <b>НОК знаменателей</b> — это наименьший общий знаменатель.</span></div>
+        <div class="sum-row"><span class="sum-key">2</span><span><b>Доп. множитель</b> = общий знаменатель : знаменатель дроби. Пишем над числителем справа: ${FM(1, 7, 4)}</span></div>
+        <div class="sum-row"><span class="sum-key">3</span><span><b>Умножить</b> числитель и знаменатель на доп. множитель: ${F(7, 28)}</span></div>
+        <div class="sum-row"><span class="sum-key">⚡</span><span>Больший знаменатель делится на меньший → он и есть общий. Знаменатели взаимно простые → перемножить.</span></div>
+        <p class="src">Правило и пример — 📖 стр. 103. Слова объяснения и примеры 2/3 и 5/12, 1/2 и 3/5 — ✏️ мои.</p>
+        <button class="btn big" data-go>${endLabel}</button>
+      </div>`;
+    container.querySelector('[data-go]').onclick = finish;
+  }
+  container.onclick = e => { if (e.target.closest('[data-skip]')) finish(); };
+  show();
+}
+
+// ---------- игра ----------
+let TASKS = makeRound();
+const S = { round: 1, task: 0, stars: [], log: [], history: [], away: [], notice: false, start: Date.now(), introErr: 0, introSeen: true };
+const app = document.getElementById('app');
+let ctx = null;
+
+function logErr(code) {
+  S.log.push({ round: S.round, task: S.task, code });
+  S.taskErrors++;
+}
+
+function renderProgress() {
+  const p = document.getElementById('progress');
+  if (S.task >= TASKS.length) p.textContent = `Раунд ${S.round} пройден!`;
+  else p.textContent = `Раунд ${S.round} · ` + (S.task === 0 ? 'разминка' : `задание ${S.task} из ${TASKS.length - 1}`);
+  document.getElementById('stars').textContent = S.stars.slice(1).map(n => '★'.repeat(n) + '☆'.repeat(3 - n)).join(' ');
+}
+
+function renderTask(keepErrors) {
+  renderProgress();
+  const t = TASKS[S.task];
+  if (!keepErrors) S.taskErrors = 0;
+  app.innerHTML = `<div class="card">
+      ${S.notice ? '<div class="away-note">Ты уходил со страницы, поэтому задание заменено новым. Считай в уме или на черновике 🙂</div>' : ''}
+      <p class="task-title">${t.title}</p>
+      ${t.text ? `<p class="task-text">${t.text}</p>` : ''}
+      ${t.show ? `<div class="task-show">${t.show}</div>` : ''}
+      <details class="rule"><summary>Вспомнить правило</summary><p>${t.rule}</p></details>
+      <div class="steps"></div>
+    </div>`;
+  ctx = makeCtx(app.querySelector('.card'), t.steps, logErr, taskDone);
+  runSteps(ctx);
+}
+
+function taskDone() {
+  const stars = S.taskErrors === 0 ? 3 : S.taskErrors <= 2 ? 2 : 1;
+  S.stars[S.task] = stars;
+  renderProgress();
+  const last = S.task + 1 >= TASKS.length;
+  const box = document.createElement('div');
+  box.innerHTML = `<div class="praise">${['Разминка пройдена!', 'Отлично!', 'Молодец!', 'Супер!', 'Класс!'][S.task]} ${S.task ? '★'.repeat(stars) : ''}</div>
+    <button class="btn big" id="next">${last ? 'Забрать награду 🎁' : S.task === 0 ? 'К заданиям →' : 'Дальше →'}</button>`;
+  ctx.stepsEl.appendChild(box);
+  box.querySelector('button').onclick = () => {
+    S.task++;
+    S.task < TASKS.length ? renderTask() : renderReward();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// уход со страницы (калькулятор, другая вкладка) дольше 3 с — текущее задание заменяется новым,
+// пройденные задания раунда остаются; на экране награды, в объяснении и после решённого задания не реагируем
+let awaySince = null;
+function goneAway() { if (awaySince === null) awaySince = Date.now(); }
+function cameBack() {
+  if (awaySince === null) return;
+  const sec = (Date.now() - awaySince) / 1000;
+  awaySince = null;
+  if (sec < 3 || introOpen || !ctx || S.task >= TASKS.length || ctx.i >= ctx.steps.length) return;
+  S.away.push({ round: S.round, task: S.task });
+  TASKS[S.task] = MAKERS[S.task]();
+  S.notice = true;
+  renderTask(true);
+  S.notice = false;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+window.addEventListener('blur', goneAway);
+window.addEventListener('focus', cameBack);
+document.addEventListener('visibilitychange', () => document.hidden ? goneAway() : cameBack());
+
+function newRound() {
+  S.round++; S.task = 0; S.stars = [];
+  TASKS = makeRound();
+  renderTask();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ---------- Множик (✏️ человечек-дробь с доп. множителем над головой) ----------
+function mnozhikSVG(mini) {
+  const body = `<rect x="55" y="40" width="90" height="62" rx="14" fill="#7fd3c4" stroke="#2f7f72" stroke-width="4"/>
+    <rect x="44" y="104" width="112" height="9" rx="4.5" fill="#24304a"/>
+    <rect x="55" y="115" width="90" height="56" rx="14" fill="#9fc4ea" stroke="#2f6690" stroke-width="4"/>
+    <circle class="eye" cx="84" cy="68" r="9" fill="#fff" stroke="#24304a" stroke-width="2"/><circle class="eye" cx="116" cy="68" r="9" fill="#fff" stroke="#24304a" stroke-width="2"/>
+    <circle cx="86" cy="70" r="4.5" fill="#24304a"/><circle cx="118" cy="70" r="4.5" fill="#24304a"/>
+    <path d="M88,86 Q100,96 112,86" fill="none" stroke="#8a2f2f" stroke-width="3.5" stroke-linecap="round"/>
+    <circle cx="70" cy="82" r="5" fill="#f2a0a0" opacity=".7"/><circle cx="130" cy="82" r="5" fill="#f2a0a0" opacity=".7"/>`;
+  if (mini) return `<svg viewBox="38 34 124 142">${body}</svg>`;
+  return `<svg viewBox="0 0 220 230" role="img" aria-label="Множик — дробь с доп. множителем над головой, которая танцует">
+    <line class="arm-l" x1="20" y1="100" x2="55" y2="125" stroke="#2f6690" stroke-width="7" stroke-linecap="round"/>
+    <line class="arm-r" x1="145" y1="125" x2="182" y2="100" stroke="#2f6690" stroke-width="7" stroke-linecap="round"/>
+    <line x1="82" y1="171" x2="76" y2="206" stroke="#2f6690" stroke-width="7" stroke-linecap="round"/>
+    <line x1="118" y1="171" x2="124" y2="206" stroke="#2f6690" stroke-width="7" stroke-linecap="round"/>
+    <ellipse cx="70" cy="210" rx="14" ry="7" fill="#2f9e8f"/><ellipse cx="130" cy="210" rx="14" ry="7" fill="#2f9e8f"/>
+    ${body}
+    <g class="badge" id="badge"><circle cx="162" cy="30" r="22" fill="#f3c54d" stroke="#b8862b" stroke-width="3"/>
+    <text id="badgeT" x="162" y="38" text-anchor="middle" font-family="PT Sans, sans-serif" font-weight="700" font-size="22" fill="#24304a">×2</text></g></svg>`;
+}
+
+function confetti() {
+  if (reduceMotion()) return;
+  const box = document.getElementById('confetti');
+  const colors = ['#e0a526', '#2f9e8f', '#c85a4f', '#2f6690', '#8f6cc8', '#3c8a5c'];
+  let html = '';
+  for (let i = 0; i < 70; i++) {
+    html += `<i style="left:${Math.random() * 100}%;background:${colors[i % colors.length]};animation-duration:${2.5 + Math.random() * 2.5}s;animation-delay:${Math.random() * 1.5}s"></i>`;
+  }
+  box.innerHTML = html;
+  setTimeout(() => box.innerHTML = '', 7000);
+}
+
+// ---------- альбом: 6 обычных наклеек, потом 6 золотых — только за раунд, где везде не меньше ★★ ----------
+// localStorage этого браузера: [{ g: золотая, d: 'дд.мм', t: результат раунда — как в отчёте маме }]
+const ALBUM_KEY = 'mnozhik_album', OLD_KEY = 'mnozhik_stickers', GOLD_RULE = 'в каждом задании не меньше ★★';
+const MINI = () => mnozhikSVG(true);
+let albumMem = null; // если хранилище недоступно — альбом живёт до закрытия вкладки
+const ddmm = () => { const d = new Date(); return `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}`; };
+const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+function loadAlbum() {
+  if (albumMem) return albumMem;
+  let a = null;
+  try { a = JSON.parse(localStorage.getItem(ALBUM_KEY) || 'null'); } catch (e) {}
+  if (Array.isArray(a)) return a;
+  let old = 0;
+  try { old = parseInt(localStorage.getItem(OLD_KEY) || '0', 10) || 0; } catch (e) {}
+  return Array.from({ length: Math.min(old, STICKERS.length) }, () => ({ g: 0, d: '', t: '' }));
+}
+function takeSticker(ok, text) {
+  const album = loadAlbum(), N = STICKERS.length;
+  let idx = -1;
+  if (album.length < N || (album.length < 2 * N && ok)) { album.push({ g: album.length >= N ? 1 : 0, d: ddmm(), t: text }); idx = album.length - 1; }
+  albumMem = album;
+  try { localStorage.setItem(ALBUM_KEY, JSON.stringify(album)); } catch (e) {}
+  return { album, idx };
+}
+function albumHTML(album, idx) {
+  const N = STICKERS.length;
+  const cell = i => album[i]
+    ? `<div class="sticker got${album[i].g ? ' gold' : ''}${i === idx ? ' new picked' : ''}" data-i="${i}" title="${STICKERS[i % N].name} — нажми: шутка и результат">${MINI()}<span class="acc">${STICKERS[i % N].acc}</span></div>`
+    : `<div class="sticker${i >= N ? ' gold-empty' : ''}">?</div>`;
+  const row = from => `<div class="stickers">${STICKERS.map((s, i) => cell(from + i)).join('')}</div>`;
+  return row(0) + (album.length >= N ? `<p class="album-h">✨ Золотой альбом — за раунд, где ${GOLD_RULE}</p>${row(N)}` : '');
+}
+function stickerInfo(album, i) {
+  const s = album[i], st = STICKERS[i % STICKERS.length];
+  return `<b>${s.g ? '✨ ' : ''}Шутка от ${st.of}:</b><br>${JOKES[i % JOKES.length]}
+    <div class="res"><b>Результат за эту наклейку${s.d ? ' · ' + s.d : ''}:</b><pre>${s.t ? esc(s.t) : 'не сохранился — наклейка получена, когда игра ещё не запоминала результаты'}</pre></div>`;
+}
+function albumTitle(album, idx) {
+  const N = STICKERS.length;
+  if (idx >= 0) return `Новая ${album[idx].g ? 'золотая ' : ''}наклейка: ${STICKERS[idx % N].name}!`;
+  if (album.length >= 2 * N) return 'Все наклейки собраны, и золотые тоже! 🏆';
+  return `Золотая наклейка — за раунд, где ${GOLD_RULE}. В этот раз не вышло — попробуй ещё!`;
+}
+function againText(album) {
+  const N = STICKERS.length;
+  return '🔄 Ещё раунд с новыми числами' + (album.length < N ? ` — открыть наклейку ${album.length + 1}` : album.length < 2 * N ? ' — за золотой наклейкой' : '');
+}
+function bindAlbum(album) {
+  app.querySelectorAll('.sticker.got').forEach(st => st.onclick = () => {
+    app.querySelectorAll('.sticker').forEach(x => x.classList.remove('picked'));
+    st.classList.add('picked');
+    document.getElementById('joke').innerHTML = stickerInfo(album, +st.dataset.i);
+  });
+}
+
+function renderReward() {
+  S.history.push({ round: S.round, stars: S.stars.slice(), labels: TASKS.map(t => t.label) });
+  ctx = null;
+  renderProgress();
+  const h = S.history[S.history.length - 1];
+  const { album, idx } = takeSticker(h.stars.slice(1).every(n => n >= 2), roundLines(h).join('\n'));
+  const shown = idx >= 0 ? idx : album.length - 1;
+  app.innerHTML = `<div class="card reward">
+      <h2>Ура! Раунд ${S.round} пройден!</h2>
+      <div class="hero-wrap"><div class="dance">${mnozhikSVG(false)}</div></div>
+      <div class="whole-count" id="wc">Я Множик! Смотри, что я умею…</div>
+      <p class="hand" style="font-size:22px;margin:16px 0 0">${albumTitle(album, idx)}</p>
+      ${albumHTML(album, idx)}
+      <div class="joke" id="joke">${shown >= 0 ? stickerInfo(album, shown) : ''}</div>
+      <p style="font-size:14px;color:var(--ink-soft);margin:8px 0 0">Нажми на любую открытую наклейку — увидишь шутку и результат, за который она получена.</p>
+      <button class="btn big" id="again">${againText(album)}</button>
+      <div class="report-box">
+        <button class="btn big" id="send">📨 Отправить маме</button>
+        <div class="sent-note" id="sent"></div>
+        <pre id="report"></pre>
+      </div>
+    </div>`;
+  confetti();
+  bindAlbum(album);
+  document.getElementById('again').onclick = newRound;
+  // доп. множитель над головой меняется: 1/2 = 2/4 = 3/6 = 4/8 — дробь та же
+  const badge = document.getElementById('badge'), bt = document.getElementById('badgeT'), wc = document.getElementById('wc');
+  [2, 3, 4].forEach((k, i) => setTimeout(() => {
+    bt.textContent = '×' + k;
+    badge.classList.remove('pulse'); void badge.getBBox(); badge.classList.add('pulse');
+    wc.innerHTML = `${FM(1, k, 2)} = ${F(k, 2 * k)}`;
+  }, 800 + i * 1200));
+  setTimeout(() => { wc.innerHTML = `${F(1, 2)} = ${F(2, 4)} = ${F(3, 6)} = ${F(4, 8)} — дробь та же, запись другая! 🎉`; }, 4600);
+
+  const report = buildReport();
+  document.getElementById('report').textContent = report;
+  document.getElementById('send').onclick = () => sendReport(report);
+}
+
+function buildReport() {
+  const mins = Math.max(1, Math.round((Date.now() - S.start) / 60000));
+  const lines = [`Тренажёр §21 · ${ddmm()} · ${mins} мин · раундов: ${S.history.length}`];
+  lines.push(S.introSeen ? `Объяснение правила пройдено, ошибок в нём: ${S.introErr}` : 'Объяснение правила пропущено (уже проходил раньше)');
+  S.history.forEach(h => lines.push('', ...roundLines(h)));
+  return lines.join('\n');
+}
+
+// строки отчёта об одном раунде — они же сохраняются у наклейки
+function roundLines(h) {
+  const lines = [`Раунд ${h.round}: ${h.stars.slice(1).map(n => '★'.repeat(n) + '☆'.repeat(3 - n)).join(' ')}`];
+  const away = S.away.filter(a => a.round === h.round);
+  if (away.length) lines.push(`⚠ уходил со страницы: ${away.length} р. (${away.map(a => a.task ? 'задание ' + a.task : 'разминка').join(', ')})`);
+  h.labels.forEach((label, t) => {
+    const errs = S.log.filter(e => e.round === h.round && e.task === t);
+    if (!errs.length) { lines.push(`• ${label} — ✓`); return; }
+    const byCode = {};
+    errs.forEach(e => byCode[e.code] = (byCode[e.code] || 0) + 1);
+    lines.push(`• ${label} — ` + Object.entries(byCode).map(([c, k]) => `${CODE_TEXT[c] || c} (${k})`).join('; '));
+  });
+  return lines;
+}
+
+async function sendReport(text) {
+  const note = document.getElementById('sent');
+  if (navigator.share) {
+    try { await navigator.share({ title: 'Тренажёр §21', text }); note.textContent = 'Отправлено!'; return; }
+    catch (e) { if (e.name === 'AbortError') return; }
+  }
+  try { await navigator.clipboard.writeText(text); note.textContent = 'Скопировано! Вставь в сообщение маме (Ctrl+V).'; }
+  catch (e) { note.textContent = 'Выдели текст ниже и скопируй его маме.'; }
+}
+
+// ---------- старт: сначала объяснение правила ----------
+const ruleBtn = document.getElementById('ruleBtn');
+function startGame() {
+  ruleBtn.hidden = false;
+  renderTask();
+  window.scrollTo({ top: 0 });
+}
+ruleBtn.onclick = () => {
+  // объяснение поверх игры: задание под ним не сбрасывается
+  const ov = document.createElement('div');
+  ov.className = 'overlay';
+  ov.innerHTML = '<div class="sheet"><div></div></div>';
+  document.body.appendChild(ov);
+  renderIntro(ov.querySelector('.sheet > div'), () => ov.remove(), true, 'Вернуться к игре →');
+};
+let seenBefore = false;
+try { seenBefore = localStorage.getItem('mnozhik_intro_done') === '1'; } catch (e) {}
+document.getElementById('progress').textContent = '';
+renderIntro(app, startGame, seenBefore, 'Начать игру ▶');
+// «пропустить» при первом старте недоступно; если пропустили позже — отметим в отчёте
+app.addEventListener('click', e => { if (e.target.closest('[data-skip]')) S.introSeen = false; }, true);
+</script>
+</body>
+</html>

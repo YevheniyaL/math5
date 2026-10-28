@@ -1,0 +1,1028 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Математика · §20 · игра</title>
+<link rel="icon" href="data:image/svg+xml,<svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22><text%20y=%22.9em%22%20font-size=%2290%22>📏</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #faf9f4; --paper-raised: #ffffff; --rule: #b9cfe0; --rule-soft: #dbe8f1;
+    --margin: #2f6690; --margin-soft: #c7dbea; --ink: #24304a; --ink-soft: #647089; --ink-faint: #97a2b8;
+    --good: #3c8a5c; --good-bg: #dff1e5; --bad: #c85a4f; --bad-bg: #fbe4e1;
+    --mark: #2f9e8f; --mark-bg: #d7f0ec; --shadow: rgba(36, 48, 74, 0.14); --star: #e0a526;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1b2431; --paper-raised: #232f3f; --rule: #3c5468; --rule-soft: #29394a;
+      --margin: #7fb1de; --margin-soft: #2c3f4f; --ink: #eceff5; --ink-soft: #a7b2c8; --ink-faint: #6d788e;
+      --good: #6fcb93; --good-bg: #23392c; --bad: #e0847a; --bad-bg: #402b2a;
+      --mark: #5fd0bd; --mark-bg: #1f3d38; --shadow: rgba(0, 0, 0, 0.35); --star: #f0c04a;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1b2431; --paper-raised: #232f3f; --rule: #3c5468; --rule-soft: #29394a;
+    --margin: #7fb1de; --margin-soft: #2c3f4f; --ink: #eceff5; --ink-soft: #a7b2c8; --ink-faint: #6d788e;
+    --good: #6fcb93; --good-bg: #23392c; --bad: #e0847a; --bad-bg: #402b2a;
+    --mark: #5fd0bd; --mark-bg: #1f3d38; --shadow: rgba(0, 0, 0, 0.35); --star: #f0c04a;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: 'PT Sans', Arial, sans-serif; line-height: 1.5; -webkit-tap-highlight-color: transparent; overflow-x: hidden; }
+  h1, .hand { font-family: 'Caveat', 'Comic Sans MS', cursive; font-weight: 700; text-wrap: balance; }
+  .back-link { font-size: 13px; color: var(--ink-faint); text-decoration: none; }
+  .back-link:hover { color: var(--margin); }
+  .sheet { max-width: 640px; margin: 0 auto; padding: 22px 16px 60px 44px; position: relative; min-height: 100vh; }
+  .sheet::before { content: ""; position: absolute; top: 0; bottom: 0; left: 26px; width: 2px; background: var(--margin); opacity: 0.75; }
+  header.page { padding-top: 6px; padding-bottom: 10px; }
+  h1 { font-size: 36px; margin: 0 0 2px; line-height: 1.1; }
+  .subtitle { font-size: 15px; color: var(--ink-soft); margin: 0 0 6px; }
+  .rule-btn { font-family: 'PT Sans', sans-serif; font-size: 14px; background: none; border: 2px solid var(--margin); color: var(--margin); border-radius: 8px; padding: 4px 10px; cursor: pointer; }
+  .rule-btn:hover { background: var(--margin-soft); }
+
+  .progress { display: flex; justify-content: space-between; align-items: center; font-family: 'Caveat', cursive; font-size: 22px; font-weight: 700; color: var(--margin); margin: 10px 0 8px; }
+  .stars { color: var(--star); letter-spacing: 2px; }
+
+  .card { background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 10px; padding: 16px 16px 18px; box-shadow: 1px 2px 0 var(--shadow); }
+  .task-title { font-size: 17px; font-weight: 700; margin: 0 0 6px; }
+  .task-show { font-size: 30px; margin: 6px 0 10px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .task-text { font-size: 16px; margin: 4px 0 10px; }
+
+  .frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; line-height: 1.1; margin: 0 2px; }
+  .frac > span:first-child { border-bottom: 2px solid currentColor; padding: 0 4px 2px; }
+  .frac > span:last-child { padding: 2px 4px 0; }
+  .mixed { display: inline-flex; align-items: center; gap: 2px; }
+
+  details.rule { font-size: 14px; color: var(--ink-soft); margin: 0 0 12px; }
+  details.rule summary { cursor: pointer; color: var(--margin); }
+  details.rule p { margin: 6px 0 0; padding: 8px 10px; background: var(--mark-bg); border-radius: 6px; color: var(--ink); }
+
+  /* координатный луч */
+  .ray { margin: 4px 0 6px; touch-action: manipulation; }
+  .ray svg { width: 100%; height: auto; display: block; overflow: visible; user-select: none; -webkit-user-select: none; }
+  .ray.clickable svg { cursor: crosshair; }
+  .r-line { stroke: var(--ink); stroke-width: 2.5; fill: none; }
+  .r-dash { stroke: var(--ink-faint); stroke-width: 2.5; stroke-dasharray: 4 5; }
+  .r-arrow { fill: var(--ink); }
+  .r-tick { stroke: var(--ink); stroke-width: 2.5; }
+  .r-mtick { stroke: var(--ink); stroke-width: 1.8; }
+  .r-new { animation: tickin 0.35s ease-out both; transform-box: fill-box; transform-origin: center; }
+  @keyframes tickin { from { opacity: 0; transform: scaleY(0); } }
+  .r-lab { fill: var(--ink); font: 18px 'PT Sans', sans-serif; }
+  .r-flab { fill: var(--margin); font: 15px 'PT Sans', sans-serif; }
+  .r-fline { stroke: var(--margin); stroke-width: 1.5; }
+  .r-o { fill: var(--ink); font: italic 700 18px 'PT Sans', sans-serif; }
+  .r-name { fill: var(--margin); font: italic 700 18px 'PT Sans', sans-serif; }
+  .r-pt { fill: var(--margin); }
+  .r-hl { stroke: var(--mark); stroke-width: 11; stroke-opacity: 0.45; stroke-linecap: round; }
+  .r-cross { stroke: var(--bad); stroke-width: 3.5; stroke-linecap: round; }
+  .r-ring { fill: none; stroke: var(--star); stroke-width: 3.5; animation: ring 1s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+  @keyframes ring { 50% { transform: scale(1.35); } }
+  .stok { fill: var(--mark); fill-opacity: 0; cursor: pointer; }
+  .stok:hover { fill-opacity: 0.14; }
+  .stok.wrong { fill: var(--bad); fill-opacity: 0.25; }
+  .stok.right { fill: var(--good); fill-opacity: 0.3; }
+
+  .step { border-top: 1px dashed var(--rule); padding: 12px 0 4px; }
+  .step-q { font-weight: 700; font-size: 15px; margin-bottom: 8px; }
+  .step.done { opacity: 0.72; }
+  .step.done .step-q::after { content: "  ✓"; color: var(--good); }
+  .step-body { font-size: 22px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .step-body input { font-family: 'PT Sans', sans-serif; font-size: 22px; width: 58px; text-align: center; padding: 3px 4px; border: 2px solid var(--ink-faint); border-radius: 6px; background: var(--paper); color: var(--ink); }
+  .step-body input:focus { outline: none; border-color: var(--margin); }
+  .step-body input.bad { border-color: var(--bad); background: var(--bad-bg); }
+  .step-body input.ok { border-color: var(--good); background: var(--good-bg); color: var(--good); }
+  .frac input { margin: 2px 0; }
+  .mark-q { font-size: 15px; color: var(--ink-soft); }
+
+  .choices { display: flex; flex-direction: column; gap: 8px; }
+  .choice { font-family: 'PT Sans', sans-serif; font-size: 16px; text-align: left; padding: 10px 12px; border-radius: 8px; border: 2px solid var(--rule); background: var(--paper); color: var(--ink); cursor: pointer; }
+  .choice:hover:not(:disabled) { border-color: var(--margin); }
+  .choice.wrong { border-color: var(--bad); background: var(--bad-bg); text-decoration: line-through; cursor: default; }
+  .choice.right { border-color: var(--good); background: var(--good-bg); }
+
+  .btn { font-family: 'PT Sans', sans-serif; font-size: 16px; font-weight: 700; background: var(--margin); color: var(--paper); border: none; border-radius: 8px; padding: 9px 18px; cursor: pointer; margin-top: 10px; }
+  .btn:hover { opacity: 0.9; }
+  .btn.big { font-size: 19px; padding: 12px 22px; }
+  .btn.ghost { background: none; color: var(--margin); border: 2px solid var(--margin); }
+  .hint { margin-top: 8px; padding: 8px 11px; border-radius: 6px; background: var(--bad-bg); color: var(--ink); font-size: 15px; }
+  .hint.show-answer { background: var(--margin-soft); }
+  .away-note { margin: 0 0 12px; padding: 9px 12px; border-radius: 8px; border: 2px solid var(--star); background: var(--paper); font-size: 15px; }
+  .praise { margin-top: 12px; font-family: 'Caveat', cursive; font-size: 26px; font-weight: 700; color: var(--good); }
+
+  /* объяснение правила */
+  .intro-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-family: 'Caveat', cursive; font-size: 22px; font-weight: 700; color: var(--margin); margin: 10px 0 8px; }
+  .skip { font-family: 'PT Sans', sans-serif; font-size: 14px; font-weight: 400; color: var(--ink-faint); background: none; border: none; cursor: pointer; text-decoration: underline; }
+  .intro-h { font-family: 'Caveat', cursive; font-size: 30px; font-weight: 700; margin: 0 0 4px; line-height: 1.15; }
+  .demo-cap p { margin: 6px 0; font-size: 17px; animation: capin 0.4s ease-out both; }
+  @keyframes capin { from { opacity: 0; transform: translateY(6px); } }
+  .demo-count { font-family: 'Caveat', cursive; font-size: 40px; font-weight: 700; color: var(--mark); min-height: 48px; text-align: center; line-height: 1.2; }
+  .src { font-size: 13px; color: var(--ink-faint); margin: 8px 0 0; }
+  .sum-row { display: flex; gap: 12px; align-items: center; padding: 10px 0; border-top: 1px dashed var(--rule); font-size: 17px; }
+  .sum-row:first-of-type { border-top: none; }
+  .sum-key { font-family: 'Caveat', cursive; font-size: 34px; font-weight: 700; color: var(--margin); min-width: 64px; text-align: center; }
+  .overlay { position: fixed; inset: 0; background: var(--paper); z-index: 8; overflow-y: auto; }
+  .overlay .sheet { min-height: auto; }
+
+  /* награда */
+  .reward { text-align: center; }
+  .reward h2 { font-family: 'Caveat', cursive; font-size: 40px; margin: 6px 0 0; color: var(--margin); }
+  .hero-wrap { width: 260px; max-width: 72vw; margin: 0 auto; }
+  .hero-wrap svg { width: 100%; height: auto; overflow: visible; }
+  .dance { animation: dance 0.9s ease-in-out infinite; transform-origin: 50% 90%; }
+  @keyframes dance { 0%,100% { transform: rotate(-6deg) translateY(0); } 50% { transform: rotate(6deg) translateY(-12px); } }
+  .arm-l, .arm-r { transform-box: fill-box; animation: wave 0.45s ease-in-out infinite alternate; }
+  .arm-l { transform-origin: right bottom; }
+  .arm-r { transform-origin: left bottom; animation-delay: 0.2s; }
+  @keyframes wave { from { transform: rotate(-25deg); } to { transform: rotate(25deg); } }
+  .eye { transform-box: fill-box; transform-origin: center; animation: blink 3s infinite; }
+  @keyframes blink { 0%,92%,100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
+  .hop { transition: transform 0.35s cubic-bezier(.3,1.6,.5,1); }
+  .whole-count { font-family: 'Caveat', cursive; font-size: 26px; font-weight: 700; color: var(--ink); min-height: 36px; margin: 4px 0; }
+  .joke { margin: 14px auto 0; max-width: 460px; padding: 12px 14px; border-radius: 10px; background: var(--mark-bg); font-size: 16px; text-align: left; }
+  .joke b { font-family: 'Caveat', cursive; font-size: 21px; color: var(--mark); }
+  .stickers { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin: 10px 0 4px; }
+  .sticker { width: 64px; height: 64px; border-radius: 50%; border: 2px dashed var(--rule); display: flex; align-items: center; justify-content: center; position: relative; font-family: 'Caveat', cursive; font-size: 28px; color: var(--ink-faint); }
+  .sticker.got { border: 2px solid var(--star); background: var(--paper-raised); cursor: pointer; }
+  .sticker.new { animation: pop 0.8s ease-out 2; }
+  @keyframes pop { 50% { transform: scale(1.25) rotate(8deg); } }
+  .sticker.got:hover { transform: scale(1.08); }
+  .sticker.picked { box-shadow: 0 0 0 3px var(--mark); }
+  .sticker svg { width: 52px; height: 52px; }
+  .sticker .acc { position: absolute; top: -10px; font-size: 26px; }
+  .tok { font-family: 'PT Sans', sans-serif; font-size: 26px; padding: 2px 10px; border-radius: 8px; border: 2px dashed var(--margin); background: var(--paper); color: var(--ink); cursor: pointer; }
+  .tok:hover:not(:disabled) { background: var(--margin-soft); }
+  .tok.wrong { border-style: solid; border-color: var(--bad); background: var(--bad-bg); }
+  .tok.right { border-style: solid; border-color: var(--good); background: var(--good-bg); color: var(--good); }
+  .tok:disabled { cursor: default; }
+  .frac .tok { margin: 3px 0; }
+  .report-box { margin-top: 18px; text-align: left; }
+  .report-box pre { white-space: pre-wrap; font-family: 'PT Sans', sans-serif; font-size: 14px; background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; padding: 10px 12px; color: var(--ink); }
+  .sent-note { font-size: 14px; color: var(--good); min-height: 20px; }
+
+  .confetti { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 9; }
+  .confetti i { position: absolute; top: -20px; width: 9px; height: 14px; border-radius: 2px; animation: fall linear forwards; }
+  @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dance, .arm-l, .arm-r, .eye, .sticker.new, .confetti i, .r-new, .r-ring, .demo-cap p { animation: none; }
+    .hop { transition: none; }
+  }
+  footer.page { margin-top: 30px; font-size: 12px; color: var(--ink-faint); }
+  footer.page a { color: var(--ink-faint); }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header class="page">
+    <a class="back-link" href="../index.html#games">&larr; к играм</a>
+    <h1>Дроби на луче: &sect;20</h1>
+    <p class="subtitle">&sect;20. Изображение дробей и смешанных чисел на координатном луче &middot; Глава 3 &middot; стр. 100–102 &middot; <b>сначала правило, потом разминка + 4 задания, в каждом раунде новые числа</b></p>
+    <button class="rule-btn" id="ruleBtn" hidden>📏 Объяснение правила ещё раз</button>
+  </header>
+
+  <div class="progress"><span id="progress"></span><span class="stars" id="stars"></span></div>
+  <main id="app"></main>
+
+  <footer class="page">Рисунки-примеры в объяснении — 📖 из учебника (стр. 100, рис. 38: Алия отмечает 1/5, 2/5, 4/5, 1 3/5); задания — как № 365–374 и 376. Формулировки правила, подсказки и Лучик — ✏️ мои.</footer>
+</div>
+<div class="confetti" id="confetti"></div>
+
+<script>
+// ---------- помощники ----------
+const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+const pick = arr => arr[rnd(0, arr.length - 1)];
+const shuffle = arr => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = rnd(0, i); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const gcd = (a, b) => b ? gcd(b, a % b) : a;
+const pair = (x, y, a, b) => (x === a && y === b) || (x === b && y === a);
+const plural = (k, f) => { const m10 = k % 10, m100 = k % 100; return f[m10 === 1 && m100 !== 11 ? 0 : m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14) ? 1 : 2]; };
+const E = (hint, code, bad) => ({ hint, code, bad });
+const F = (n, d) => `<span class="frac"><span>${n}</span><span>${d}</span></span>`;
+const MX = (w, n, d) => `<span class="mixed">${w}${F(n, d)}</span>`;
+const IN = name => `<input data-f="${name}" inputmode="numeric" autocomplete="off" maxlength="3">`;
+const FIN = (a, b) => `<span class="frac"><span>${IN(a)}</span><span>${IN(b)}</span></span>`;
+const PARTS = ['часть', 'части', 'частей'];
+const DIVS = ['деление', 'деления', 'делений'];
+const NAMES = ['A', 'B', 'C', 'D', 'K', 'M', 'N', 'P'];
+// несократимая правильная дробь m/n со знаменателем от a до b
+function genFrac(a, b) { for (;;) { const n = rnd(a, b), m = rnd(1, n - 1); if (gcd(m, n) === 1) return { m, n }; } }
+const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// ---------- координатный луч (SVG) ----------
+// r: { U — сколько единичных отрезков показать, n — на сколько частей разделён каждый (0 — не разделён),
+//      from — число у левого конца (0 — луч от точки O, иначе кусок луча), pts: [{k, name, lab:{w,m,n}}],
+//      hl: [k1, k2] — подсветка, cross / ring — отметки, roles — области для «нажми на…», anim — чёрточки появляются }
+// k — номер деления от левого конца (в долях 1/n).
+const X0 = 34, YR = 58;
+const unitLen = r => 500 / (r.U + 0.15);
+const rayX = (r, k) => X0 + k * unitLen(r) / (r.n || 1);
+
+function svgFrac(x, y, lab) {
+  const { w, m, n } = lab;
+  const fx = w ? x + 7 : x, half = String(Math.max(m, n)).length * 5 + 3;
+  return (w ? `<text class="r-flab" x="${x - 1}" y="${y + 23}" text-anchor="end" style="font-size:18px">${w}</text>` : '') +
+    `<text class="r-flab" x="${fx}" y="${y + 13}" text-anchor="middle">${m}</text>` +
+    `<line class="r-fline" x1="${fx - half}" y1="${y + 18}" x2="${fx + half}" y2="${y + 18}"/>` +
+    `<text class="r-flab" x="${fx}" y="${y + 33}" text-anchor="middle">${n}</text>`;
+}
+
+function rayHTML(r) {
+  const L = unitLen(r), n = r.n || 1, end = X0 + L * (r.U + 0.13);
+  let s = '';
+  if (r.from) s += `<line class="r-dash" x1="${X0 - 26}" y1="${YR}" x2="${X0}" y2="${YR}"/>`;
+  s += `<line class="r-line" x1="${X0}" y1="${YR}" x2="${end}" y2="${YR}"/>
+    <polygon class="r-arrow" points="${end + 12},${YR} ${end - 1},${YR - 6} ${end - 1},${YR + 6}"/>`;
+  if (r.hl) s += `<line class="r-hl" x1="${rayX(r, r.hl[0])}" y1="${YR}" x2="${rayX(r, r.hl[1])}" y2="${YR}"/>`;
+  for (let k = 0; k <= r.U * n; k++) {
+    const x = rayX(r, k);
+    if (k % n === 0) {
+      s += `<line class="r-tick" x1="${x}" y1="${YR - 9}" x2="${x}" y2="${YR + 9}"/>
+        <text class="r-lab" x="${x}" y="${YR + 30}" text-anchor="middle">${r.from + k / n}</text>`;
+    } else if (r.n) {
+      s += `<line class="r-mtick${r.anim ? ' r-new' : ''}" x1="${x}" y1="${YR - 6}" x2="${x}" y2="${YR + 6}"${r.anim ? ` style="animation-delay:${(k % n) * 0.12}s"` : ''}/>`;
+    }
+  }
+  if (!r.from) s += `<circle cx="${X0}" cy="${YR}" r="4" class="r-pt"/><text class="r-o" x="${X0}" y="${YR - 16}" text-anchor="middle">O</text>`;
+  (r.pts || []).forEach(p => {
+    const x = rayX(r, p.k);
+    s += `<circle cx="${x}" cy="${YR}" r="6" class="r-pt"/><text class="r-name" x="${x}" y="${YR - 16}" text-anchor="middle">${p.name || ''}</text>`;
+    if (p.lab) s += svgFrac(x, YR + 14, p.lab);
+  });
+  if (r.cross != null) { const x = rayX(r, r.cross); s += `<path class="r-cross" d="M${x - 8},${YR - 8} L${x + 8},${YR + 8} M${x + 8},${YR - 8} L${x - 8},${YR + 8}"/>`; }
+  if (r.ring != null) s += `<circle class="r-ring" cx="${rayX(r, r.ring)}" cy="${YR}" r="11"/>`;
+  if (r.roles) {
+    const x1 = rayX(r, n);
+    s += `<rect class="stok" data-role="unit" x="${X0 + 16}" y="${YR - 15}" width="${x1 - X0 - 32}" height="30" rx="6"/>
+      <circle class="stok" data-role="origin" cx="${X0}" cy="${YR - 10}" r="20"/>
+      <rect class="stok" data-role="one" x="${x1 - 15}" y="${YR - 15}" width="30" height="52" rx="6"/>`;
+    (r.pts || []).forEach(p => s += `<circle class="stok" data-role="point" cx="${rayX(r, p.k)}" cy="${YR - 8}" r="16"/>`);
+  }
+  return `<svg viewBox="0 0 600 112" role="img" aria-label="координатный луч">${s}</svg>`;
+}
+
+// ---------- задания раунда ----------
+// Шаги: tap (нажми на…), choice (варианты перемешиваются при показе), inputs (окошки), mark (нажми на луче).
+// inputs.check(v) / mark.check(k) → null, если верно, иначе E(подсказка, код, неверные окошки).
+// after(ctx) — что поменять на луче после верного шага. typ — типичные ошибки (по ним гоняется автотест).
+const ROLES = {
+  origin: { name: 'начало отсчёта', desc: 'точка O, с неё начинается луч, её координата 0' },
+  unit: { name: 'единичный отрезок', desc: 'отрезок от 0 до 1' },
+  one: { name: 'точка с координатой 1', desc: 'конец единичного отрезка' },
+  point: { name: 'отмеченная точка', desc: 'точка, которую поставили на луче' },
+  numer: { name: 'числитель', desc: 'число над дробной чертой' },
+  denom: { name: 'знаменатель', desc: 'число под дробной чертой' },
+};
+const TOK = (v, role) => `<button class="tok" data-role="${role}">${v}</button>`;
+const RULE_MAIN = 'Знаменатель — на сколько равных частей делят единичный отрезок (от 0 до 1). Числитель — сколько таких частей отсчитать от начала отсчёта O. Смешанное число: сначала целые единичные отрезки, потом дробная часть на следующем отрезке. (✏️ формулировка по 📖 рис. 38, стр. 100)';
+
+function warmup() {
+  const { m, n } = genFrac(3, 8), name = pick(NAMES);
+  const tap = role => ({ type: 'tap', q: `Нажми на ${ROLES[role].name}`, correct: role, code: role === 'numer' || role === 'denom' ? 'term_frac' : 'term_ray' });
+  return {
+    title: 'Разминка: луч и дробь', label: 'разминка',
+    ray: { U: 1, n, from: 0, pts: [{ k: m, name }], roles: true },
+    show: `${name}(${F(TOK(m, 'numer'), TOK(n, 'denom'))})`,
+    rule: 'Луч начинается в точке O — начало отсчёта (0). Отрезок от 0 до 1 — единичный отрезок. В дроби над чертой — числитель, под чертой — знаменатель. (📖 стр. 100)',
+    steps: [
+      ...shuffle(['origin', 'unit']).map(tap),
+      ...shuffle(['numer', 'denom']).map(tap),
+      { type: 'choice', q: `В записи ${name}(${m}/${n}) знаменатель ${n} показывает…`, options: [
+        { t: 'на сколько равных частей разделили единичный отрезок', ok: true },
+        { t: 'сколько частей отсчитали от 0', hint: 'Это делает числитель. Знаменатель — на сколько частей разделили единичный отрезок.', code: 'term_role' },
+        { t: 'сколько всего точек на луче', hint: `Посмотри на луч: от 0 до 1 ровно ${n} ${plural(n, PARTS)}. Знаменатель — на сколько частей разделили единичный отрезок.`, code: 'term_role' } ] },
+      { type: 'choice', q: `А числитель ${m} показывает…`, options: [
+        { t: 'сколько частей отсчитали от 0 до точки', ok: true },
+        { t: 'на сколько частей разделили единичный отрезок', hint: 'Это делает знаменатель. Числитель — сколько частей отсчитали от 0.', code: 'term_role' },
+        { t: 'сколько единичных отрезков до точки', hint: `Точка ${name} не дошла даже до 1. Числитель — сколько маленьких частей от 0 до точки.`, code: 'term_role' } ] },
+    ],
+  };
+}
+
+function readCoord() {
+  const mixed = Math.random() < 0.4, { m, n } = genFrac(3, mixed ? 8 : 10), k = mixed ? n + m : m, name = pick(NAMES);
+  const lab = { w: mixed ? 1 : 0, m, n };
+  const steps = [
+    { type: 'choice', q: 'Шаг 1. С чего начинаем?', options: [
+      { t: 'считаем, на сколько частей разделён единичный отрезок (от 0 до 1)', ok: true },
+      { t: 'считаем все чёрточки на луче', hint: 'Считаем не чёрточки, а части (промежутки между ними) — и только от 0 до 1. Это будет знаменатель.', code: 'ticks_not_parts' },
+      { t: 'сразу считаем части от 0 до точки', hint: 'Сначала знаменатель — нужно знать, какие это части: пятые, восьмые… Посчитай, на сколько частей разделён отрезок от 0 до 1.', code: 'skip_denom' } ] },
+    { type: 'inputs', q: 'Шаг 2. На сколько равных частей разделён отрезок от 0 до 1?', body: `Частей: ${IN('n')}`, sol: { n },
+      typ: [{ v: { n: n + 1 }, code: 'ticks_not_parts' }, ...(mixed ? [{ v: { n: 2 * n }, code: 'whole_ray' }] : [])],
+      check: v => {
+        if (v.n === n) return null;
+        if (v.n === n + 1) return E('Ты посчитал чёрточки вместе с 0 и 1. Частей (промежутков) на одну меньше, чем чёрточек.', 'ticks_not_parts', ['n']);
+        if (mixed && v.n === 2 * n) return E('Это части на всём луче. Считаем только от 0 до 1 — на единичном отрезке.', 'whole_ray', ['n']);
+        return E('Посчитай промежутки между чёрточками ещё раз — только от 0 до 1.', 'parts_err', ['n']);
+      },
+      answer: `от 0 до 1 — ${n} ${plural(n, PARTS)}.` },
+  ];
+  if (!mixed) {
+    steps.push({ type: 'inputs', q: `Шаг 3. Сколько таких частей от 0 до точки ${name}?`, body: `Частей: ${IN('m')}`, sol: { m },
+      typ: [...(m + 1 !== n - m ? [{ v: { m: m + 1 }, code: 'ticks_not_parts' }] : []), ...(n - m !== m ? [{ v: { m: n - m }, code: 'from_end' }] : [])],
+      check: v => {
+        if (v.m === m) return null;
+        if (v.m === n - m) return E(`Ты считал от 1 влево. Отсчитываем от начала отсчёта — от 0 вправо.`, 'from_end', ['m']);
+        if (v.m === m + 1) return E('Ты посчитал чёрточки вместе с нулевой. Считаем части — промежутки.', 'ticks_not_parts', ['m']);
+        return E(`Посчитай ещё раз промежутки от 0 до точки ${name}.`, 'count_err', ['m']);
+      },
+      answer: `от 0 до ${name} — ${m} ${plural(m, PARTS)}.` });
+  } else {
+    steps.push({ type: 'inputs', q: `Шаг 3. Между какими числами точка ${name}?`, body: `между ${IN('a')} и ${IN('b')}`, sol: { a: 1, b: 2 },
+      typ: [{ v: { a: 0, b: 1 }, code: 'forgot_whole' }],
+      check: v => {
+        if (v.a === 1 && v.b === 2) return null;
+        if (v.a === 0) return E(`Посмотри внимательно: точка ${name} правее 1.`, 'forgot_whole', ['a', 'b']);
+        return E('Найди под лучом числа слева и справа от точки.', 'between_err', ['a', 'b']);
+      },
+      answer: `точка ${name} между 1 и 2 — значит, одна целая уже есть.` });
+    steps.push({ type: 'inputs', q: `Шаг 4. Сколько частей от 1 до точки ${name}?`, body: `Частей: ${IN('m')}`, sol: { m },
+      typ: [{ v: { m: k }, code: 'count_from_zero' }, ...(n - m !== m ? [{ v: { m: n - m }, code: 'from_end' }] : [])],
+      check: v => {
+        if (v.m === m) return null;
+        if (v.m === k) return E('Это все части от 0. Одна целая уже есть — считай части только от 1.', 'count_from_zero', ['m']);
+        if (v.m === n - m) return E('Ты считал от 2 влево. Считаем от 1 вправо.', 'from_end', ['m']);
+        return E(`Посчитай ещё раз промежутки от 1 до точки ${name}.`, 'count_err', ['m']);
+      },
+      answer: `от 1 до ${name} — ${m} ${plural(m, PARTS)}.` });
+  }
+  const last = steps.length + 1;
+  steps.push({ type: 'inputs', q: `Шаг ${last}. Запиши координату точки ${name}`,
+    body: `${name}( ${mixed ? `<span class="mixed">${IN('w')}${FIN('m', 'n')}</span>` : FIN('m', 'n')} )`,
+    sol: mixed ? { w: 1, m, n } : { m, n },
+    typ: [{ v: mixed ? { w: 1, m: n, n: m } : { m: n, n: m }, code: 'swap_nd' }, ...(mixed ? [{ v: { w: 0, m, n }, code: 'whole_err' }] : [])],
+    check: v => {
+      if (mixed && v.w !== 1) return E('Целая часть — сколько целых единичных отрезков до точки (шаг 3).', 'whole_err', ['w']);
+      if (v.m === n && v.n === m) return E('Перепутаны: внизу — знаменатель (на сколько частей разделили), сверху — числитель (сколько частей отсчитали).', 'swap_nd', ['m', 'n']);
+      if (v.n !== n) return E('Знаменатель — число из шага 2.', 'den_err', ['n']);
+      if (v.m !== m) return E(`Числитель — число из шага ${last - 1}.`, 'num_err', ['m']);
+      return null;
+    },
+    after: ctx => { ctx.ray.pts[0].lab = lab; },
+    answer: `${name}(${mixed ? MX(1, m, n) : F(m, n)}).` });
+  return {
+    title: 'Прочитай координату точки', text: `Какая координата у точки ${name}?`,
+    label: `прочитать ${name} = ${mixed ? '1 ' : ''}${m}/${n}`,
+    ray: { U: mixed ? 2 : 1, n, from: 0, pts: [{ k, name }] },
+    rule: RULE_MAIN + ' Задания как № 365, 370.',
+    steps,
+  };
+}
+
+function markFrac() {
+  const { m, n } = genFrac(3, 10), name = pick(NAMES), lab = { w: 0, m, n };
+  return {
+    title: 'Отметь точку на луче', show: `${name}(${F(m, n)})`, label: `отметить ${name}(${m}/${n})`,
+    ray: { U: 1, n: 0, from: 0, pts: [] },
+    rule: RULE_MAIN + ' Задания как № 366, 368.',
+    steps: [
+      { type: 'choice', q: `Шаг 1. Что показывает знаменатель ${n}?`, options: [
+        { t: 'на сколько равных частей делим единичный отрезок', ok: true },
+        { t: 'сколько частей отсчитать от 0', hint: 'Это делает числитель. Знаменатель (внизу) — на сколько частей делим.', code: 'term_role' },
+        { t: `сколько единичных отрезков отложить`, hint: `${m}/${n} меньше 1 — точка будет внутри одного единичного отрезка, от 0 до 1.`, code: 'term_role' } ] },
+      { type: 'inputs', q: 'Шаг 2. На сколько равных частей делим отрезок от 0 до 1?', body: `Частей: ${IN('n')}`, sol: { n },
+        typ: [{ v: { n: m }, code: 'swap_nd' }],
+        check: v => {
+          if (v.n === n) return null;
+          if (v.n === m) return E(`${m} — это числитель. Делим на знаменатель — число под чертой.`, 'swap_nd', ['n']);
+          return E('Делим на столько частей, сколько показывает знаменатель.', 'den_err', ['n']);
+        },
+        after: ctx => { ctx.ray.n = n; ctx.ray.anim = true; },
+        answer: `знаменатель ${n} — делим на ${n} ${plural(n, PARTS)}.` },
+      { type: 'inputs', q: 'Шаг 3. Сколько частей отсчитываем от 0?', body: `Частей: ${IN('m')}`, sol: { m },
+        typ: [{ v: { m: n }, code: 'swap_nd' }],
+        check: v => {
+          if (v.m === m) return null;
+          if (v.m === n) return E(`${n} — знаменатель, на столько частей мы уже разделили. Отсчитываем числитель.`, 'swap_nd', ['m']);
+          return E('Отсчитываем столько частей, сколько показывает числитель.', 'num_err', ['m']);
+        },
+        answer: `числитель ${m} — отсчитываем ${m} ${plural(m, PARTS)}.` },
+      markStep(`Шаг 4. Нажми на луче, где будет точка ${name}(${m}/${n})`, m, n, 0, name, lab),
+    ],
+  };
+}
+
+function markMixed() {
+  const w = rnd(1, 2), { m, n } = genFrac(3, 8), name = pick(NAMES), lab = { w, m, n };
+  const WH = ['целый единичный отрезок', 'целых единичных отрезка', 'целых единичных отрезков'];
+  return {
+    title: 'Отметь смешанное число', show: `${name}(${MX(w, m, n)})`, label: `отметить ${name}(${w} ${m}/${n})`,
+    ray: { U: w + 1, n: 0, from: 0, pts: [] },
+    rule: RULE_MAIN + ' Задания как № 369.',
+    steps: [
+      { type: 'choice', q: 'Шаг 1. С чего начинаем?', options: [
+        { t: `откладываем ${w} ${plural(w, WH)} — целую часть`, ok: true },
+        { t: `сразу отсчитываем ${m} ${plural(m, PARTS)} от 0`, hint: `Так получится ${m}/${n} — меньше 1. А у нас есть ещё ${w} ${w === 1 ? 'целая' : 'целых'}: сначала их.`, code: 'forgot_whole' },
+        { t: `сразу делим отрезок от 0 до 1 на ${n} ${plural(n, PARTS)}`, hint: `Делить будем, но потом. Сначала целая часть: точка лежит дальше ${w}.`, code: 'order_err' } ] },
+      { type: 'inputs', q: 'Шаг 2. Между какими числами будет точка?', body: `между ${IN('a')} и ${IN('b')}`, sol: { a: w, b: w + 1 },
+        typ: [{ v: { a: 0, b: 1 }, code: 'forgot_whole' }],
+        check: v => {
+          if (v.a === w && v.b === w + 1) return null;
+          if (v.a === 0) return E(`Целая часть ${w} — значит, точка правее ${w}. От 0 до 1 она быть не может.`, 'forgot_whole', ['a', 'b']);
+          return E(`Целая часть ${w}: точка прошла ${w}, но не дошла до ${w + 1}.`, 'between_err', ['a', 'b']);
+        },
+        after: ctx => { ctx.ray.hl = [0, w]; },
+        answer: `между ${w} и ${w + 1}.` },
+      { type: 'inputs', q: 'Шаг 3. На сколько равных частей делим единичный отрезок?', body: `Частей: ${IN('n')}`, sol: { n },
+        typ: [{ v: { n: m }, code: 'swap_nd' }],
+        check: v => {
+          if (v.n === n) return null;
+          if (v.n === m) return E(`${m} — это числитель. Делим на знаменатель — число под чертой.`, 'swap_nd', ['n']);
+          return E('Делим на столько частей, сколько показывает знаменатель.', 'den_err', ['n']);
+        },
+        after: ctx => { ctx.ray.n = n; ctx.ray.anim = true; ctx.ray.hl = [0, w * n]; },
+        answer: `знаменатель ${n} — делим на ${n} ${plural(n, PARTS)}.` },
+      { type: 'inputs', q: `Шаг 4. Сколько частей отсчитываем от ${w}?`, body: `Частей: ${IN('m')}`, sol: { m },
+        typ: [{ v: { m: n }, code: 'swap_nd' }],
+        check: v => {
+          if (v.m === m) return null;
+          if (v.m === n) return E(`${n} — знаменатель, на столько частей мы уже разделили. Отсчитываем числитель.`, 'swap_nd', ['m']);
+          return E('Отсчитываем столько частей, сколько показывает числитель.', 'num_err', ['m']);
+        },
+        answer: `числитель ${m} — отсчитываем ${m} ${plural(m, PARTS)} от ${w}.` },
+      markStep(`Шаг 5. Нажми на луче, где будет точка ${name}(${w} ${m}/${n})`, w * n + m, n, w, name, lab),
+    ],
+  };
+}
+
+// шаг «нажми на луче»: верное деление k; typ — типичные промахи
+function markStep(q, k, n, w, name, lab) {
+  const m = k - w * n, typ = [];
+  if (w && m !== k) typ.push({ k: m, code: 'forgot_whole' });
+  if (n - m !== m) typ.push({ k: w * n + n - m, code: 'from_end' });
+  const near = [k + 1, k - 1].find(j => j % n !== 0 && j !== w * n + n - m);
+  if (near !== undefined) typ.push({ k: near, code: 'count_err' });
+  return { type: 'mark', q, k, typ,
+    check: j => {
+      if (j === k) return null;
+      const jw = Math.floor(j / (n)), jm = j - jw * n;
+      if (w && j === m) return E(`Это ${m}/${n} — без целых. Точка должна быть между ${w} и ${w + 1}.`, 'forgot_whole');
+      if (jm === 0) return E(`Это число ${jw}. А нужно отсчитать ещё ${m} ${plural(m, PARTS)} от ${w}.`, 'count_err');
+      if (jw !== w) return E(`Эта точка между ${jw} и ${jw + 1}. А нужно между ${w} и ${w + 1}.`, 'between_err');
+      if (jm === n - m) return E(`Ты отсчитал ${m} ${plural(m, PARTS)} от ${w + 1} влево. Отсчитываем от ${w} вправо.`, 'from_end');
+      return E(`Здесь от ${w} отсчитано ${jm} ${plural(jm, PARTS)}, а нужно ${m}. Считай промежутки, а не чёрточки.`, 'count_err');
+    },
+    after: ctx => { ctx.ray.pts = [{ k, name, lab }]; },
+    answer: `от ${w} отсчитай ${m} ${plural(m, PARTS)} вправо — эта чёрточка обведена жёлтым.` };
+}
+
+function problem() {
+  const a = rnd(3, 15), { m: p, n } = genFrac(3, 10), q = n - p, name = pick(['B', 'C', 'K', 'M']);
+  return {
+    title: 'Задача', label: `задача: между ${a} и ${a + 1}, деления ${p} и ${q} → ${a} ${p}/${n}`,
+    text: `Точка ${name} на координатном луче лежит между точками с координатами ${a} и ${a + 1}. От точки ${a} она правее на ${p} ${plural(p, DIVS)}, от точки ${a + 1} — левее на ${q} ${plural(q, DIVS)}. Какая координата у точки ${name}?`,
+    ray: null,
+    rule: 'Отрезок между соседними целыми числами — это тоже единичный отрезок. Деления слева и справа от точки вместе — на сколько частей он разделён (знаменатель). Целая часть — левое число, числитель — сколько делений от него. (✏️ по 📖 рис. 38.3; задачи как № 374, 376)',
+    steps: [
+      { type: 'choice', q: 'Шаг 1. Что узнаём сначала?', options: [
+        { t: `на сколько частей разделён отрезок от ${a} до ${a + 1}`, ok: true },
+        { t: `сразу пишем дробь ${p}/${q}`, hint: `${p} и ${q} — это деления по разные стороны от точки. Знаменатель — сколько частей во всём отрезке от ${a} до ${a + 1}.`, code: 'pq_frac' },
+        { t: `прибавляем ${p} к ${a}`, hint: 'Деления — это доли единичного отрезка, а не целые. Сначала узнаём, какие это доли.', code: 'add_whole' } ] },
+      { type: 'inputs', q: `Шаг 2. Сколько всего частей от ${a} до ${a + 1}?`, body: `${IN('x')} + ${IN('y')} = ${IN('s')}`, sol: { x: p, y: q, s: n },
+        typ: [{ v: { x: p, y: q + 1, s: n + 1 }, code: 'parts_err' }, { v: { x: p, y: q, s: n + 1 }, code: 'calc_err' }],
+        check: v => {
+          if (!pair(v.x, v.y, p, q)) return E('Складываем деления справа от одной точки и слева от другой.', 'parts_err', ['x', 'y']);
+          if (v.s !== n) return E(`Посчитай ещё раз: ${p} + ${q}.`, 'calc_err', ['s']);
+          return null;
+        },
+        answer: `${p} + ${q} = ${n} — отрезок от ${a} до ${a + 1} разделён на ${n} ${plural(n, PARTS)}.` },
+      { type: 'inputs', q: 'Шаг 3. Какая целая часть у координаты?', body: `Целых: ${IN('w')}`, sol: { w: a },
+        typ: [{ v: { w: a + 1 }, code: 'whole_err' }],
+        check: v => {
+          if (v.w === a) return null;
+          if (v.w === a + 1) return E(`Точка ещё не дошла до ${a + 1} — целых пока ${a}.`, 'whole_err', ['w']);
+          return E('Целая часть — левое из двух чисел, между которыми лежит точка.', 'whole_err', ['w']);
+        },
+        answer: `${a} — точка прошла ${a}, но не дошла до ${a + 1}.` },
+      { type: 'inputs', q: `Шаг 4. Запиши координату точки ${name}`, body: `${name}( <span class="mixed">${IN('w')}${FIN('m', 'n')}</span> )`, sol: { w: a, m: p, n },
+        typ: [{ v: { w: a, m: q, n }, code: 'from_end' }, { v: { w: a, m: p, n: q }, code: 'pq_frac' }],
+        check: v => {
+          if (v.w !== a) return E('Целая часть — из шага 3.', 'whole_err', ['w']);
+          if (v.n === q && v.m === p) return E(`${q} — это деления от ${a + 1}, а не все части. Знаменатель — из шага 2.`, 'pq_frac', ['n']);
+          if (v.n !== n) return E('Знаменатель — сколько всего частей (шаг 2).', 'den_err', ['n']);
+          if (v.m === q && q !== p) return E(`${q} — это деления от ${a + 1}. Числитель — сколько делений от ${a}.`, 'from_end', ['m']);
+          if (v.m !== p) return E(`Числитель — сколько делений от ${a} до точки.`, 'num_err', ['m']);
+          return null;
+        },
+        after: ctx => { ctx.ray = { U: 1, n, from: a, pts: [{ k: p, name, lab: { w: a, m: p, n } }], anim: true }; },
+        answer: `${name}(${MX(a, p, n)}).` },
+    ],
+  };
+}
+
+const MAKERS = [warmup, readCoord, markFrac, markMixed, problem];
+const makeRound = () => MAKERS.map(make => make());
+
+const CODE_TEXT = {
+  term_ray: 'путал начало отсчёта / единичный отрезок / точки',
+  term_frac: 'путал числитель и знаменатель',
+  term_role: 'путал, что показывают числитель и знаменатель',
+  ticks_not_parts: 'считал чёрточки, а не части (промежутки)',
+  skip_denom: 'начинал не со знаменателя',
+  whole_ray: 'считал части на всём луче, а не на единичном отрезке',
+  parts_err: 'ошибка в подсчёте частей',
+  from_end: 'отсчитывал не с того конца (от правого числа)',
+  count_err: 'ошибка в отсчёте частей',
+  count_from_zero: 'считал части от 0, а не от целого',
+  swap_nd: 'перепутал числитель и знаменатель',
+  den_err: 'ошибка в знаменателе',
+  num_err: 'ошибка в числителе',
+  forgot_whole: 'забыл целую часть смешанного числа',
+  order_err: 'в смешанном числе начинал не с целой части',
+  between_err: 'не нашёл, между какими числами точка',
+  whole_err: 'ошибка в целой части',
+  pq_frac: 'записал деления слева и справа как дробь',
+  add_whole: 'прибавлял деления к целым',
+  calc_err: 'ошибка в счёте',
+};
+
+// ✏️ шутки — по одной на наклейку (одобрены пользователем 2026-10-28)
+const JOKES = [
+  'Почему координатный луч никогда не грустит? Потому что у него всё впереди — он бесконечный!',
+  'Знаменатель хвастается: «Я делю отрезок на части!» Числитель: «А я решаю, сколько из них взять. Так кто тут главный?»',
+  'Точка O — самая скромная на луче: её координата 0. Зато без неё никто не знает, откуда считать.',
+  'Дробь 5/5 обиделась, что её не позвали на вечеринку дробей меньше 1. Ей объяснили: «Ты не часть — ты целая единица!»',
+  'Лучик полетел в космос, чтобы долететь до своего конца. Летит до сих пор: у луча есть начало, но нет конца!',
+  'Ученик отмечал 3/8 и считал чёрточки вместо промежутков. Учитель: «Мимо ворот на одно деление!»',
+];
+
+const STICKERS = [
+  { acc: '🎩', name: 'Лучик в шляпе', of: 'Лучика в шляпе' }, { acc: '😎', name: 'Лучик в очках', of: 'Лучика в очках' }, { acc: '👑', name: 'Лучик-король', of: 'Лучика-короля' },
+  { acc: '🎧', name: 'Лучик-диджей', of: 'Лучика-диджея' }, { acc: '🚀', name: 'Лучик-космонавт', of: 'Лучика-космонавта' }, { acc: '⚽', name: 'Лучик-футболист', of: 'Лучика-футболиста' },
+];
+
+// ---------- движок шагов (общий для объяснения и для игры) ----------
+// ctx: { host, rayEl, stepsEl, ray, steps, i, tries, cur, onErr(code), onFinish() }
+function drawRay(ctx) {
+  ctx.rayEl.innerHTML = ctx.ray ? rayHTML(ctx.ray) : '';
+  if (ctx.ray) ctx.ray.anim = false;
+}
+
+function makeCtx(host, ray, steps, onErr, onFinish) {
+  const ctx = { host, rayEl: host.querySelector('.ray'), stepsEl: host.querySelector('.steps'), ray, steps, i: 0, tries: 0, cur: null, onErr, onFinish };
+  host.addEventListener('click', e => onHostClick(ctx, e));
+  return ctx;
+}
+
+function runSteps(ctx) { ctx.i = 0; drawRay(ctx); nextStep(ctx); }
+function nextStep(ctx) { ctx.i < ctx.steps.length ? renderStep(ctx, ctx.steps[ctx.i]) : ctx.onFinish(); }
+
+function renderStep(ctx, st) {
+  ctx.tries = 0; ctx.cur = st;
+  const el = document.createElement('div');
+  el.className = 'step';
+  ctx.stepEl = el;
+  ctx.host.querySelectorAll('[data-role]').forEach(b => b.classList.remove('wrong', 'right'));
+  if (st.type === 'tap' || st.type === 'mark') {
+    el.innerHTML = `<div class="step-q">${st.q}</div>${st.type === 'tap' && st.body ? `<div class="step-body">${st.body}</div>` : ''}${st.type === 'mark' ? '<div class="mark-q">↑ нажимай прямо на чёрточку на луче</div>' : ''}<div class="fb"></div>`;
+    ctx.rayEl.classList.toggle('clickable', st.type === 'mark');
+  } else if (st.type === 'choice') {
+    el.innerHTML = `<div class="step-q">${st.q}</div><div class="choices">${
+      shuffle(st.options.map((o, i) => i)).map(i => `<button class="choice" data-i="${i}">${st.options[i].t}</button>`).join('')}</div><div class="fb"></div>`;
+    el.querySelectorAll('.choice').forEach(b => b.onclick = () => onChoice(ctx, el, st, b));
+  } else {
+    el.innerHTML = `<div class="step-q">${st.q}</div><div class="step-body">${st.body}</div>
+      <button class="btn">Проверить</button><div class="fb"></div>`;
+    el.querySelector('.btn').onclick = () => onCheck(ctx, el, st);
+    el.querySelectorAll('input').forEach(inp => {
+      inp.addEventListener('keydown', e => { if (e.key === 'Enter') onCheck(ctx, el, st); });
+      inp.addEventListener('input', () => { inp.value = inp.value.replace(/\D/g, ''); inp.classList.remove('bad'); });
+    });
+  }
+  ctx.stepsEl.appendChild(el);
+  const first = el.querySelector('input'); if (first) first.focus({ preventScroll: true });
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function onHostClick(ctx, e) {
+  const st = ctx.cur;
+  if (!st) return;
+  if (st.type === 'tap') {
+    const b = e.target.closest('[data-role]');
+    if (b && ctx.host.contains(b) && !b.classList.contains('wrong')) onTap(ctx, st, b);
+  } else if (st.type === 'mark') {
+    const svg = e.target.closest('svg');
+    if (svg && ctx.rayEl.contains(svg)) onMark(ctx, st, svg, e);
+  }
+}
+
+function onTap(ctx, st, b) {
+  const role = b.dataset.role;
+  if (role === st.correct) { b.classList.add('right'); stepDone(ctx); return; }
+  b.classList.add('wrong');
+  ctx.onErr(st.code);
+  const got = ROLES[role], want = ROLES[st.correct];
+  ctx.stepEl.querySelector('.fb').innerHTML = `<div class="hint">Это ${got.name} — ${got.desc}. А ${want.name} — ${want.desc}.</div>`;
+}
+
+// нажатие на луч → ближайшая чёрточка
+function onMark(ctx, st, svg, e) {
+  const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY;
+  const loc = p.matrixTransform(svg.getScreenCTM().inverse());
+  const r = ctx.ray, step = unitLen(r) / r.n, j = Math.round((loc.x - X0) / step);
+  const fb = ctx.stepEl.querySelector('.fb');
+  if (Math.abs(loc.y - YR) > 40 || j < 0 || j > r.U * r.n) { fb.innerHTML = '<div class="hint">Нажми прямо на луч — на одну из чёрточек.</div>'; return; }
+  const err = st.check(j);
+  if (!err) { r.cross = null; r.ring = null; stepDone(ctx); return; }
+  ctx.onErr(err.code);
+  ctx.tries++;
+  r.cross = j;
+  if (ctx.tries >= 3) r.ring = st.k;
+  drawRay(ctx);
+  fb.innerHTML = `<div class="hint">${err.hint}</div>` +
+    (ctx.tries >= 3 ? `<div class="hint show-answer">Подсказка-решение: ${st.answer} Нажми на неё.</div>` : '');
+}
+
+function onChoice(ctx, el, st, btn) {
+  const o = st.options[+btn.dataset.i];
+  if (o.ok) {
+    btn.classList.add('right');
+    el.querySelectorAll('.choice').forEach(b => b.disabled = true);
+    stepDone(ctx);
+    return;
+  }
+  btn.classList.add('wrong'); btn.disabled = true;
+  ctx.onErr(o.code);
+  el.querySelector('.fb').innerHTML = `<div class="hint">${o.hint}</div>`;
+}
+
+function onCheck(ctx, el, st) {
+  if (ctx.cur !== st) return;
+  const inputs = [...el.querySelectorAll('input')];
+  const fb = el.querySelector('.fb');
+  const empty = inputs.filter(x => x.value === '');
+  if (empty.length) {
+    empty.forEach(x => x.classList.add('bad'));
+    fb.innerHTML = '<div class="hint">Заполни все окошки.</div>';
+    return;
+  }
+  const v = {}; inputs.forEach(x => v[x.dataset.f] = parseInt(x.value, 10));
+  const err = st.check(v);
+  if (!err) {
+    inputs.forEach(x => { x.classList.add('ok'); x.disabled = true; });
+    el.querySelector('.btn').remove();
+    stepDone(ctx);
+    return;
+  }
+  ctx.onErr(err.code);
+  ctx.tries++;
+  inputs.forEach(x => { if (err.bad.includes(x.dataset.f)) x.classList.add('bad'); });
+  // после 3 ошибок показываем решение, но вписать его всё равно нужно самому
+  fb.innerHTML = `<div class="hint">${err.hint}</div>` +
+    (ctx.tries >= 3 ? `<div class="hint show-answer">Подсказка-решение: ${st.answer} Впиши и нажми «Проверить».</div>` : '');
+}
+
+function stepDone(ctx) {
+  const st = ctx.cur, el = ctx.stepEl;
+  ctx.cur = null;
+  el.classList.add('done');
+  el.querySelector('.fb').innerHTML = '';
+  ctx.rayEl.classList.remove('clickable');
+  if (st.after) st.after(ctx);
+  if (st.after || st.type === 'mark') drawRay(ctx);
+  ctx.i++;
+  nextStep(ctx);
+}
+
+// ---------- объяснение правила (✏️ слова мои, примеры — 📖 рис. 38, Алия) ----------
+// demo: [[мс, ctx => …]] — показ по шагам; check — что ребёнок делает сам (тот же движок шагов).
+const SLIDES = [
+  { h: 'Что такое координатный луч',
+    ray: { U: 1, n: 0, from: 0, pts: [] },
+    demo: [
+      [300, (c, cap) => { c.ray.ring = 0; cap('Луч начинается в точке <b>O</b> — это <b>начало отсчёта</b>. Её координата <b>0</b>.'); }],
+      [2200, (c, cap) => { c.ray.ring = null; c.ray.hl = [0, 1]; cap('Отрезок от 0 до 1 называется <b>единичным отрезком</b>. Дроби меньше 1 живут внутри него.'); }],
+    ],
+    check: { ray: { U: 1, n: 0, from: 0, pts: [], roles: true }, steps: [
+      { type: 'tap', q: 'Теперь ты: нажми на единичный отрезок', correct: 'unit', code: 'term_ray' },
+      { type: 'tap', q: 'А теперь — на начало отсчёта', correct: 'origin', code: 'term_ray' } ] } },
+  { h: 'Знаменатель — на сколько частей делим',
+    ray: { U: 1, n: 0, from: 0, pts: [] },
+    demo: [
+      [300, (c, cap) => cap(`Алия отмечает на луче дробь ${F(1, 5)} (📖 рис. 38.1).`)],
+      [1800, (c, cap) => { c.ray.n = 5; c.ray.anim = true; cap(`Знаменатель <b>5</b> → делим единичный отрезок на <b>5 равных частей</b>.`); }],
+      [3800, (c, cap) => { c.ray.hl = [0, 1]; c.ray.pts = [{ k: 1, name: 'A', lab: { w: 0, m: 1, n: 5 } }]; cap(`Числитель <b>1</b> → отсчитываем от 0 <b>одну часть</b>. Получилась точка A(${F(1, 5)}).`); }],
+    ],
+    check: { steps: [
+      { type: 'inputs', q: `Теперь ты: на сколько равных частей нужно разделить единичный отрезок для дроби ${F(3, 10)}?`, body: `Частей: ${IN('n')}`, sol: { n: 10 },
+        typ: [{ v: { n: 3 }, code: 'swap_nd' }],
+        check: v => v.n === 10 ? null : v.n === 3 ? E('3 — это числитель (сверху). Делим на знаменатель — число под чертой.', 'swap_nd', ['n']) : E('Посмотри на число под дробной чертой.', 'den_err', ['n']),
+        answer: 'знаменатель 10 — делим на 10 частей.' } ] } },
+  { h: 'Числитель — сколько частей отсчитать от 0',
+    ray: { U: 1, n: 5, from: 0, pts: [] },
+    demo: [
+      [300, (c, cap) => cap(`А как Алия отметила ${F(4, 5)} (📖 рис. 38.2)? Знаменатель 5 — отрезок уже разделён на 5 частей.`)],
+      ...[1, 2, 3, 4].map((i, j) => [2000 + j * 800, (c, cap, cnt) => { c.ray.hl = [0, i]; cnt(i); }]),
+      [5400, (c, cap, cnt) => { cnt(''); c.ray.pts = [{ k: 4, name: '', lab: { w: 0, m: 4, n: 5 } }]; cap(`Числитель <b>4</b> → отсчитали от 0 <b>4 части</b>. Вот точка ${F(4, 5)}.`); }],
+    ],
+    check: { ray: { U: 1, n: 5, from: 0, pts: [] }, steps: [
+      markStep(`Теперь ты: нажми на луче, где точка ${F(3, 5)}`, 3, 5, 0, '', { w: 0, m: 3, n: 5 }) ] } },
+  { h: 'Смешанное число',
+    ray: { U: 2, n: 5, from: 0, pts: [] },
+    demo: [
+      [300, (c, cap) => cap(`Как отметить смешанное число ${MX(1, 3, 5)} (📖 рис. 38.3)?`)],
+      [1800, (c, cap) => { c.ray.hl = [0, 5]; cap(`Сначала <b>целая часть 1</b>: проходим один целый единичный отрезок — до точки 1.`); }],
+      ...[1, 2, 3].map((i, j) => [3600 + j * 800, (c, cap, cnt) => { c.ray.hl = [0, 5 + i]; cnt(i); }]),
+      [6300, (c, cap, cnt) => { cnt(''); c.ray.pts = [{ k: 8, name: '', lab: { w: 1, m: 3, n: 5 } }]; cap(`Потом <b>дробная часть ${F(3, 5)}</b>: отсчитываем <b>от 1</b> ещё 3 части. Вот ${MX(1, 3, 5)}.`); }],
+    ],
+    check: { ray: { U: 2, n: 5, from: 0, pts: [] }, steps: [
+      { type: 'inputs', q: `Теперь ты: между какими числами будет точка ${MX(1, 2, 5)}?`, body: `между ${IN('a')} и ${IN('b')}`, sol: { a: 1, b: 2 },
+        typ: [{ v: { a: 0, b: 1 }, code: 'forgot_whole' }],
+        check: v => v.a === 1 && v.b === 2 ? null : v.a === 0 ? E('Целая часть 1 — значит, точка правее 1.', 'forgot_whole', ['a', 'b']) : E('Целая часть 1: точка прошла 1, но не дошла до 2.', 'between_err', ['a', 'b']),
+        after: c => { c.ray.hl = [0, 5]; },
+        answer: 'между 1 и 2.' },
+      markStep(`Нажми на луче, где точка ${MX(1, 2, 5)}`, 7, 5, 1, '', { w: 1, m: 2, n: 5 }) ] } },
+];
+
+let introOpen = false, introTimers = [];
+function clearIntroTimers() { introTimers.forEach(clearTimeout); introTimers = []; }
+
+// container — куда рисовать; onEnd — после последнего экрана; canSkip — показывать «пропустить»
+function renderIntro(container, onEnd, canSkip, endLabel) {
+  introOpen = true;
+  let idx = 0;
+  const finish = () => { clearIntroTimers(); introOpen = false; try { localStorage.setItem('luchik_intro_done', '1'); } catch (e) {} onEnd(); };
+  const top = () => `<div class="intro-top"><span>Сначала правило · ${idx + 1} из ${SLIDES.length + 1}</span>${canSkip ? '<button class="skip" data-skip>пропустить →</button>' : ''}</div>`;
+  function show() {
+    clearIntroTimers();
+    if (idx >= SLIDES.length) { summary(); return; }
+    const sl = SLIDES[idx];
+    container.innerHTML = `${top()}<div class="card">
+        <p class="intro-h">${sl.h}</p>
+        <div class="ray"></div>
+        <div class="demo-count"></div>
+        <div class="demo-cap"></div>
+        <button class="btn ghost" data-replay hidden>▶ Показать ещё раз</button>
+        <button class="btn big" data-try hidden>Понятно, теперь я сам →</button>
+        <div class="steps"></div>
+      </div>`;
+    const card = container.querySelector('.card');
+    const ctx = makeCtx(card, JSON.parse(JSON.stringify(sl.ray)), sl.check.steps, () => S.introErr++, () => {
+      const b = document.createElement('div');
+      b.innerHTML = `<div class="praise">Верно!</div><button class="btn big">Дальше →</button>`;
+      ctx.stepsEl.appendChild(b);
+      b.querySelector('button').onclick = () => { idx++; show(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+      b.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+    const capEl = card.querySelector('.demo-cap'), cntEl = card.querySelector('.demo-count');
+    const cap = html => { capEl.insertAdjacentHTML('beforeend', `<p>${html}</p>`); };
+    const cnt = v => { cntEl.textContent = v; };
+    const replay = card.querySelector('[data-replay]'), tryBtn = card.querySelector('[data-try]');
+    function play() {
+      clearIntroTimers();
+      ctx.ray = JSON.parse(JSON.stringify(sl.ray)); capEl.innerHTML = ''; cnt(''); drawRay(ctx);
+      const fast = reduceMotion();
+      sl.demo.forEach(([ms, fn], i) => introTimers.push(setTimeout(() => {
+        fn(ctx, cap, cnt); drawRay(ctx);
+        if (i === sl.demo.length - 1) { replay.hidden = false; tryBtn.hidden = false; }
+      }, fast ? 0 : ms)));
+    }
+    replay.onclick = play;
+    tryBtn.onclick = () => {
+      clearIntroTimers();
+      replay.hidden = true; tryBtn.hidden = true;
+      if (sl.check.ray) ctx.ray = JSON.parse(JSON.stringify(sl.check.ray));
+      runSteps(ctx);
+    };
+    play();
+  }
+  function summary() {
+    container.innerHTML = `${top()}<div class="card">
+        <p class="intro-h">Запомни</p>
+        <div class="sum-row"><span class="sum-key">${F('m', '<b>n</b>')}</span><span><b>Знаменатель n</b> — на сколько равных частей делим единичный отрезок.</span></div>
+        <div class="sum-row"><span class="sum-key">${F('<b>m</b>', 'n')}</span><span><b>Числитель m</b> — сколько частей отсчитываем <b>от 0</b> (от точки O).</span></div>
+        <div class="sum-row"><span class="sum-key">${MX(1, 3, 5)}</span><span><b>Смешанное число</b> — сначала целые единичные отрезки, потом дробная часть <b>от последнего целого</b>.</span></div>
+        <p class="src">Примеры — 📖 стр. 100, рис. 38. Слова правила — ✏️ мои: в учебнике правило показано рисунком.</p>
+        <button class="btn big" data-go>${endLabel}</button>
+      </div>`;
+    container.querySelector('[data-go]').onclick = finish;
+  }
+  container.onclick = e => { if (e.target.closest('[data-skip]')) finish(); };
+  show();
+}
+
+// ---------- игра ----------
+let TASKS = makeRound();
+const S = { round: 1, task: 0, stars: [], log: [], history: [], away: [], notice: false, start: Date.now(), introErr: 0 };
+const app = document.getElementById('app');
+let ctx = null;
+
+function logErr(code) {
+  S.log.push({ round: S.round, task: S.task, code });
+  S.taskErrors++;
+}
+
+function renderProgress() {
+  const p = document.getElementById('progress');
+  if (S.task >= TASKS.length) p.textContent = `Раунд ${S.round} пройден!`;
+  else p.textContent = `Раунд ${S.round} · ` + (S.task === 0 ? 'разминка' : `задание ${S.task} из ${TASKS.length - 1}`);
+  document.getElementById('stars').textContent = S.stars.slice(1).map(n => '★'.repeat(n) + '☆'.repeat(3 - n)).join(' ');
+}
+
+function renderTask(keepErrors) {
+  renderProgress();
+  const t = TASKS[S.task];
+  if (!keepErrors) S.taskErrors = 0;
+  app.innerHTML = `<div class="card">
+      ${S.notice ? '<div class="away-note">Ты уходил со страницы, поэтому задание заменено новым. Считай в уме или на черновике 🙂</div>' : ''}
+      <p class="task-title">${t.title}</p>
+      ${t.show ? `<div class="task-show">${t.show}</div>` : ''}
+      ${t.text ? `<p class="task-text">${t.text}</p>` : ''}
+      <div class="ray"></div>
+      <details class="rule"><summary>Вспомнить правило</summary><p>${t.rule}</p></details>
+      <div class="steps"></div>
+    </div>`;
+  ctx = makeCtx(app.querySelector('.card'), t.ray, t.steps, logErr, taskDone);
+  runSteps(ctx);
+}
+
+function taskDone() {
+  const stars = S.taskErrors === 0 ? 3 : S.taskErrors <= 2 ? 2 : 1;
+  S.stars[S.task] = stars;
+  renderProgress();
+  const last = S.task + 1 >= TASKS.length;
+  const box = document.createElement('div');
+  box.innerHTML = `<div class="praise">${['Разминка пройдена!', 'Отлично!', 'Молодец!', 'Супер!', 'Класс!'][S.task]} ${S.task ? '★'.repeat(stars) : ''}</div>
+    <button class="btn big" id="next">${last ? 'Забрать награду 🎁' : S.task === 0 ? 'К заданиям →' : 'Дальше →'}</button>`;
+  ctx.stepsEl.appendChild(box);
+  box.querySelector('button').onclick = () => {
+    S.task++;
+    S.task < TASKS.length ? renderTask() : renderReward();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// уход со страницы (калькулятор, другая вкладка) дольше 3 с — текущее задание заменяется новым,
+// пройденные задания раунда остаются; на экране награды, в объяснении и после решённого задания не реагируем
+let awaySince = null;
+function goneAway() { if (awaySince === null) awaySince = Date.now(); }
+function cameBack() {
+  if (awaySince === null) return;
+  const sec = (Date.now() - awaySince) / 1000;
+  awaySince = null;
+  if (sec < 3 || introOpen || !ctx || S.task >= TASKS.length || ctx.i >= ctx.steps.length) return;
+  S.away.push({ round: S.round, task: S.task });
+  TASKS[S.task] = MAKERS[S.task]();
+  S.notice = true;
+  renderTask(true);
+  S.notice = false;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+window.addEventListener('blur', goneAway);
+window.addEventListener('focus', cameBack);
+document.addEventListener('visibilitychange', () => document.hidden ? goneAway() : cameBack());
+
+function newRound() {
+  S.round++; S.task = 0; S.stars = [];
+  TASKS = makeRound();
+  renderTask();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ---------- Лучик (✏️ человечек-линейка со стрелкой, как у луча) ----------
+function luchikSVG(mini) {
+  let ticks = '';
+  for (let i = 0; i <= 4; i++) ticks += `<line x1="${36 + i * 32}" y1="80" x2="${36 + i * 32}" y2="${i % 4 ? 90 : 96}" stroke="#8a5a1c" stroke-width="3" stroke-linecap="round"/>`;
+  const body = `<rect x="20" y="80" width="150" height="50" rx="9" fill="#f3c54d" stroke="#b8862b" stroke-width="4"/>
+    <polygon points="168,70 204,105 168,140" fill="#f3c54d" stroke="#b8862b" stroke-width="4" stroke-linejoin="round"/>
+    ${ticks}
+    <circle class="eye" cx="78" cy="106" r="9" fill="#fff" stroke="#24304a" stroke-width="2"/><circle class="eye" cx="112" cy="106" r="9" fill="#fff" stroke="#24304a" stroke-width="2"/>
+    <circle cx="80" cy="108" r="4.5" fill="#24304a"/><circle cx="114" cy="108" r="4.5" fill="#24304a"/>
+    <path d="M84,119 Q95,128 106,119" fill="none" stroke="#8a2f2f" stroke-width="3.5" stroke-linecap="round"/>
+    <circle cx="62" cy="118" r="5" fill="#f2a0a0" opacity=".7"/><circle cx="128" cy="118" r="5" fill="#f2a0a0" opacity=".7"/>`;
+  if (mini) return `<svg viewBox="12 55 200 100">${body}</svg>`;
+  return `<svg viewBox="-30 30 260 180" role="img" aria-label="Лучик — линейка со стрелкой, которая танцует">
+    <line class="arm-l" x1="-10" y1="62" x2="24" y2="96" stroke="#b8862b" stroke-width="7" stroke-linecap="round"/>
+    <line class="arm-r" x1="186" y1="88" x2="222" y2="54" stroke="#b8862b" stroke-width="7" stroke-linecap="round"/>
+    <line x1="66" y1="130" x2="60" y2="176" stroke="#b8862b" stroke-width="7" stroke-linecap="round"/>
+    <line x1="124" y1="130" x2="130" y2="176" stroke="#b8862b" stroke-width="7" stroke-linecap="round"/>
+    <ellipse cx="54" cy="180" rx="14" ry="7" fill="#2f6690"/><ellipse cx="136" cy="180" rx="14" ry="7" fill="#2f6690"/>
+    ${body}
+    <circle class="hop" id="hop" cx="36" cy="66" r="8" fill="#2f9e8f"/></svg>`;
+}
+
+function confetti() {
+  if (reduceMotion()) return;
+  const box = document.getElementById('confetti');
+  const colors = ['#e0a526', '#2f9e8f', '#c85a4f', '#2f6690', '#8f6cc8', '#3c8a5c'];
+  let html = '';
+  for (let i = 0; i < 70; i++) {
+    html += `<i style="left:${Math.random() * 100}%;background:${colors[i % colors.length]};animation-duration:${2.5 + Math.random() * 2.5}s;animation-delay:${Math.random() * 1.5}s"></i>`;
+  }
+  box.innerHTML = html;
+  setTimeout(() => box.innerHTML = '', 7000);
+}
+
+// одна наклейка за каждый пройденный раунд; счётчик в localStorage этого браузера
+function takeSticker() {
+  let got = S.round - 1;
+  try { got = parseInt(localStorage.getItem('luchik_stickers') || '0', 10) || 0; } catch (e) {}
+  const now = Math.min(got + 1, STICKERS.length);
+  try { localStorage.setItem('luchik_stickers', String(now)); } catch (e) {}
+  return { now, isNew: got < STICKERS.length };
+}
+
+const jokeOf = i => JOKES[i % JOKES.length];
+const fromName = s => s.of;
+
+function renderReward() {
+  S.history.push({ round: S.round, stars: S.stars.slice(), labels: TASKS.map(t => t.label) });
+  ctx = null;
+  renderProgress();
+  const { now, isNew } = takeSticker();
+  app.innerHTML = `<div class="card reward">
+      <h2>Ура! Раунд ${S.round} пройден!</h2>
+      <div class="hero-wrap"><div class="dance">${luchikSVG(false)}</div></div>
+      <div class="whole-count" id="wc">Я Лучик! Смотри, как я считаю…</div>
+      <p class="hand" style="font-size:22px;margin:16px 0 0">${isNew ? `Новая наклейка: ${STICKERS[now - 1].name}!` : 'Все наклейки собраны! 🏆'}</p>
+      <div class="stickers">${STICKERS.map((s, i) => i < now
+        ? `<div class="sticker got${isNew && i === now - 1 ? ' new picked' : ''}" data-i="${i}" title="${s.name} — нажми, чтобы прочитать шутку">${luchikSVG(true)}<span class="acc">${s.acc}</span></div>`
+        : `<div class="sticker">?</div>`).join('')}</div>
+      <div class="joke" id="joke"><b>Шутка от ${fromName(STICKERS[now - 1])}:</b><br>${jokeOf(now - 1)}</div>
+      <p style="font-size:14px;color:var(--ink-soft);margin:8px 0 0">Нажми на любую открытую наклейку — у каждой своя шутка.</p>
+      ${now < STICKERS.length ? `<button class="btn big" id="again">🔄 Ещё раунд с новыми числами — открыть наклейку ${now + 1}</button>` : `<button class="btn big" id="again">🔄 Ещё раунд с новыми числами</button>`}
+      <div class="report-box">
+        <button class="btn big" id="send">📨 Отправить маме</button>
+        <div class="sent-note" id="sent"></div>
+        <pre id="report"></pre>
+      </div>
+    </div>`;
+  confetti();
+  app.querySelectorAll('.sticker.got').forEach(st => st.onclick = () => {
+    const i = +st.dataset.i;
+    app.querySelectorAll('.sticker').forEach(x => x.classList.remove('picked'));
+    st.classList.add('picked');
+    document.getElementById('joke').innerHTML = `<b>Шутка от ${fromName(STICKERS[i])}:</b><br>${jokeOf(i)}`;
+  });
+  document.getElementById('again').onclick = newRound;
+  // точка прыгает по чёрточкам Лучика: 1/4, 2/4, 3/4, 4/4 = 1
+  const hop = document.getElementById('hop'), wc = document.getElementById('wc');
+  [1, 2, 3, 4].forEach(i => setTimeout(() => {
+    hop.style.transform = `translateX(${i * 32}px)`;
+    wc.innerHTML = i < 4 ? `${F(i, 4)}…` : `${F(4, 4)} = 1 — целый единичный отрезок! 🎉`;
+  }, 700 + i * 800));
+
+  const report = buildReport();
+  document.getElementById('report').textContent = report;
+  document.getElementById('send').onclick = () => sendReport(report);
+}
+
+function buildReport() {
+  const d = new Date(), mins = Math.max(1, Math.round((Date.now() - S.start) / 60000));
+  const date = `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}`;
+  const lines = [`Тренажёр §20 · ${date} · ${mins} мин · раундов: ${S.history.length}`];
+  lines.push(S.introSeen ? `Объяснение правила пройдено, ошибок в нём: ${S.introErr}` : 'Объяснение правила пропущено (уже проходил раньше)');
+  S.history.forEach(h => {
+    lines.push('', `Раунд ${h.round}: ${h.stars.slice(1).map(n => '★'.repeat(n) + '☆'.repeat(3 - n)).join(' ')}`);
+    const away = S.away.filter(a => a.round === h.round);
+    if (away.length) lines.push(`⚠ уходил со страницы: ${away.length} р. (${away.map(a => a.task ? 'задание ' + a.task : 'разминка').join(', ')})`);
+    h.labels.forEach((label, t) => {
+      const errs = S.log.filter(e => e.round === h.round && e.task === t);
+      if (!errs.length) { lines.push(`• ${label} — ✓`); return; }
+      const byCode = {};
+      errs.forEach(e => byCode[e.code] = (byCode[e.code] || 0) + 1);
+      lines.push(`• ${label} — ` + Object.entries(byCode).map(([c, k]) => `${CODE_TEXT[c] || c} (${k})`).join('; '));
+    });
+  });
+  return lines.join('\n');
+}
+
+async function sendReport(text) {
+  const note = document.getElementById('sent');
+  if (navigator.share) {
+    try { await navigator.share({ title: 'Тренажёр §20', text }); note.textContent = 'Отправлено!'; return; }
+    catch (e) { if (e.name === 'AbortError') return; }
+  }
+  try { await navigator.clipboard.writeText(text); note.textContent = 'Скопировано! Вставь в сообщение маме (Ctrl+V).'; }
+  catch (e) { note.textContent = 'Выдели текст ниже и скопируй его маме.'; }
+}
+
+// ---------- старт: сначала объяснение правила ----------
+const ruleBtn = document.getElementById('ruleBtn');
+function startGame() {
+  ruleBtn.hidden = false;
+  renderTask();
+  window.scrollTo({ top: 0 });
+}
+ruleBtn.onclick = () => {
+  // объяснение поверх игры: задание под ним не сбрасывается
+  const ov = document.createElement('div');
+  ov.className = 'overlay';
+  ov.innerHTML = '<div class="sheet"><div></div></div>';
+  document.body.appendChild(ov);
+  renderIntro(ov.querySelector('.sheet > div'), () => ov.remove(), true, 'Вернуться к игре →');
+};
+let seenBefore = false;
+try { seenBefore = localStorage.getItem('luchik_intro_done') === '1'; } catch (e) {}
+S.introSeen = true;
+renderProgress();
+document.getElementById('progress').textContent = '';
+renderIntro(app, startGame, seenBefore, 'Начать игру ▶');
+// «пропустить» при первом старте недоступно; если пропустили позже — отметим в отчёте
+app.addEventListener('click', e => { if (e.target.closest('[data-skip]')) S.introSeen = false; }, true);
+</script>
+</body>
+</html>
